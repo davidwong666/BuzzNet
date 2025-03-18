@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: social_media_dev
+    container_name: buzznet_dev
     ports:
       - '3000:3000' # Common port for web development
       - '5000:5000' # Alternative port if needed
