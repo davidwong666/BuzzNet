@@ -4,9 +4,39 @@
   "service": "dev",
   "workspaceFolder": "/app",
   "remoteUser": "developer",
+  "mounts": ["source=/c/Users/David/.ssh,target=/home/developer/.ssh,type=bind,consistency=cached"],
+  "remoteEnv": {
+    "SSH_AUTH_SOCK": "/home/developer/.ssh/ssh-agent.sock"
+  },
   "customizations": {
     "vscode": {
-      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "hnw.vscode-auto-open-markdown-preview",
+        "aaron-bond.better-comments",
+        "alefragnani.bookmarks",
+        "ms-azuretools.vscode-docker",
+        "dsznajder.es7-react-js-snippets",
+        "eamodio.gitlens",
+        "kisstkondoros.vscode-gutter-preview",
+        "oderwat.indent-rainbow",
+        "xabikos.javascriptsnippets",
+        "zainchen.json",
+        "mongodb.mongodb-vscode",
+        "monicaim.monica-code",
+        "chris-noring.node-snippets",
+        "techer.open-in-browser",
+        "ibm.output-colorizer",
+        "bradlc.vscode-tailwindcss",
+        "wayou.vscode-todo-highlight",
+        "gruntfuggly.todo-tree",
+        "chakrounanas.turbo-console-log",
+        "tomoki1207.pdf",
+        "wakatime.vscode-wakatime",
+        "redhat.vscode-yaml"
+      ]
     }
-  }
+  },
+  "postStartCommand": "sudo chown -R developer:developer /home/developer/.ssh && chmod 600 /home/developer/.ssh/BuzzNetKey && chmod 644 /home/developer/.ssh/BuzzNetKey.pub"
 }
