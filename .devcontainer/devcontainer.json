@@ -8,8 +8,13 @@
   "remoteEnv": {
     "SSH_AUTH_SOCK": "/home/developer/.ssh/ssh-agent.sock"
   },
+  "forwardPorts": [3000, 5000, 27017],
   "customizations": {
     "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true
+      },
       "extensions": [
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
