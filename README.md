@@ -47,3 +47,17 @@ We suggest that you begin by typing:
 
 cd /app/frontend
 npm start
+
+# ChangeLog
+
+## 22-03-2025 Suggestions from Professor
+Adding more details:
+- Encryption
+- Rate Limit
+- Internationalization
+- 
+Provide reason on choosing MongoDB
+
+Communication between frontend and backend: RESTful API Information
+
+Consider removing some part due to tiem limit
