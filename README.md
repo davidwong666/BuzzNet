@@ -2,6 +2,13 @@
 
 Group Project for CSCI3100 2024-25 Sem 2 at CUHK
 
+# Devloper's Role
+Zhang Ka Sing - Frontend
+Peng Minqi - Frontend
+Li Chun Leung - Backend
+Zeng Bai Chuan - Backend
+Wong Kwok Kam - Backend
+
 # Dev Environment Setup
 
 This project uses VS Code's Remote Development extension for a consistent development environment:
