@@ -31,3 +31,23 @@
 4. 2FA & CAPTCHA
 
    - The platform offers optional Two-Factor Authentication for enhanced account security, requiring a verification code alongside passwords during login. CAPTCHA verification automatically activates during registration, suspicious logins, and rapid actions to differentiate human users from automated bots.
+
+5. Logging
+
+   - The platform supports intelligent logging system continuously tracks user interactions and system events, including login attempts and data access, etc.
+
+6. Basic account management
+
+   - Including changing profile picture, username, email account, password and account deactivation/deletion options.
+
+# Future considerations
+
+1. Password Reset
+
+2. Post Category
+
+3. Report and Flagging Mechanism
+
+4. Anonymity (anonymous post and comment)
+
+5. Search keywords
