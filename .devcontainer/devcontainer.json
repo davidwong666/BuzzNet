@@ -4,10 +4,6 @@
   "service": "dev",
   "workspaceFolder": "/app",
   "remoteUser": "developer",
-  "mounts": ["source=/c/Users/David/.ssh,target=/home/developer/.ssh,type=bind,consistency=cached"],
-  "remoteEnv": {
-    "SSH_AUTH_SOCK": "/home/developer/.ssh/ssh-agent.sock"
-  },
   "forwardPorts": [3000, 5000, 27017],
   "customizations": {
     "vscode": {
@@ -42,6 +38,5 @@
         "redhat.vscode-yaml"
       ]
     }
-  },
-  "postStartCommand": "sudo chown -R developer:developer /home/developer/.ssh && chmod 600 /home/developer/.ssh/BuzzNetKey && chmod 644 /home/developer/.ssh/BuzzNetKey.pub"
+  }
 }
