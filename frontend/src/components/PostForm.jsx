@@ -10,6 +10,7 @@ const PostForm = ({ onPostCreated }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [offlineMode, setOfflineMode] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,9 +59,45 @@ const PostForm = ({ onPostCreated }) => {
         onPostCreated(newPost);
       }
       
+      // Reset offline mode if we were successful
+      if (offlineMode) {
+        setOfflineMode(false);
+      }
+      
     } catch (err) {
-      setError('Failed to create post');
       console.error('Error creating post:', err);
+      
+      // Check if we're offline
+      if (!navigator.onLine || err.message.includes('Failed to fetch')) {
+        setOfflineMode(true);
+        setError('Database connection unavailable - post will be saved locally');
+        
+        // Create a temporary post in local storage
+        const tempPost = {
+          ...formData,
+          _id: `temp_${Date.now()}`,
+          createdAt: new Date().toISOString(),
+          likes: 0
+        };
+        
+        // Save to localStorage
+        const savedPosts = JSON.parse(localStorage.getItem('buzznetPosts') || '[]');
+        localStorage.setItem('buzznetPosts', JSON.stringify([...savedPosts, tempPost]));
+        
+        // Reset form
+        setFormData({
+          title: '',
+          content: '',
+          author: ''
+        });
+        
+        // Notify parent component
+        if (onPostCreated) {
+          onPostCreated(tempPost);
+        }
+      } else {
+        setError('Failed to create post');
+      }
     } finally {
       setIsSubmitting(false);
     }
