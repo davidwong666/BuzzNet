@@ -63,21 +63,21 @@ npm start
 I've implemented a simple but comprehensive set of functions for both frontend and backend. Here's what I've created:
 
 - Backend:
-MongoDB Post Model: Created a schema for posts with fields for title, content, author, likes, and creation date.
-Database Connection: Set up a MongoDB connection configuration with error handling.
-Post Controller: Implemented controller functions for CRUD operations (Create, Read, Update, Delete) and a like function.
-Routes: Created API routes for posts with appropriate HTTP methods.
-Express Server: Updated the main server file to use routes and DB connection.
+  MongoDB Post Model: Created a schema for posts with fields for title, content, author, likes, and creation date.
+  Database Connection: Set up a MongoDB connection configuration with error handling.
+  Post Controller: Implemented controller functions for CRUD operations (Create, Read, Update, Delete) and a like function.
+  Routes: Created API routes for posts with appropriate HTTP methods.
+  Express Server: Updated the main server file to use routes and DB connection.
 
 - Frontend:
-Post List Component: Fetches and displays posts from the API.
-Post Item Component: Displays individual posts with formatted date, expandable content, and like functionality.
-Post Form Component: Allows users to create new posts with validation.
-Main App Component: Integrates all components with a clean layout and refresh functionality.
-CSS Styling: Added comprehensive styling for a modern, responsive UI.
-To use this application:
-Start the backend server: cd BuzzNet/backend && npm run dev
-Start the frontend development server: cd BuzzNet/frontend && npm run dev
+  Post List Component: Fetches and displays posts from the API.
+  Post Item Component: Displays individual posts with formatted date, expandable content, and like functionality.
+  Post Form Component: Allows users to create new posts with validation.
+  Main App Component: Integrates all components with a clean layout and refresh functionality.
+  CSS Styling: Added comprehensive styling for a modern, responsive UI.
+  To use this application:
+  Start the backend server: cd BuzzNet/backend && npm run dev
+  Start the frontend development server: cd BuzzNet/frontend && npm run dev
 
 ## 22-03-2025 Suggestions from Professor
 
