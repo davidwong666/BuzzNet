@@ -332,9 +332,9 @@ body {
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Reduced gap */
-  width: 980px; /* Fixed width */
-  height: 100%;
+  gap: 20px;
+  width: 980px;
+  height: auto; /* Let content determine height */
   margin: 0;
   padding-bottom: 20px;
 }
@@ -392,9 +392,10 @@ body {
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
   width: 980px;
-  min-height: 150px; /* Reduced minimum height */
-  max-height: 350px; /* Added maximum height */
-  overflow-y: auto; /* Add scrollbar if needed */
+  min-height: 150px; /* Minimum height */
+  height: auto; /* Let content determine height */
+  max-height: none; /* Remove max height limit */
+  overflow-y: visible; /* Show full content */
 }
 
 .post-item:hover {
@@ -421,10 +422,15 @@ body {
   margin-bottom: 1.5625rem; /* 25px */
   line-height: 1.8;
   font-size: 1.3rem;
+  white-space: pre-line; /* Preserve line breaks */
+  overflow: visible; /* Ensure content is fully visible */
+  height: auto; /* Let content determine height */
 }
 
 .post-content.expanded {
   white-space: pre-line;
+  height: auto;
+  overflow: visible;
 }
 
 .read-more {
@@ -611,9 +617,9 @@ body {
     flex: 0 0 calc(95vw - 420px);
   }
   
-  .post-list,
   .post-item {
     width: 100%; /* Full width of parent */
+    max-height: none; /* Ensure no max height constraint */
   }
 }
 
@@ -665,6 +671,7 @@ body {
   .post-list,
   .post-item {
     width: 95vw;
+    max-height: none; /* Ensure no max height constraint */
   }
 }
 
