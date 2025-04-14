@@ -34,7 +34,7 @@ body {
 
 /* App Layout */
 .app-container {
-  max-width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0;
   width: 100%;
@@ -68,22 +68,19 @@ body {
 
 .app-main {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
+  flex-direction: column;
   width: 100%;
   padding: 0 15px;
 }
 
 .create-post-section {
-  width: 38%;
-  position: sticky;
-  top: 20px;
+  width: 100%;
+  position: relative;
+  top: 0;
 }
 
 .posts-section {
-  width: 62%;
+  width: 100%;
 }
 
 .app-footer {
@@ -99,18 +96,25 @@ body {
 /* Form Styles */
 .post-form-container {
   background-color: white;
-  padding: 25px;
+  padding: 35px 50px;
   border-radius: 12px;
   box-shadow: var(--card-shadow);
   width: 100%;
+  margin-bottom: 40px;
 }
 
 /* Wide form style - double width */
 .wide-form {
-  width: 200%; /* Make it twice as wide */
-  max-width: calc(100vw - 50px); /* Prevent overflow on small screens */
-  margin-left: -50%; /* Center the wider form */
-  z-index: 10; /* Ensure it appears above other content */
+  width: 100%;
+  transform: none;
+  margin-left: 0;
+  max-width: 100%;
+  z-index: 1;
+}
+
+/* Adjust layout for wide form */
+.wide-form + .posts-section {
+  margin-top: 20px;
 }
 
 .post-form-container h2 {
@@ -133,28 +137,28 @@ body {
 .post-form input,
 .post-form textarea {
   width: 100%;
-  padding: 15px;
+  padding: 18px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 .post-form textarea {
   resize: vertical;
-  min-height: 150px;
+  min-height: 200px;
 }
 
 .post-form .submit-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 15px 20px;
+  padding: 18px 25px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 500;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .post-form .submit-button:hover {
@@ -289,5 +293,16 @@ body {
     width: 100%;
     margin-left: 0;
     max-width: 100%;
+  }
+  
+  /* Adjust padding for mobile */
+  .post-form-container {
+    padding: 20px;
+  }
+  
+  .post-form input,
+  .post-form textarea {
+    padding: 15px;
+    font-size: 1.1rem;
   }
 }
