@@ -20,7 +20,8 @@ const allowedOrigins = [
   'http://localhost:5178',
   'http://localhost:5179',
   'https://buzznet.vercel.app',
-  'https://buzznet-api.vercel.app'
+  'https://buzznet-api.vercel.app',
+  'https://buzznet-xi.vercel.app'
 ];
 
 // Middleware
