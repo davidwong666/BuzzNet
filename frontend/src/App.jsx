@@ -1,14 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import PostList from './components/PostList';
 import PostForm from './components/PostForm';
 
 function App() {
   const [refreshKey, setRefreshKey] = useState(0);
+  const [lastAction, setLastAction] = useState(null);
 
   const handlePostCreated = () => {
     // Trigger refresh of PostList component
     setRefreshKey(prev => prev + 1);
+    setLastAction("Post created successfully!");
+    
+    // Clear success message after 3 seconds
+    setTimeout(() => {
+      setLastAction(null);
+    }, 3000);
   };
 
   return (
@@ -23,6 +30,7 @@ function App() {
       <main className="app-main">
         <section className="create-post-section">
           <PostForm onPostCreated={handlePostCreated} />
+          {lastAction && <div className="success-message">{lastAction}</div>}
         </section>
         
         <section className="posts-section" key={refreshKey}>
