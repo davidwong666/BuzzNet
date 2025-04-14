@@ -229,14 +229,16 @@ body {
 /* Form Styles */
 .post-form-container {
   background-color: white;
-  padding: 2.2rem; /* Convert 35px to rem */
-  border-radius: 1rem; /* Convert 16px to rem */
+  padding: 2.5rem; /* Increase from 2.2rem to 2.5rem */
+  border-radius: 1rem;
   box-shadow: var(--card-shadow);
   width: 100%;
   margin-bottom: 0;
   transition: all 0.3s ease;
   max-width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Update post-form-container for left column */
@@ -244,6 +246,7 @@ body {
   max-width: 100%;
   position: sticky;
   top: 1.25rem; /* Convert 20px to rem */
+  height: auto; /* Allow natural height based on content */
 }
 
 .post-form-container:hover {
@@ -258,24 +261,28 @@ body {
 }
 
 .post-form .form-group {
-  margin-bottom: 1.5625rem; /* 25px */
+  margin-bottom: 2rem; /* Increase from 1.5625rem (25px) to 2rem (32px) */
 }
 
 .post-form label {
   display: block;
-  margin-bottom: 0.625rem; /* 10px */
+  margin-bottom: 0.875rem; /* Increase from 0.625rem to 0.875rem */
   font-weight: 500;
-  font-size: 1.3rem;
+  font-size: 1.4rem; /* Increase from 1.3rem */
 }
 
 .post-form input,
 .post-form textarea {
   width: 100%;
-  padding: 1.25rem; /* 20px */
+  padding: 1.5rem; /* Increase from 1.25rem to 1.5rem */
   border: 1px solid var(--border-color);
-  border-radius: 0.625rem; /* 10px */
+  border-radius: 0.625rem;
   font-size: 1.4rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-form input {
+  height: 3.5rem; /* Set explicit height for input fields */
 }
 
 .post-form input:focus,
@@ -287,20 +294,21 @@ body {
 
 .post-form textarea {
   resize: vertical;
-  min-height: 13.75rem; /* 220px */
+  min-height: 18.75rem; /* Increase from 13.75rem (220px) to 18.75rem (300px) */
+  max-height: 31.25rem; /* Add max height of 500px */
 }
 
 .post-form .submit-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 1.125rem 1.5625rem; /* 18px 25px */
-  border-radius: 0.5rem; /* 8px */
+  padding: 1.125rem 1.5625rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-size: 1.4rem;
   font-weight: 500;
   width: 100%;
-  margin-top: 1.875rem; /* 30px */
+  margin-top: 2.5rem; /* Increase from 1.875rem (30px) to 2.5rem (40px) */
 }
 
 .post-form .submit-button:hover {
