@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "name": "buzznet-api",
   "builds": [
     {
       "src": "index.js",
