@@ -34,25 +34,27 @@ body {
 
 /* App Layout */
 .app-container {
-  max-width: 1600px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .app-header {
   text-align: center;
   margin-bottom: 40px;
-  padding: 25px 0 30px;
+  padding: 25px 20px 30px;
   width: 100%;
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
+  border-radius: 0 0 16px 16px;
 }
 
 .app-header::before {
@@ -98,22 +100,22 @@ body {
 
 .app-main {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 50px;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  padding: 0 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  gap: 40px;
 }
 
 .create-post-section {
-  width: 45%;
-  position: sticky;
-  top: 20px;
+  width: 100%;
+  position: relative;
+  top: auto;
 }
 
 .posts-section {
-  width: 55%;
+  width: 100%;
 }
 
 .app-footer {
@@ -135,6 +137,8 @@ body {
   width: 100%;
   margin-bottom: 0;
   transition: all 0.3s ease;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .post-form-container:hover {
@@ -209,13 +213,16 @@ body {
   flex-direction: column;
   gap: 30px;
   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .post-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .post-list h2 {
@@ -262,6 +269,7 @@ body {
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
+  width: 100%;
 }
 
 .post-item:hover {
@@ -438,32 +446,17 @@ body {
 @media (max-width: 1280px) {
   .app-container {
     max-width: 100%;
-    padding: 0 10px;
+    padding: 0 15px;
   }
   
   .app-main {
-    gap: 30px;
-  }
-  
-  .create-post-section,
-  .posts-section {
-    width: 48%;
+    max-width: 900px;
   }
 }
 
 @media (max-width: 992px) {
   .app-main {
-    flex-direction: column;
-  }
-  
-  .create-post-section,
-  .posts-section {
-    width: 100%;
-  }
-  
-  .create-post-section {
-    position: static;
-    margin-bottom: 40px;
+    gap: 30px;
   }
   
   .app-header h1 {
@@ -480,6 +473,14 @@ body {
 }
 
 @media (max-width: 576px) {
+  .app-container {
+    padding: 0 10px;
+  }
+  
+  .app-header {
+    padding: 20px 15px 25px;
+  }
+  
   .app-header h1 {
     font-size: 3rem;
   }
@@ -500,5 +501,9 @@ body {
   
   .post-content {
     font-size: 1.1rem;
+  }
+  
+  .app-main {
+    gap: 25px;
   }
 }
