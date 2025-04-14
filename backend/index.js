@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 const connectDB = require('./config/db');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,12 +28,7 @@ const allowedOrigins = [
 // Middleware
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
+    // Allow all origins during development
     return callback(null, true);
   },
   credentials: true
@@ -45,6 +41,23 @@ app.use('/api/posts', require('./routes/postRoutes'));
 
 app.get('/api', (req, res) => {
   res.json({ message: 'BuzzNet API is running' });
+});
+
+// Add debug endpoint for DB connection
+app.get('/api/debug/db', (req, res) => {
+  const dbStatus = mongoose.connection.readyState;
+  const statusMap = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting'
+  };
+  
+  res.json({
+    db_status: statusMap[dbStatus] || 'unknown',
+    mongo_uri_exists: !!process.env.MONGO_URI,
+    mongo_uri_length: process.env.MONGO_URI ? process.env.MONGO_URI.length : 0
+  });
 });
 
 // Add root route for debugging
