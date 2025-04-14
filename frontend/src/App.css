@@ -105,6 +105,14 @@ body {
   width: 100%;
 }
 
+/* Wide form style - double width */
+.wide-form {
+  width: 200%; /* Make it twice as wide */
+  max-width: calc(100vw - 50px); /* Prevent overflow on small screens */
+  margin-left: -50%; /* Center the wider form */
+  z-index: 10; /* Ensure it appears above other content */
+}
+
 .post-form-container h2 {
   margin-bottom: 25px;
   color: var(--primary-color);
@@ -274,5 +282,12 @@ body {
   
   .create-post-section {
     position: static;
+  }
+  
+  /* Reset wide form on mobile */
+  .wide-form {
+    width: 100%;
+    margin-left: 0;
+    max-width: 100%;
   }
 }

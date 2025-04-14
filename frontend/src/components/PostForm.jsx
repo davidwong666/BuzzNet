@@ -67,7 +67,7 @@ const PostForm = ({ onPostCreated }) => {
   };
 
   return (
-    <div className="post-form-container">
+    <div className="post-form-container wide-form">
       <h2>Create New Post</h2>
       
       {error && <div className="error">{error}</div>}
@@ -81,7 +81,7 @@ const PostForm = ({ onPostCreated }) => {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            placeholder="Write an eye-catching title for your post..."
+            placeholder="Write a title for your post..."
             disabled={isSubmitting}
           />
         </div>
@@ -94,7 +94,7 @@ const PostForm = ({ onPostCreated }) => {
             name="author"
             value={formData.author}
             onChange={handleChange}
-            placeholder="How should we call you?"
+            placeholder="Your name"
             disabled={isSubmitting}
           />
         </div>
@@ -106,7 +106,7 @@ const PostForm = ({ onPostCreated }) => {
             name="content"
             value={formData.content}
             onChange={handleChange}
-            placeholder="Share your thoughts, ideas, stories or questions with the BuzzNet community..."
+            placeholder="Share everything with the BuzzNet community..."
             rows="4"
             disabled={isSubmitting}
           ></textarea>
