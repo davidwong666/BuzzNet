@@ -33,6 +33,7 @@ const PostList = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
+        console.log('Fetching from:', `${API_URL}/api/posts`); // Debug log
         const response = await fetch(`${API_URL}/api/posts`);
         
         if (!response.ok) {
@@ -40,6 +41,7 @@ const PostList = () => {
         }
         
         const data = await response.json();
+        console.log('Posts fetched:', data); // Debug log
         setPosts(data);
         setError(null);
         setUsedMockData(false);
