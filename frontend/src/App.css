@@ -97,9 +97,9 @@ body {
 
 /* App Layout */
 .app-container {
-  max-width: 90%; /* Use percentage instead of fixed width */
+  max-width: 1400px; /* Fixed width instead of percentage */
   margin: 0 auto;
-  padding: 0 1.25rem; /* Convert 20px to rem */
+  padding: 0 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -111,15 +111,17 @@ body {
 
 .app-header {
   text-align: center;
-  margin-bottom: 2.5rem; /* Convert 40px to rem */
-  padding: 1.5rem 1.25rem 1.875rem; /* Convert px to rem */
+  margin-bottom: 40px; /* Fixed size */
+  padding: 25px 20px 30px; /* Fixed size */
   width: 100%;
+  max-width: 1400px; /* Fixed size */
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
-  border-radius: 0 0 1rem 1rem; /* Convert 16px to rem */
+  border-radius: 0 0 16px 16px;
+  height: 200px; /* Fixed height */
 }
 
 .app-header::before {
@@ -169,27 +171,31 @@ body {
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  max-width: 90%; /* Use percentage instead of fixed width */
+  max-width: 1200px; /* Fixed width instead of percentage */
   margin: 0 auto;
-  gap: 2.5rem; /* Convert 40px to rem */
+  gap: 40px; /* Fixed size */
 }
 
 .left-column {
-  flex: 0 0 30%; /* Use percentage instead of fixed width */
+  flex: 0 0 400px; /* Fixed width instead of percentage */
   position: sticky;
-  top: 1.25rem; /* Convert 20px to rem */
+  top: 20px;
   align-self: flex-start;
-  max-height: calc(100vh - 6.25rem); /* Convert 100px to rem */
+  max-height: calc(100vh - 100px);
+  width: 400px; /* Fixed width */
+  overflow-y: auto; /* Add scroll if content overflows */
 }
 
 .right-column {
-  flex: 1;
-  max-width: calc(70% - 2.5rem); /* Use percentage and convert gap to rem */
+  flex: 0 0 760px; /* Fixed width */
+  width: 760px; /* Fixed width */
+  max-width: 760px; /* Fixed max width */
 }
 
 /* Add margin to the posts section to align with create post form header */
 .right-column .posts-section {
-  margin-top: 4.5rem; /* Convert 72px to rem */
+  margin-top: 72px; /* Fixed size */
+  width: 760px; /* Fixed width */
 }
 
 /* Old app-main styles for reference */
@@ -229,13 +235,13 @@ body {
 /* Form Styles */
 .post-form-container {
   background-color: white;
-  padding: 2.5rem; /* Increase from 2.2rem to 2.5rem */
-  border-radius: 1rem;
+  padding: 40px; /* Fixed size */
+  border-radius: 16px;
   box-shadow: var(--card-shadow);
-  width: 100%;
+  width: 400px; /* Fixed width */
+  height: 700px; /* Fixed height */
   margin-bottom: 0;
   transition: all 0.3s ease;
-  max-width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -243,10 +249,11 @@ body {
 
 /* Update post-form-container for left column */
 .left-column .post-form-container {
-  max-width: 100%;
+  width: 100%; /* Take full width of parent */
   position: sticky;
-  top: 1.25rem; /* Convert 20px to rem */
-  height: auto; /* Allow natural height based on content */
+  top: 20px;
+  height: 700px; /* Fixed height */
+  overflow-y: auto; /* Add scroll if content exceeds height */
 }
 
 .post-form-container:hover {
@@ -302,13 +309,14 @@ body {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 1.125rem 1.5625rem;
-  border-radius: 0.5rem;
+  padding: 18px 25px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 1.4rem;
   font-weight: 500;
   width: 100%;
-  margin-top: 2.5rem; /* Increase from 1.875rem (30px) to 2.5rem (40px) */
+  margin-top: 40px; /* Fixed size */
+  height: 65px; /* Fixed height */
 }
 
 .post-form .submit-button:hover {
@@ -324,9 +332,8 @@ body {
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 1.875rem; /* 30px */
-  width: 100%;
-  max-width: 100%;
+  gap: 30px; /* Fixed size */
+  width: 760px; /* Fixed width */
   margin: 0 auto;
 }
 
@@ -377,12 +384,13 @@ body {
 
 .post-item {
   background-color: white;
-  padding: 1.875rem; /* 30px */
-  border-radius: 1rem; /* 16px */
+  padding: 30px; /* Fixed size */
+  border-radius: 16px;
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
-  border-left: 0.25rem solid transparent; /* 4px */
+  border-left: 4px solid transparent;
   width: 100%;
+  min-height: 200px; /* Minimum fixed height */
 }
 
 .post-item:hover {
@@ -557,69 +565,102 @@ body {
 
 /* Media Queries for Responsive Layout */
 @media (max-width: 1280px) {
-  :root {
-    font-size: 15px; /* Slightly reduce base font size */
-  }
-  
   .app-container {
-    max-width: 95%;
-    padding: 0 0.9375rem; /* Convert 15px to rem */
+    max-width: 1200px; /* Still fixed but smaller */
   }
   
   .app-main-flex {
-    max-width: 95%;
+    max-width: 1000px; /* Still fixed but smaller */
   }
-
-  body {
-    padding-top: 0.9375rem; /* Convert 15px to rem */
+  
+  .left-column {
+    flex: 0 0 350px; /* Smaller fixed width */
+    width: 350px;
+  }
+  
+  .right-column {
+    flex: 0 0 610px; /* Smaller fixed width */
+    width: 610px;
+    max-width: 610px;
+  }
+  
+  .post-list {
+    width: 610px; /* Fixed width */
+  }
+  
+  .right-column .posts-section {
+    width: 610px; /* Fixed width */
   }
 }
 
 @media (max-width: 992px) {
-  :root {
-    font-size: 14px; /* Further reduce base font size */
+  .app-container {
+    max-width: 900px; /* Still fixed but smaller */
   }
   
   .app-main-flex {
-    gap: 1.875rem; /* Convert 30px to rem */
+    max-width: 800px; /* Still fixed but smaller */
+    gap: 30px; /* Fixed size */
   }
   
   .left-column {
-    flex: 0 0 35%; /* Adjust percentage */
+    flex: 0 0 300px; /* Smaller fixed width */
+    width: 300px;
   }
   
   .right-column {
-    max-width: calc(65% - 1.875rem); /* Adjust percentage and convert gap to rem */
+    flex: 0 0 470px; /* Smaller fixed width */
+    width: 470px;
+    max-width: 470px;
   }
   
-  body {
-    padding-top: 0.625rem; /* Convert 10px to rem */
+  .post-list {
+    width: 470px; /* Fixed width */
+  }
+  
+  .right-column .posts-section {
+    width: 470px; /* Fixed width */
+  }
+  
+  .post-form-container {
+    height: 650px; /* Slightly smaller fixed height */
   }
 }
 
 @media (max-width: 768px) {
-  :root {
-    font-size: 13px; /* Further reduce base font size */
+  .app-container {
+    max-width: 700px; /* Still fixed but smaller */
   }
   
   .app-main-flex {
     flex-direction: column;
+    max-width: 600px; /* Still fixed but smaller */
   }
   
   .left-column {
     flex: 0 0 auto;
-    width: 100%;
+    width: 600px; /* Fixed width */
     position: relative;
     top: 0;
   }
   
   .right-column {
-    max-width: 100%;
+    width: 600px; /* Fixed width */
+    max-width: 600px;
   }
   
-  /* Remove top margin on mobile since columns stack */
+  .post-list {
+    width: 600px; /* Fixed width */
+  }
+  
   .right-column .posts-section {
-    margin-top: 1.25rem; /* Convert 20px to rem */
+    margin-top: 20px; /* Fixed size */
+    width: 600px; /* Fixed width */
+  }
+  
+  .post-form-container {
+    width: 600px; /* Fixed width */
+    height: 600px; /* Smaller fixed height */
   }
 }
 
