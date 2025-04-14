@@ -21,6 +21,8 @@
 html, body {
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -30,6 +32,8 @@ body {
   background-color: var(--background-color);
   display: flex;
   justify-content: center;
+  overflow-y: auto;
+  padding-top: 20px; /* Add padding to ensure content isn't cut off */
 }
 
 /* App Layout */
@@ -42,6 +46,7 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .app-header {
@@ -452,6 +457,10 @@ body {
   .app-main {
     max-width: 900px;
   }
+
+  body {
+    padding-top: 15px;
+  }
 }
 
 @media (max-width: 992px) {
@@ -470,6 +479,10 @@ body {
   .post-item {
     padding: 20px;
   }
+
+  body {
+    padding-top: 10px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -479,6 +492,7 @@ body {
   
   .app-header {
     padding: 20px 15px 25px;
+    margin-top: 10px; /* Add margin to ensure header is visible */
   }
   
   .app-header h1 {
@@ -505,5 +519,9 @@ body {
   
   .app-main {
     gap: 25px;
+  }
+
+  body {
+    padding-top: 5px;
   }
 }
