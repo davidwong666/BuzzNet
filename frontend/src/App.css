@@ -97,31 +97,31 @@ body {
 
 /* App Layout */
 .app-container {
-  max-width: 1400px; /* Fixed width instead of percentage */
+  width: 1400px; /* Fixed exact width */
   margin: 0 auto;
-  padding: 0 20px;
-  width: 100%;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  overflow-x: hidden; /* Prevent horizontal scroll */
-  min-height: 100vh; /* Ensure container takes full height */
+  overflow-x: hidden;
+  height: 100vh; /* Full viewport height */
+  min-height: 800px; /* Minimum height */
+  max-height: 100vh; /* Maximum height */
 }
 
 .app-header {
   text-align: center;
-  margin-bottom: 40px; /* Fixed size */
-  padding: 25px 20px 30px; /* Fixed size */
-  width: 100%;
-  max-width: 1400px; /* Fixed size */
+  margin-bottom: 20px; /* Reduced margin */
+  padding: 15px 20px; /* Reduced padding */
+  width: 1400px; /* Fixed exact width */
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
   border-radius: 0 0 16px 16px;
-  height: 200px; /* Fixed height */
+  height: 150px; /* Fixed exact height, reduced from 200px */
 }
 
 .app-header::before {
@@ -170,32 +170,35 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
-  max-width: 1200px; /* Fixed width instead of percentage */
-  margin: 0 auto;
-  gap: 40px; /* Fixed size */
+  width: 1400px; /* Fixed exact width */
+  height: calc(100vh - 230px); /* Fixed height: viewport minus header, footer and margins */
+  margin: 0;
+  gap: 20px; /* Reduced gap */
+  overflow: hidden; /* Prevent overflow */
 }
 
 .left-column {
-  flex: 0 0 400px; /* Fixed width instead of percentage */
-  position: sticky;
-  top: 20px;
-  align-self: flex-start;
-  max-height: calc(100vh - 100px);
-  width: 400px; /* Fixed width */
-  overflow-y: auto; /* Add scroll if content overflows */
+  flex: 0 0 400px; /* Fixed width */
+  position: relative;
+  top: 0;
+  height: 100%; /* Full height of parent */
+  width: 400px;
+  overflow-y: auto;
 }
 
 .right-column {
-  flex: 0 0 760px; /* Fixed width */
-  width: 760px; /* Fixed width */
-  max-width: 760px; /* Fixed max width */
+  flex: 0 0 980px; /* Fixed width - Increased to fill the space */
+  width: 980px;
+  height: 100%; /* Full height of parent */
+  overflow-y: auto; /* Add scroll if needed */
 }
 
 /* Add margin to the posts section to align with create post form header */
 .right-column .posts-section {
-  margin-top: 72px; /* Fixed size */
-  width: 760px; /* Fixed width */
+  margin-top: 0; /* No margin needed anymore */
+  width: 980px; /* Fixed width */
+  height: 100%;
+  overflow-y: auto;
 }
 
 /* Old app-main styles for reference */
@@ -219,30 +222,28 @@ body {
   width: 100%;
 }
 
-/* Footer improvements for zoom out */
+/* Footer */
 .app-footer {
-  margin-top: 3.75rem; /* 60px in rem */
+  margin-top: 20px; /* Reduced margin */
   text-align: center;
-  padding: 1.25rem 0; /* 20px in rem */
+  padding: 10px 0;
   color: var(--light-text);
   border-top: 1px solid var(--border-color);
-  width: 100%;
-  font-size: 1.1rem;
-  position: relative; /* Ensure proper stacking */
+  width: 1400px; /* Fixed width */
+  position: relative;
   bottom: 0;
+  height: 40px; /* Fixed height */
 }
 
 /* Form Styles */
 .post-form-container {
   background-color: white;
-  padding: 40px; /* Fixed size */
+  padding: 20px; /* Reduced padding */
   border-radius: 16px;
   box-shadow: var(--card-shadow);
   width: 400px; /* Fixed width */
-  height: 700px; /* Fixed height */
-  margin-bottom: 0;
-  transition: all 0.3s ease;
-  margin: 0 auto;
+  height: 600px; /* Fixed height - Reduced to fit better */
+  margin: 0;
   display: flex;
   flex-direction: column;
 }
@@ -250,10 +251,9 @@ body {
 /* Update post-form-container for left column */
 .left-column .post-form-container {
   width: 100%; /* Take full width of parent */
-  position: sticky;
-  top: 20px;
-  height: 700px; /* Fixed height */
-  overflow-y: auto; /* Add scroll if content exceeds height */
+  height: auto; /* Let it size naturally */
+  max-height: calc(100vh - 250px); /* Maximum height */
+  overflow-y: auto;
 }
 
 .post-form-container:hover {
@@ -301,8 +301,8 @@ body {
 
 .post-form textarea {
   resize: vertical;
-  min-height: 18.75rem; /* Increase from 13.75rem (220px) to 18.75rem (300px) */
-  max-height: 31.25rem; /* Add max height of 500px */
+  min-height: 150px; /* Reduced minimum height */
+  max-height: 250px; /* Reduced maximum height */
 }
 
 .post-form .submit-button {
@@ -332,9 +332,11 @@ body {
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 30px; /* Fixed size */
-  width: 760px; /* Fixed width */
-  margin: 0 auto;
+  gap: 20px; /* Reduced gap */
+  width: 980px; /* Fixed width */
+  height: 100%;
+  margin: 0;
+  padding-bottom: 20px;
 }
 
 .post-list-header {
@@ -384,13 +386,15 @@ body {
 
 .post-item {
   background-color: white;
-  padding: 30px; /* Fixed size */
+  padding: 20px; /* Reduced padding */
   border-radius: 16px;
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
-  width: 100%;
-  min-height: 200px; /* Minimum fixed height */
+  width: 980px;
+  min-height: 150px; /* Reduced minimum height */
+  max-height: 350px; /* Added maximum height */
+  overflow-y: auto; /* Add scrollbar if needed */
 }
 
 .post-item:hover {
@@ -563,149 +567,104 @@ body {
   margin-top: 20px;
 }
 
-/* Media Queries for Responsive Layout */
-@media (max-width: 1280px) {
-  .app-container {
-    max-width: 1200px; /* Still fixed but smaller */
+/* Viewport adaptation */
+@media (max-height: 900px) {
+  .app-header {
+    height: 120px; /* Even smaller height */
+    padding: 10px;
+    margin-bottom: 10px;
   }
   
   .app-main-flex {
-    max-width: 1000px; /* Still fixed but smaller */
+    height: calc(100vh - 180px);
+  }
+  
+  .post-form-container {
+    height: 550px;
+  }
+  
+  .post-form textarea {
+    min-height: 120px;
+  }
+  
+  .app-footer {
+    height: 30px;
+    margin-top: 10px;
+    padding: 5px 0;
+  }
+}
+
+/* Ensure all content fits within browser window */
+@media (max-width: 1440px) {
+  .app-container,
+  .app-header,
+  .app-main-flex,
+  .app-footer,
+  .right-column .posts-section,
+  .post-list,
+  .post-item {
+    width: 95vw; /* Switch to viewport width */
+  }
+  
+  .right-column {
+    width: calc(95vw - 420px); /* 95vw minus left column and gap */
+    flex: 0 0 calc(95vw - 420px);
+  }
+  
+  .post-list,
+  .post-item {
+    width: 100%; /* Full width of parent */
+  }
+}
+
+/* Style adjustments for smaller screens */
+@media (max-width: 1200px) {
+  .app-container,
+  .app-header,
+  .app-main-flex,
+  .app-footer {
+    width: 95vw;
   }
   
   .left-column {
-    flex: 0 0 350px; /* Smaller fixed width */
+    flex: 0 0 350px;
     width: 350px;
   }
   
   .right-column {
-    flex: 0 0 610px; /* Smaller fixed width */
-    width: 610px;
-    max-width: 610px;
-  }
-  
-  .post-list {
-    width: 610px; /* Fixed width */
-  }
-  
-  .right-column .posts-section {
-    width: 610px; /* Fixed width */
+    width: calc(95vw - 370px);
+    flex: 0 0 calc(95vw - 370px);
   }
 }
 
 @media (max-width: 992px) {
-  .app-container {
-    max-width: 900px; /* Still fixed but smaller */
-  }
-  
   .app-main-flex {
-    max-width: 800px; /* Still fixed but smaller */
-    gap: 30px; /* Fixed size */
-  }
-  
-  .left-column {
-    flex: 0 0 300px; /* Smaller fixed width */
-    width: 300px;
-  }
-  
-  .right-column {
-    flex: 0 0 470px; /* Smaller fixed width */
-    width: 470px;
-    max-width: 470px;
-  }
-  
-  .post-list {
-    width: 470px; /* Fixed width */
-  }
-  
-  .right-column .posts-section {
-    width: 470px; /* Fixed width */
-  }
-  
-  .post-form-container {
-    height: 650px; /* Slightly smaller fixed height */
-  }
-}
-
-@media (max-width: 768px) {
-  .app-container {
-    max-width: 700px; /* Still fixed but smaller */
-  }
-  
-  .app-main-flex {
+    width: 95vw;
+    height: auto;
     flex-direction: column;
-    max-width: 600px; /* Still fixed but smaller */
   }
   
   .left-column {
-    flex: 0 0 auto;
-    width: 600px; /* Fixed width */
-    position: relative;
-    top: 0;
+    width: 95vw;
+    flex: none;
+    height: auto;
+    position: static;
   }
   
   .right-column {
-    width: 600px; /* Fixed width */
-    max-width: 600px;
-  }
-  
-  .post-list {
-    width: 600px; /* Fixed width */
-  }
-  
-  .right-column .posts-section {
-    margin-top: 20px; /* Fixed size */
-    width: 600px; /* Fixed width */
+    width: 95vw;
+    flex: none;
+    margin-top: 20px;
   }
   
   .post-form-container {
-    width: 600px; /* Fixed width */
-    height: 600px; /* Smaller fixed height */
-  }
-}
-
-@media (max-width: 576px) {
-  :root {
-    font-size: 12px; /* Minimum base font size */
+    height: 500px;
+    width: 95vw;
   }
   
-  .app-container {
-    padding: 0 0.625rem; /* Convert 10px to rem */
-  }
-  
-  .app-header {
-    padding: 1.25rem 0.9375rem 1.5625rem; /* Convert px to rem */
-    margin-top: 0.625rem; /* Convert 10px to rem */
-  }
-  
-  .app-header h1 {
-    font-size: 3rem;
-  }
-  
-  .app-header p {
-    font-size: 1.2rem;
-  }
-  
-  .post-form input,
-  .post-form textarea {
-    padding: 15px;
-    font-size: 1.1rem;
-  }
-  
-  .post-item h3 {
-    font-size: 1.6rem;
-  }
-  
-  .post-content {
-    font-size: 1.1rem;
-  }
-  
-  .app-main {
-    gap: 25px;
-  }
-
-  body {
-    padding-top: 0.3125rem; /* Convert 5px to rem */
+  .post-list,
+  .post-item {
+    width: 95vw;
   }
 }
 
