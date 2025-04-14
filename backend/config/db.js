@@ -7,6 +7,17 @@ const connectDB = async () => {
     console.log('Attempting to connect to MongoDB...');
     console.log('Connection string exists:', !!mongoURI);
     
+    // Ensure we're using the buzznet database
+    let uriWithDb = mongoURI;
+    if (!mongoURI.includes('/buzznet?') && !mongoURI.endsWith('/buzznet')) {
+      // Add the database name if not already specified
+      uriWithDb = mongoURI.includes('?') 
+        ? mongoURI.replace('?', '/buzznet?')
+        : `${mongoURI}/buzznet`;
+    }
+    
+    console.log('Using URI with database:', uriWithDb.substring(0, 20) + '...');
+    
     // Connection options
     const options = {
       useNewUrlParser: true,
@@ -15,8 +26,9 @@ const connectDB = async () => {
       socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
     };
     
-    const conn = await mongoose.connect(mongoURI, options);
+    const conn = await mongoose.connect(uriWithDb, options);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`Database name: ${conn.connection.name}`);
     return conn;
   } catch (error) {
     console.error(`MongoDB connection error: ${error.message}`);

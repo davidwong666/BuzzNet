@@ -1,0 +1,9 @@
+{
+  "name": "buzznet-api-functions",
+  "version": "1.0.0",
+  "description": "Serverless functions for BuzzNet API",
+  "main": "index.js",
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  }
+} 
