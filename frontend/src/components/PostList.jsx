@@ -95,6 +95,39 @@ const PostList = () => {
       console.error('Error liking post:', err);
     }
   };
+  
+  const handleDelete = async (id) => {
+    try {
+      // If using mock data, handle delete differently
+      if (usedMockData) {
+        // Remove post from UI
+        setPosts(posts.filter(post => post._id !== id));
+        
+        // If using local storage, update it
+        if (localStorage.getItem('buzznetPosts')) {
+          const localPosts = JSON.parse(localStorage.getItem('buzznetPosts'));
+          localStorage.setItem('buzznetPosts', JSON.stringify(localPosts.filter(post => post._id !== id)));
+        }
+        return;
+      }
+      
+      // If connected to backend, send delete request
+      const response = await fetch(`${API_URL}/api/posts/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      
+      // Remove the deleted post from the state
+      setPosts(posts.filter(post => post._id !== id));
+      
+    } catch (err) {
+      console.error('Error deleting post:', err);
+      alert('Failed to delete post. Please try again.');
+    }
+  };
 
   if (loading) return <div className="loading">Loading posts...</div>;
   if (error && !usedMockData) return <div className="error">{error}</div>;
@@ -108,6 +141,7 @@ const PostList = () => {
             key={post._id} 
             post={post}
             onLike={handleLike}
+            onDelete={handleDelete}
           />
         ))}
       </div>
@@ -123,6 +157,7 @@ const PostList = () => {
           key={post._id} 
           post={post}
           onLike={handleLike}
+          onDelete={handleDelete}
         />
       ))}
     </div>

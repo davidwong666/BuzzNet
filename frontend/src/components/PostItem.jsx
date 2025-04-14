@@ -1,9 +1,23 @@
 import { useState } from 'react';
 
-const PostItem = ({ post, onLike }) => {
+const PostItem = ({ post, onLike, onDelete }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   
   const toggleExpand = () => setIsExpanded(!isExpanded);
+  
+  const handleDeleteClick = () => {
+    setShowConfirm(true);
+  };
+  
+  const confirmDelete = () => {
+    onDelete(post._id);
+    setShowConfirm(false);
+  };
+  
+  const cancelDelete = () => {
+    setShowConfirm(false);
+  };
   
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -60,7 +74,21 @@ const PostItem = ({ post, onLike }) => {
         >
           👍 {post.likes}
         </button>
+        <button 
+          className="delete-button" 
+          onClick={handleDeleteClick}
+        >
+          Delete
+        </button>
       </div>
+      
+      {showConfirm && (
+        <div className="confirm-delete">
+          <p>Are you sure you want to delete this post?</p>
+          <button onClick={confirmDelete}>Yes</button>
+          <button onClick={cancelDelete}>No</button>
+        </div>
+      )}
     </div>
   );
 };
