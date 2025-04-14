@@ -19,7 +19,8 @@ const allowedOrigins = [
   'http://localhost:5177',
   'http://localhost:5178',
   'http://localhost:5179',
-  'https://buzznet.vercel.app'
+  'https://buzznet.vercel.app',
+  'https://buzznet-api.vercel.app'
 ];
 
 // Middleware
@@ -45,7 +46,21 @@ app.get('/api', (req, res) => {
   res.json({ message: 'BuzzNet API is running' });
 });
 
+// Add root route for debugging
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'BuzzNet API is running',
+    endpoints: {
+      api: '/api',
+      posts: '/api/posts'
+    }
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Export the Express API for Vercel serverless functions
+module.exports = app;
