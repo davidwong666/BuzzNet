@@ -14,8 +14,10 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>BuzzNet</h1>
-        <p>Let's chat here!</p>
+        <div className="logo-container">
+          <h1>BuzzNet</h1>
+        </div>
+        <p>Share and Connect with the Community</p>
       </header>
 
       <main className="app-main">
@@ -29,7 +31,7 @@ function App() {
       </main>
 
       <footer className="app-footer">
-        <p>&copy; {new Date().getFullYear()} BuzzNet</p>
+        <p>&copy; {new Date().getFullYear()} BuzzNet - Group Project for CSCI3100</p>
       </footer>
     </div>
   );
