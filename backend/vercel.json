@@ -12,5 +12,9 @@
       "src": "/(.*)",
       "dest": "index.js"
     }
-  ]
+  ],
+  "env": {
+    "MONGO_URI": "mongodb+srv://zbc2385505079:zbc2385505079@buzznet.tdtukqc.mongodb.net/?retryWrites=true&w=majority&appName=BuzzNet",
+    "NODE_ENV": "production"
+  }
 } 
