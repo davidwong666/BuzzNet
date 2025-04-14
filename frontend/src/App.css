@@ -68,19 +68,22 @@ body {
 
 .app-main {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
   width: 100%;
   padding: 0 15px;
 }
 
 .create-post-section {
-  width: 100%;
-  position: relative;
-  top: 0;
+  width: 40%;
+  position: sticky;
+  top: 20px;
 }
 
 .posts-section {
-  width: 100%;
+  width: 60%;
 }
 
 .app-footer {
@@ -96,14 +99,14 @@ body {
 /* Form Styles */
 .post-form-container {
   background-color: white;
-  padding: 35px 50px;
+  padding: 30px;
   border-radius: 12px;
   box-shadow: var(--card-shadow);
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 0;
 }
 
-/* Wide form style - double width */
+/* Wide form style - redefine to fit properly in left column */
 .wide-form {
   width: 100%;
   transform: none;
@@ -286,6 +289,7 @@ body {
   
   .create-post-section {
     position: static;
+    margin-bottom: 30px;
   }
   
   /* Reset wide form on mobile */
