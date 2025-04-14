@@ -386,16 +386,16 @@ body {
 
 .post-item {
   background-color: white;
-  padding: 20px; /* Reduced padding */
+  padding: 20px;
   border-radius: 16px;
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
   width: 980px;
-  min-height: 150px; /* Minimum height */
-  height: auto; /* Let content determine height */
-  max-height: none; /* Remove max height limit */
-  overflow-y: visible; /* Show full content */
+  min-height: 150px;
+  height: auto;
+  max-height: none;
+  overflow: visible;
 }
 
 .post-item:hover {
@@ -419,12 +419,12 @@ body {
 }
 
 .post-content {
-  margin-bottom: 1.5625rem; /* 25px */
+  margin-bottom: 1.5625rem;
   line-height: 1.8;
   font-size: 1.3rem;
-  white-space: pre-line; /* Preserve line breaks */
-  overflow: visible; /* Ensure content is fully visible */
-  height: auto; /* Let content determine height */
+  white-space: pre-line;
+  overflow: visible;
+  height: auto;
 }
 
 .post-content.expanded {
