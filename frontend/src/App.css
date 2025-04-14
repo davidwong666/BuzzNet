@@ -46,24 +46,54 @@ body {
 .app-header {
   text-align: center;
   margin-bottom: 40px;
-  padding: 30px 0;
-  border-bottom: 2px solid var(--primary-color);
+  padding: 25px 0 30px;
   width: 100%;
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 60%);
+  z-index: 1;
+}
+
+.logo-container {
+  position: relative;
+  z-index: 2;
 }
 
 .app-header h1 {
-  font-size: 4rem;
+  font-size: 5rem;
+  font-weight: 700;
   color: white;
   margin-bottom: 15px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+}
+
+.app-header h1:hover {
+  transform: scale(1.05);
+  text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.4);
 }
 
 .app-header p {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: rgba(255, 255, 255, 0.9);
+  font-weight: 300;
+  position: relative;
+  z-index: 2;
+  max-width: 80%;
+  margin: 0 auto;
 }
 
 .app-main {
