@@ -27,15 +27,19 @@ function App() {
         <p>Share and Connect with the Community</p>
       </header>
 
-      <main className="app-main">
-        <section className="create-post-section">
-          <PostForm onPostCreated={handlePostCreated} />
-          {lastAction && <div className="success-message">{lastAction}</div>}
-        </section>
+      <main className="app-main-flex">
+        <div className="left-column">
+          <section className="create-post-section">
+            <PostForm onPostCreated={handlePostCreated} />
+            {lastAction && <div className="success-message">{lastAction}</div>}
+          </section>
+        </div>
         
-        <section className="posts-section" key={refreshKey}>
-          <PostList />
-        </section>
+        <div className="right-column">
+          <section className="posts-section" key={refreshKey}>
+            <PostList />
+          </section>
+        </div>
       </main>
 
       <footer className="app-footer">

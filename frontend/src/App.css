@@ -103,6 +103,31 @@ body {
   margin: 0 auto;
 }
 
+/* New Flex Layout */
+.app-main-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.left-column {
+  flex: 0 0 350px;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  max-height: calc(100vh - 100px);
+}
+
+.right-column {
+  flex: 1;
+  max-width: calc(100% - 390px);
+}
+
+/* Old app-main styles for reference */
 .app-main {
   display: flex;
   flex-direction: column;
@@ -144,6 +169,13 @@ body {
   transition: all 0.3s ease;
   max-width: 800px;
   margin: 0 auto;
+}
+
+/* Update post-form-container for left column */
+.left-column .post-form-container {
+  max-width: 100%;
+  position: sticky;
+  top: 20px;
 }
 
 .post-form-container:hover {
@@ -454,8 +486,8 @@ body {
     padding: 0 15px;
   }
   
-  .app-main {
-    max-width: 900px;
+  .app-main-flex {
+    max-width: 100%;
   }
 
   body {
@@ -464,8 +496,16 @@ body {
 }
 
 @media (max-width: 992px) {
-  .app-main {
+  .app-main-flex {
     gap: 30px;
+  }
+  
+  .left-column {
+    flex: 0 0 300px;
+  }
+  
+  .right-column {
+    max-width: calc(100% - 330px);
   }
   
   .app-header h1 {
@@ -482,6 +522,23 @@ body {
 
   body {
     padding-top: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-main-flex {
+    flex-direction: column;
+  }
+  
+  .left-column {
+    flex: 0 0 auto;
+    width: 100%;
+    position: relative;
+    top: 0;
+  }
+  
+  .right-column {
+    max-width: 100%;
   }
 }
 
