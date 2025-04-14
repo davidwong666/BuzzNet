@@ -34,7 +34,7 @@ body {
 
 /* App Layout */
 .app-container {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0;
   width: 100%;
@@ -101,19 +101,19 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 30px;
+  gap: 50px;
   width: 100%;
-  padding: 0 15px;
+  padding: 0 20px;
 }
 
 .create-post-section {
-  width: 40%;
+  width: 45%;
   position: sticky;
   top: 20px;
 }
 
 .posts-section {
-  width: 60%;
+  width: 55%;
 }
 
 .app-footer {
@@ -129,56 +129,56 @@ body {
 /* Form Styles */
 .post-form-container {
   background-color: white;
-  padding: 30px;
-  border-radius: 12px;
+  padding: 35px;
+  border-radius: 16px;
   box-shadow: var(--card-shadow);
   width: 100%;
   margin-bottom: 0;
+  transition: all 0.3s ease;
 }
 
-/* Wide form style - redefine to fit properly in left column */
-.wide-form {
-  width: 100%;
-  transform: none;
-  margin-left: 0;
-  max-width: 100%;
-  z-index: 1;
-}
-
-/* Adjust layout for wide form */
-.wide-form + .posts-section {
-  margin-top: 20px;
+.post-form-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .post-form-container h2 {
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   color: var(--primary-color);
-  font-size: 2rem;
+  font-size: 2.2rem;
 }
 
 .post-form .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .post-form label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 .post-form input,
 .post-form textarea {
   width: 100%;
-  padding: 18px;
+  padding: 20px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 1.3rem;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-form input:focus,
+.post-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(76, 181, 245, 0.2);
 }
 
 .post-form textarea {
   resize: vertical;
-  min-height: 200px;
+  min-height: 220px;
 }
 
 .post-form .submit-button {
@@ -257,15 +257,23 @@ body {
 
 .post-item {
   background-color: white;
-  padding: 25px;
-  border-radius: 12px;
+  padding: 30px;
+  border-radius: 16px;
   box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.post-item:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-left-color: var(--accent-color);
 }
 
 .post-item h3 {
   margin-bottom: 20px;
   color: var(--secondary-color);
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 .post-meta {
@@ -279,7 +287,7 @@ body {
 .post-content {
   margin-bottom: 25px;
   line-height: 1.8;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 .post-content.expanded {
@@ -298,40 +306,45 @@ body {
 
 .post-actions {
   display: flex;
-  gap: 15px;
+  gap: 20px;
+  margin-top: 25px;
 }
 
 .like-button {
   background-color: #f0f2f5;
   border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 12px 24px;
+  border-radius: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 1.2rem;
+  transition: all 0.2s ease;
 }
 
 .like-button:hover {
   background-color: #e4e6eb;
+  transform: scale(1.05);
 }
 
 .delete-button {
   background-color: #ffebee;
   border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 12px 24px;
+  border-radius: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 1.2rem;
   color: var(--error-color);
+  transition: all 0.2s ease;
 }
 
 .delete-button:hover {
   background-color: #ffcdd2;
+  transform: scale(1.05);
 }
 
 .confirm-delete {
@@ -410,8 +423,35 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Wide form style - redefine for new layout */
+.wide-form {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Adjust layout for wide form */
+.wide-form + .posts-section {
+  margin-top: 20px;
+}
+
 /* Media Queries for Responsive Layout */
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
+  .app-container {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  .app-main {
+    gap: 30px;
+  }
+  
+  .create-post-section,
+  .posts-section {
+    width: 48%;
+  }
+}
+
+@media (max-width: 992px) {
   .app-main {
     flex-direction: column;
   }
@@ -423,24 +463,42 @@ body {
   
   .create-post-section {
     position: static;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
   
-  /* Reset wide form on mobile */
-  .wide-form {
-    width: 100%;
-    margin-left: 0;
-    max-width: 100%;
+  .app-header h1 {
+    font-size: 4rem;
   }
   
-  /* Adjust padding for mobile */
   .post-form-container {
+    padding: 25px;
+  }
+  
+  .post-item {
     padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .app-header h1 {
+    font-size: 3rem;
+  }
+  
+  .app-header p {
+    font-size: 1.2rem;
   }
   
   .post-form input,
   .post-form textarea {
     padding: 15px;
+    font-size: 1.1rem;
+  }
+  
+  .post-item h3 {
+    font-size: 1.6rem;
+  }
+  
+  .post-content {
     font-size: 1.1rem;
   }
 }

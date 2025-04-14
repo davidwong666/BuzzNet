@@ -68,16 +68,26 @@ I've implemented a simple but comprehensive set of functions for both frontend a
   Post Controller: Implemented controller functions for CRUD operations (Create, Read, Update, Delete) and a like function.
   Routes: Created API routes for posts with appropriate HTTP methods.
   Express Server: Updated the main server file to use routes and DB connection.
+  Deployed on Vercel https://vercel.com/nokktsangs-projects/buzz-net-backend
 
 - Frontend:
   Post List Component: Fetches and displays posts from the API.
   Post Item Component: Displays individual posts with formatted date, expandable content, and like functionality.
   Post Form Component: Allows users to create new posts with validation.
   Main App Component: Integrates all components with a clean layout and refresh functionality.
+  Real-time refreshing of the webpage
   CSS Styling: Added comprehensive styling for a modern, responsive UI.
-  To use this application:
+  Deployed on Vercel https://vercel.com/nokktsangs-projects/buzz-net-frontend
+
+- Database:
+  Collections: posts
+  Deployed on MongoDB https://cloud.mongodb.com/v2/67fc861383cfad4a0275d512#/overview
+
+- To use this application locally:
   Start the backend server: cd BuzzNet/backend && npm run dev
   Start the frontend development server: cd BuzzNet/frontend && npm run dev
+
+- Check out the prototype on: https://buzz-net-tau.vercel.app/ and https://github.com/NokkTsang/BuzzNet
 
 ## 22-03-2025 Suggestions from Professor
 
