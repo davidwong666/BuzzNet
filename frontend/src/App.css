@@ -12,6 +12,57 @@
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   /* Base font size for better zoom adaptability */
   font-size: 16px;
+  
+  /* Dynamic scale factor for zooming */
+  --scale-factor: 1;
+}
+
+/* Enhanced zoom level adaptability - scale based on zoom level */
+@media screen and (min-resolution: 96dpi) {
+  :root {
+    font-size: calc(16px + 0.2vw); /* Slightly responsive to viewport width */
+    --scale-factor: 1;
+  }
+}
+
+/* Better handling of extreme zoom out */
+@media screen and (max-resolution: 50dpi) {
+  :root {
+    font-size: calc(16px + 2vw); /* More aggressive scaling for extreme zoom out */
+    --scale-factor: 1.5; /* Increase scale factor for 50% zoom */
+  }
+  
+  .app-container {
+    max-width: 98%; /* Use more screen space when zoomed out */
+  }
+  
+  /* Ensure minimum sizes at 50% zoom */
+  .left-column {
+    min-width: 250px;
+  }
+  
+  .right-column {
+    min-width: 400px;
+  }
+  
+  /* Scale up certain text elements at extreme zoom out */
+  .app-header h1 {
+    font-size: calc(5rem * var(--scale-factor));
+  }
+  
+  .app-header p {
+    font-size: calc(1.6rem * var(--scale-factor));
+  }
+  
+  .post-form-container h2,
+  .post-list h2 {
+    font-size: calc(2.2rem * var(--scale-factor));
+  }
+}
+
+/* Transition helper to smooth zoom changes */
+* {
+  transition: font-size 0.3s ease, padding 0.3s ease, margin 0.3s ease;
 }
 
 * {
@@ -25,6 +76,10 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  /* Force-render layout elements at full precision */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -36,6 +91,8 @@ body {
   justify-content: center;
   overflow-y: auto;
   padding-top: 1.25rem; /* Convert 20px to rem */
+  /* Add minimum width to prevent extreme narrowing at lower zoom */
+  min-width: 320px;
 }
 
 /* App Layout */
@@ -49,6 +106,7 @@ body {
   align-items: center;
   position: relative;
   overflow-x: hidden; /* Prevent horizontal scroll */
+  min-height: 100vh; /* Ensure container takes full height */
 }
 
 .app-header {
@@ -155,14 +213,17 @@ body {
   width: 100%;
 }
 
+/* Footer improvements for zoom out */
 .app-footer {
-  margin-top: 60px;
+  margin-top: 3.75rem; /* 60px in rem */
   text-align: center;
-  padding: 20px 0;
+  padding: 1.25rem 0; /* 20px in rem */
   color: var(--light-text);
   border-top: 1px solid var(--border-color);
   width: 100%;
   font-size: 1.1rem;
+  position: relative; /* Ensure proper stacking */
+  bottom: 0;
 }
 
 /* Form Styles */
@@ -191,18 +252,18 @@ body {
 }
 
 .post-form-container h2 {
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem; /* 30px */
   color: var(--primary-color);
   font-size: 2.2rem;
 }
 
 .post-form .form-group {
-  margin-bottom: 25px;
+  margin-bottom: 1.5625rem; /* 25px */
 }
 
 .post-form label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem; /* 10px */
   font-weight: 500;
   font-size: 1.3rem;
 }
@@ -210,9 +271,9 @@ body {
 .post-form input,
 .post-form textarea {
   width: 100%;
-  padding: 20px;
+  padding: 1.25rem; /* 20px */
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 0.625rem; /* 10px */
   font-size: 1.4rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -226,20 +287,20 @@ body {
 
 .post-form textarea {
   resize: vertical;
-  min-height: 220px;
+  min-height: 13.75rem; /* 220px */
 }
 
 .post-form .submit-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 18px 25px;
-  border-radius: 8px;
+  padding: 1.125rem 1.5625rem; /* 18px 25px */
+  border-radius: 0.5rem; /* 8px */
   cursor: pointer;
   font-size: 1.4rem;
   font-weight: 500;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 1.875rem; /* 30px */
 }
 
 .post-form .submit-button:hover {
@@ -255,9 +316,9 @@ body {
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 1.875rem; /* 30px */
   width: 100%;
-  max-width: 800px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -265,7 +326,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem; /* 20px */
   width: 100%;
 }
 
@@ -279,8 +340,8 @@ body {
   background-color: var(--accent-color);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 0.5rem 1rem; /* 8px 16px */
+  border-radius: 1.25rem; /* 20px */
   cursor: pointer;
   font-size: 1rem;
   font-weight: 500;
@@ -301,18 +362,18 @@ body {
 .last-refresh-info {
   color: var(--light-text);
   font-size: 0.9rem;
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem; /* 15px */
   text-align: right;
   font-style: italic;
 }
 
 .post-item {
   background-color: white;
-  padding: 30px;
-  border-radius: 16px;
+  padding: 1.875rem; /* 30px */
+  border-radius: 1rem; /* 16px */
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
-  border-left: 4px solid transparent;
+  border-left: 0.25rem solid transparent; /* 4px */
   width: 100%;
 }
 
@@ -323,7 +384,7 @@ body {
 }
 
 .post-item h3 {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem; /* 20px */
   color: var(--secondary-color);
   font-size: 2rem;
 }
@@ -333,11 +394,11 @@ body {
   justify-content: space-between;
   font-size: 1.1rem;
   color: var(--light-text);
-  margin-bottom: 25px;
+  margin-bottom: 1.5625rem; /* 25px */
 }
 
 .post-content {
-  margin-bottom: 25px;
+  margin-bottom: 1.5625rem; /* 25px */
   line-height: 1.8;
   font-size: 1.3rem;
 }
@@ -353,24 +414,24 @@ body {
   cursor: pointer;
   font-size: 1.1rem;
   padding: 0;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem; /* 20px */
 }
 
 .post-actions {
   display: flex;
-  gap: 20px;
-  margin-top: 25px;
+  gap: 1.25rem; /* 20px */
+  margin-top: 1.5625rem; /* 25px */
 }
 
 .like-button {
   background-color: #f0f2f5;
   border: none;
-  padding: 12px 24px;
-  border-radius: 24px;
+  padding: 0.75rem 1.5rem; /* 12px 24px */
+  border-radius: 1.5rem; /* 24px */
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.625rem; /* 10px */
   font-size: 1.2rem;
   transition: all 0.2s ease;
 }
@@ -383,12 +444,12 @@ body {
 .delete-button {
   background-color: #ffebee;
   border: none;
-  padding: 12px 24px;
-  border-radius: 24px;
+  padding: 0.75rem 1.5rem; /* 12px 24px */
+  border-radius: 1.5rem; /* 24px */
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.625rem; /* 10px */
   font-size: 1.2rem;
   color: var(--error-color);
   transition: all 0.2s ease;
@@ -400,23 +461,23 @@ body {
 }
 
 .confirm-delete {
-  margin-top: 15px;
-  padding: 15px;
+  margin-top: 0.9375rem; /* 15px */
+  padding: 0.9375rem; /* 15px */
   background-color: #fff8e1;
-  border-radius: 8px;
-  border-left: 4px solid #ffc107;
+  border-radius: 0.5rem; /* 8px */
+  border-left: 0.25rem solid #ffc107; /* 4px */
 }
 
 .confirm-delete p {
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem; /* 15px */
   font-weight: 500;
 }
 
 .confirm-delete button {
-  padding: 8px 16px;
-  margin-right: 10px;
+  padding: 0.5rem 1rem; /* 8px 16px */
+  margin-right: 0.625rem; /* 10px */
   border: none;
-  border-radius: 4px;
+  border-radius: 0.25rem; /* 4px */
   cursor: pointer;
   font-weight: 500;
 }
@@ -433,7 +494,7 @@ body {
 /* Utility Classes */
 .loading {
   text-align: center;
-  padding: 40px;
+  padding: 2.5rem; /* 40px */
   color: var(--light-text);
   font-size: 1.4rem;
 }
@@ -441,18 +502,18 @@ body {
 .error {
   background-color: #ffebee;
   color: var(--error-color);
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 25px;
+  padding: 1.25rem; /* 20px */
+  border-radius: 0.5rem; /* 8px */
+  margin-bottom: 1.5625rem; /* 25px */
   font-size: 1.2rem;
 }
 
 .no-posts {
   text-align: center;
-  padding: 50px;
+  padding: 3.125rem; /* 50px */
   color: var(--light-text);
   background-color: white;
-  border-radius: 12px;
+  border-radius: 0.75rem; /* 12px */
   box-shadow: var(--card-shadow);
   font-size: 1.4rem;
 }
@@ -460,14 +521,14 @@ body {
 .success-message {
   background-color: #e8f5e9;
   color: var(--success-color);
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 20px;
+  padding: 0.75rem; /* 12px */
+  border-radius: 0.5rem; /* 8px */
+  margin-top: 1.25rem; /* 20px */
   font-size: 1.1rem;
   font-weight: 500;
   text-align: center;
   animation: fadeIn 0.3s ease-in-out;
-  border-left: 4px solid var(--success-color);
+  border-left: 0.25rem solid var(--success-color); /* 4px */
 }
 
 @keyframes fadeIn {
