@@ -449,6 +449,8 @@ body {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+  padding: 0.5rem;
+  border-top: 1px solid var(--border-color);
 }
 
 .action-button {
@@ -462,10 +464,11 @@ body {
   color: var(--text-color);
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 1rem;
 }
 
 .action-button:hover {
-  background-color: var(--hover);
+  background-color: var(--border-color);
 }
 
 .action-button:disabled {
@@ -503,6 +506,26 @@ body {
   resize: vertical;
   min-height: 60px;
   font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.comment-form .submit-button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.comment-form .submit-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.comment-form .submit-button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
 }
 
 .comments-list {
@@ -515,6 +538,7 @@ body {
   background-color: var(--background-color);
   padding: 1rem;
   border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .comment-header {
@@ -522,7 +546,7 @@ body {
   justify-content: space-between;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
-  color: var(--text-color);
+  color: var(--light-text);
 }
 
 .comment-content {
