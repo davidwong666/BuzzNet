@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, addDoc, updateDoc, doc, getDocs, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, getDocs, query, orderBy, serverTimestamp, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { useAuth } from './AuthContext';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
 
@@ -22,7 +22,15 @@ export const PostsProvider = ({ children }) => {
         const fetchedPosts = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate()
+          createdAt: doc.data().createdAt?.toDate(),
+          comments: doc.data().comments?.map(comment => ({
+            ...comment,
+            createdAt: comment.createdAt?.toDate()
+          })) || [],
+          likedBy: doc.data().likedBy || [],
+          unlikedBy: doc.data().unlikedBy || [],
+          likes: doc.data().likes || 0,
+          unlikes: doc.data().unlikes || 0
         }));
         setPosts(fetchedPosts);
       } catch (error) {
@@ -43,7 +51,10 @@ export const PostsProvider = ({ children }) => {
         author: currentUser.email,
         createdAt: new Date(),
         likes: 0,
-        comments: []
+        unlikes: 0,
+        comments: [],
+        likedBy: [],
+        unlikedBy: []
       };
       setPosts(prevPosts => [tempPost, ...prevPosts]);
       return tempPost;
@@ -55,7 +66,10 @@ export const PostsProvider = ({ children }) => {
         author: currentUser.email,
         createdAt: serverTimestamp(),
         likes: 0,
-        comments: []
+        unlikes: 0,
+        comments: [],
+        likedBy: [],
+        unlikedBy: []
       });
       
       const newPost = {
@@ -64,7 +78,10 @@ export const PostsProvider = ({ children }) => {
         author: currentUser.email,
         createdAt: new Date(),
         likes: 0,
-        comments: []
+        unlikes: 0,
+        comments: [],
+        likedBy: [],
+        unlikedBy: []
       };
       
       setPosts(prevPosts => [newPost, ...prevPosts]);
@@ -81,17 +98,26 @@ export const PostsProvider = ({ children }) => {
     try {
       const postRef = doc(db, 'posts', postId);
       const post = posts.find(p => p.id === postId);
-      await updateDoc(postRef, {
-        likes: (post.likes || 0) + 1
-      });
       
-      setPosts(prevPosts => 
-        prevPosts.map(p => 
-          p.id === postId 
-            ? { ...p, likes: (p.likes || 0) + 1 }
-            : p
-        )
-      );
+      // Add to likedBy if not already liked
+      if (!post.likedBy?.includes(currentUser.email)) {
+        await updateDoc(postRef, {
+          likedBy: arrayUnion(currentUser.email),
+          likes: (post.likes || 0) + 1
+        });
+        
+        setPosts(prevPosts => 
+          prevPosts.map(p => 
+            p.id === postId 
+              ? { 
+                  ...p, 
+                  likedBy: [...(p.likedBy || []), currentUser.email],
+                  likes: (p.likes || 0) + 1 
+                }
+              : p
+          )
+        );
+      }
     } catch (error) {
       console.error('Error liking post:', error);
       throw error;
@@ -104,19 +130,26 @@ export const PostsProvider = ({ children }) => {
     try {
       const postRef = doc(db, 'posts', postId);
       const post = posts.find(p => p.id === postId);
-      const newLikes = Math.max(0, (post.likes || 0) - 1);
       
-      await updateDoc(postRef, {
-        likes: newLikes
-      });
-      
-      setPosts(prevPosts => 
-        prevPosts.map(p => 
-          p.id === postId 
-            ? { ...p, likes: newLikes }
-            : p
-        )
-      );
+      // Add to unlikedBy if not already unliked
+      if (!post.unlikedBy?.includes(currentUser.email)) {
+        await updateDoc(postRef, {
+          unlikedBy: arrayUnion(currentUser.email),
+          unlikes: (post.unlikes || 0) + 1
+        });
+        
+        setPosts(prevPosts => 
+          prevPosts.map(p => 
+            p.id === postId 
+              ? { 
+                  ...p, 
+                  unlikedBy: [...(p.unlikedBy || []), currentUser.email],
+                  unlikes: (p.unlikes || 0) + 1
+                }
+              : p
+          )
+        );
+      }
     } catch (error) {
       console.error('Error unliking post:', error);
       throw error;
@@ -132,25 +165,28 @@ export const PostsProvider = ({ children }) => {
         id: Date.now().toString(),
         content,
         author: currentUser.email,
-        createdAt: new Date()
+        createdAt: serverTimestamp()
       };
 
-      const post = posts.find(p => p.id === postId);
-      const updatedComments = [...(post.comments || []), newComment];
-      
       await updateDoc(postRef, {
-        comments: updatedComments
+        comments: arrayUnion(newComment)
       });
       
       setPosts(prevPosts => 
         prevPosts.map(p => 
           p.id === postId 
-            ? { ...p, comments: updatedComments }
+            ? { 
+                ...p, 
+                comments: [
+                  ...(p.comments || []), 
+                  { ...newComment, createdAt: new Date() }
+                ] 
+              }
             : p
         )
       );
 
-      return newComment;
+      return { ...newComment, createdAt: new Date() };
     } catch (error) {
       console.error('Error adding comment:', error);
       throw error;
