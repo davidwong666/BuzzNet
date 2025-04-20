@@ -1,42 +1,799 @@
-#root {
-  max-width: 1280px;
+/* Base Styles */
+:root {
+  --primary-color: #4a6fa5;
+  --secondary-color: #166088;
+  --accent-color: #4cb5f5;
+  --background-color: #f5f7fa;
+  --text-color: #333;
+  --light-text: #666;
+  --border-color: #ddd;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Base font size for better zoom adaptability */
+  font-size: 16px;
+  
+  /* Dynamic scale factor for zooming */
+  --scale-factor: 1;
+}
+
+/* Enhanced zoom level adaptability - scale based on zoom level */
+@media screen and (min-resolution: 96dpi) {
+  :root {
+    font-size: calc(16px + 0.2vw); /* Slightly responsive to viewport width */
+    --scale-factor: 1;
+  }
+}
+
+/* Better handling of extreme zoom out */
+@media screen and (max-resolution: 50dpi) {
+  :root {
+    font-size: calc(16px + 2vw); /* More aggressive scaling for extreme zoom out */
+    --scale-factor: 1.5; /* Increase scale factor for 50% zoom */
+  }
+  
+  .app-container {
+    max-width: 98%; /* Use more screen space when zoomed out */
+  }
+  
+  /* Ensure minimum sizes at 50% zoom */
+  .left-column {
+    min-width: 250px;
+  }
+  
+  .right-column {
+    min-width: 400px;
+  }
+  
+  /* Scale up certain text elements at extreme zoom out */
+  .app-header h1 {
+    font-size: calc(5rem * var(--scale-factor));
+  }
+  
+  .app-header p {
+    font-size: calc(1.6rem * var(--scale-factor));
+  }
+  
+  .post-form-container h2,
+  .post-list h2 {
+    font-size: calc(2.2rem * var(--scale-factor));
+  }
+}
+
+/* Transition helper to smooth zoom changes */
+* {
+  transition: font-size 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  /* Force-render layout elements at full precision */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  padding-top: 1.25rem; /* Convert 20px to rem */
+  /* Add minimum width to prevent extreme narrowing at lower zoom */
+  min-width: 320px;
+}
+
+/* App Layout */
+.app-container {
+  width: 1400px; /* Fixed exact width */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  height: 100vh; /* Full viewport height */
+  min-height: 800px; /* Minimum height */
+  max-height: 100vh; /* Maximum height */
+}
+
+.app-header {
   text-align: center;
+  margin-bottom: 20px; /* Reduced margin */
+  padding: 15px 20px; /* Reduced padding */
+  width: 1400px; /* Fixed exact width */
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 16px 16px;
+  height: 150px; /* Fixed exact height, reduced from 200px */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 60%);
+  z-index: 1;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.logo-container {
+  position: relative;
+  z-index: 2;
+}
+
+.app-header h1 {
+  font-size: 5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+}
+
+.app-header h1:hover {
+  transform: scale(1.05);
+  text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+.app-header p {
+  font-size: 1.6rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 300;
+  position: relative;
+  z-index: 2;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+/* New Flex Layout */
+.app-main-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 1400px; /* Fixed exact width */
+  height: calc(100vh - 230px); /* Fixed height: viewport minus header, footer and margins */
+  margin: 0;
+  gap: 20px; /* Reduced gap */
+  overflow: hidden; /* Prevent overflow */
+}
+
+.left-column {
+  flex: 0 0 400px; /* Fixed width */
+  position: relative;
+  top: 0;
+  height: 100%; /* Full height of parent */
+  width: 400px;
+  overflow-y: auto;
+}
+
+.right-column {
+  flex: 0 0 980px; /* Fixed width - Increased to fill the space */
+  width: 980px;
+  height: 100%; /* Full height of parent */
+  overflow-y: auto; /* Add scroll if needed */
+}
+
+/* Add margin to the posts section to align with create post form header */
+.right-column .posts-section {
+  margin-top: 0; /* No margin needed anymore */
+  width: 980px; /* Fixed width */
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Old app-main styles for reference */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.create-post-section {
+  width: 100%;
+  position: relative;
+  top: auto;
+}
+
+.posts-section {
+  width: 100%;
+}
+
+/* Footer */
+.app-footer {
+  margin-top: 20px; /* Reduced margin */
+  text-align: center;
+  padding: 10px 0;
+  color: var(--light-text);
+  border-top: 1px solid var(--border-color);
+  width: 1400px; /* Fixed width */
+  position: relative;
+  bottom: 0;
+  height: 40px; /* Fixed height */
+}
+
+/* Form Styles */
+.post-form-container {
+  background-color: white;
+  padding: 20px; /* Reduced padding */
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  width: 400px; /* Fixed width */
+  height: 600px; /* Fixed height - Reduced to fit better */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Update post-form-container for left column */
+.left-column .post-form-container {
+  width: 100%; /* Take full width of parent */
+  height: auto; /* Let it size naturally */
+  max-height: calc(100vh - 250px); /* Maximum height */
+  overflow-y: auto;
+}
+
+.post-form-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.post-form-container h2 {
+  margin-bottom: 1.875rem; /* 30px */
+  color: var(--primary-color);
+  font-size: 2.2rem;
+}
+
+.post-form .form-group {
+  margin-bottom: 2rem; /* Increase from 1.5625rem (25px) to 2rem (32px) */
+}
+
+.post-form label {
+  display: block;
+  margin-bottom: 0.875rem; /* Increase from 0.625rem to 0.875rem */
+  font-weight: 500;
+  font-size: 1.4rem; /* Increase from 1.3rem */
+}
+
+.post-form input,
+.post-form textarea {
+  width: 100%;
+  padding: 1.5rem; /* Increase from 1.25rem to 1.5rem */
+  border: 1px solid var(--border-color);
+  border-radius: 0.625rem;
+  font-size: 1.4rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-form input {
+  height: 3.5rem; /* Set explicit height for input fields */
+}
+
+.post-form input:focus,
+.post-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(76, 181, 245, 0.2);
+}
+
+.post-form textarea {
+  resize: vertical;
+  min-height: 150px; /* Reduced minimum height */
+  max-height: 250px; /* Reduced maximum height */
+}
+
+.post-form .submit-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 18px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: 500;
+  width: 100%;
+  margin-top: 40px; /* Fixed size */
+  height: 65px; /* Fixed height */
+}
+
+.post-form .submit-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.post-form .submit-button:disabled {
+  background-color: var(--light-text);
+  cursor: not-allowed;
+}
+
+/* Post List Styles */
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding-bottom: 20px;
+  overflow-x: hidden;
+}
+
+.post-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem; /* 20px */
+  width: 100%;
+}
+
+.post-list h2 {
+  margin-bottom: 0;
+  color: var(--primary-color);
+  font-size: 2rem;
+}
+
+.refresh-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem; /* 8px 16px */
+  border-radius: 1.25rem; /* 20px */
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.refresh-button:hover {
+  background-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+.refresh-button:disabled {
+  background-color: var(--light-text);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.last-refresh-info {
+  color: var(--light-text);
+  font-size: 0.9rem;
+  margin-bottom: 0.9375rem; /* 15px */
+  text-align: right;
+  font-style: italic;
+}
+
+.post-item {
+  background-color: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+  width: 100%;
+  min-height: 150px;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.post-item:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-left-color: var(--accent-color);
+}
+
+.post-item h3 {
+  margin-bottom: 1.25rem; /* 20px */
+  color: var(--secondary-color);
+  font-size: 2rem;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  color: var(--light-text);
+  margin-bottom: 1.5625rem; /* 25px */
+}
+
+.post-content {
+  margin-bottom: 1.5625rem;
+  line-height: 1.8;
+  font-size: 1.3rem;
+  white-space: pre-line;
+  overflow: visible;
+  height: auto;
+}
+
+.post-content.expanded {
+  white-space: pre-line;
+  height: auto;
+  overflow: visible;
+}
+
+.read-more {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0;
+  margin-bottom: 1.25rem; /* 20px */
+}
+
+.post-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 0.5rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--background-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button:hover:not(:disabled) {
+  background: var(--hover-color);
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-button.active {
+  color: var(--primary-color);
+}
+
+.action-count {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.comment-form {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+.comment-form button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.comment-form button:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.comment-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.like-button {
+  color: var(--primary-color);
+  background-color: rgba(74, 111, 165, 0.1);
+}
+
+.like-button:hover {
+  background-color: rgba(74, 111, 165, 0.2);
+}
+
+.unlike-button {
+  color: var(--error-color);
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.unlike-button:hover {
+  background-color: rgba(244, 67, 54, 0.2);
+}
+
+.comment-button {
+  color: var(--secondary-color);
+  background-color: rgba(22, 96, 136, 0.1);
+}
+
+.comment-button:hover {
+  background-color: rgba(22, 96, 136, 0.2);
+}
+
+.comment-button span {
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
+.comments-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.comment-form {
+  margin-bottom: 1.5rem;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  resize: vertical;
+  min-height: 60px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.comment-form .submit-button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.comment-form .submit-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.comment-form .submit-button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment {
+  background-color: var(--background-color);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--light-text);
+}
+
+.comment-content {
+  font-size: 1rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* Utility Classes */
+.loading {
+  text-align: center;
+  padding: 2.5rem; /* 40px */
+  color: var(--light-text);
+  font-size: 1.4rem;
+}
+
+.error {
+  background-color: #ffebee;
+  color: var(--error-color);
+  padding: 1.25rem; /* 20px */
+  border-radius: 0.5rem; /* 8px */
+  margin-bottom: 1.5625rem; /* 25px */
+  font-size: 1.2rem;
+}
+
+.no-posts {
+  text-align: center;
+  padding: 3.125rem; /* 50px */
+  color: var(--light-text);
+  background-color: white;
+  border-radius: 0.75rem; /* 12px */
+  box-shadow: var(--card-shadow);
+  font-size: 1.4rem;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  color: var(--success-color);
+  padding: 0.75rem; /* 12px */
+  border-radius: 0.5rem; /* 8px */
+  margin-top: 1.25rem; /* 20px */
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+  border-left: 0.25rem solid var(--success-color); /* 4px */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Wide form style - redefine for new layout */
+.wide-form {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Adjust layout for wide form */
+.wide-form + .posts-section {
+  margin-top: 20px;
+}
+
+/* Viewport adaptation */
+@media (max-height: 900px) {
+  .app-header {
+    height: 120px; /* Even smaller height */
+    padding: 10px;
+    margin-bottom: 10px;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .app-main-flex {
+    height: calc(100vh - 180px);
+  }
+  
+  .post-form-container {
+    height: 550px;
+  }
+  
+  .post-form textarea {
+    min-height: 120px;
+  }
+  
+  .app-footer {
+    height: 30px;
+    margin-top: 10px;
+    padding: 5px 0;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Ensure all content fits within browser window */
+@media (max-width: 1440px) {
+  .app-container,
+  .app-header,
+  .app-main-flex,
+  .app-footer,
+  .right-column .posts-section,
+  .post-list,
+  .post-item {
+    width: 95vw; /* Switch to viewport width */
+  }
+  
+  .right-column {
+    width: calc(95vw - 420px); /* 95vw minus left column and gap */
+    flex: 0 0 calc(95vw - 420px);
+  }
+  
+  .post-item {
+    width: 100%; /* Full width of parent */
+    max-height: none; /* Ensure no max height constraint */
   }
 }
 
-.card {
-  padding: 2em;
+/* Style adjustments for smaller screens */
+@media (max-width: 1200px) {
+  .app-container,
+  .app-header,
+  .app-main-flex,
+  .app-footer {
+    width: 95vw;
+  }
+  
+  .left-column {
+    flex: 0 0 350px;
+    width: 350px;
+  }
+  
+  .right-column {
+    width: calc(95vw - 370px);
+    flex: 0 0 calc(95vw - 370px);
+  }
 }
 
-.read-the-docs {
-  color: #888;
+@media (max-width: 992px) {
+  .app-main-flex {
+    width: 95vw;
+    height: auto;
+    flex-direction: column;
+  }
+  
+  .left-column {
+    width: 95vw;
+    flex: none;
+    height: auto;
+    position: static;
+  }
+  
+  .right-column {
+    width: 95vw;
+    flex: none;
+    margin-top: 20px;
+  }
+  
+  .post-form-container {
+    height: 500px;
+    width: 95vw;
+  }
+  
+  .post-list,
+  .post-item {
+    width: 95vw;
+    max-height: none; /* Ensure no max height constraint */
+  }
+}
+
+/* Add zoom adaptability for high DPI screens */
+@media screen and (min-resolution: 192dpi) {
+  :root {
+    font-size: 18px; /* Increase base font size for high DPI screens */
+  }
+}
+
+.header-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+  position: relative;
+  top: -20px;
 }
