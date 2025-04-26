@@ -48,8 +48,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests) in dev,
-      // or allow all if NODE_ENV is not production
       if (
         process.env.NODE_ENV !== 'production' ||
         !origin ||
@@ -71,7 +69,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/posts', require('./routes/postRoutes'));
 
 app.get('/api', (req, res) => {
-  res.json({ message: 'BuzzNet API is running' });
+  res.json({ message: '/api: BuzzNet API is running' });
 });
 
 // Add debug endpoint for DB connection
@@ -107,7 +105,7 @@ app.get('/api/debug/db', (req, res) => {
 // Add root route for debugging
 app.get('/', (req, res) => {
   res.json({
-    message: 'BuzzNet API is running',
+    message: 'root: BuzzNet API is running',
     endpoints: {
       api: '/api',
       posts: '/api/posts',
@@ -115,7 +113,38 @@ app.get('/', (req, res) => {
   });
 });
 
-// Start server
+// ============================================
+// === ERROR HANDLING MIDDLEWARE PLACEMENT ===
+// ============================================
+// Define the error handling function
+const errorHandler = (err, req, res, next) => {
+  console.error(`ERROR ===> ${err.message}`);
+  // Log stack trace in development for better debugging
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(err.stack);
+  }
+
+  // Determine status code:
+  // Use res.statusCode if it's already set (e.g., by res.status(400) before throwing)
+  // Otherwise, use err.statusCode if the error object has one
+  // Default to 500 (Internal Server Error)
+  const statusCode = res.statusCode >= 400 ? res.statusCode : err.statusCode || 500;
+
+  // Send a structured JSON error response
+  res.status(statusCode).json({
+    message: err.message || 'An unexpected server error occurred.',
+    // Only include the stack trace in non-production environments
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+  });
+};
+
+// Register the error handling middleware with Express
+// **** THIS MUST BE AFTER ALL ROUTES (app.use, app.get, etc.) ****
+app.use(errorHandler);
+// ============================================
+// ============================================
+
+// Start server (only for local development, Vercel uses the export)
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
@@ -123,4 +152,5 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Export the Express API for Vercel serverless functions
+// The error handler MUST be registered before this export
 module.exports = app;

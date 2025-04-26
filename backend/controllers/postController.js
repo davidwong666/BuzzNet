@@ -36,27 +36,53 @@ const getPost = asyncHandler(async (req, res) => {
 // @route   POST /api/posts
 // @access  Private (Assuming only logged-in users can post)
 const createPost = asyncHandler(async (req, res) => {
-  // Destructure title, content, and author from the request body
-  const { title, content, author } = req.body;
+  // Destructure only title and content from the request body.
+  // The author comes from the authenticated user (req.user).
+  const { title, content } = req.body;
 
-  // Basic validation: Check if required fields are present
-  if (!title || !content || !author) {
-    // If validation fails, set status to 400 and throw an error
+  // Basic validation: Check if required fields from the body are present.
+  if (!title || !content) {
+    // If validation fails, set status to 400 (Bad Request).
     res.status(400);
-    throw new Error('Please provide title, content, and author');
-    // If 'author' is an ObjectId, you'd likely get it from req.user (auth middleware)
-    // instead of req.body, and validate its presence.
+    // Throw an error indicating missing fields.
+    throw new Error('Please provide both title and content for the post.');
   }
 
-  // Create a new post using the Post model
+  // --- Get Author ID from Authenticated User ---
+  // Authentication middleware should have added the user object to req.user.
+  // We need the user's MongoDB ObjectId (_id).
+  if (!req.user || !req.user._id) {
+    // If authentication middleware failed or didn't attach user info, deny access.
+    res.status(401); // Unauthorized
+    throw new Error('User not authenticated or user ID not found.');
+    // This check is a safeguard; ideally, the auth middleware prevents unauthenticated access entirely.
+  }
+  const authorId = req.user._id;
+
+  // Optional: Verify the user actually exists in the DB, although the ID
+  // coming from a trusted auth token should be valid.
+  // const userExists = await User.findById(authorId);
+  // if (!userExists) {
+  //   res.status(401);
+  //   throw new Error('Author user not found in database.');
+  // }
+
+  // Create a new post using the Post model.
+  // Pass the extracted title, content, and the author's ObjectId.
   const post = await Post.create({
     title,
     content,
-    author, // If author is ObjectId, this should be the user's ID
+    author: authorId, // Use the ObjectId from the authenticated user
+    // 'likes' will default to 0 based on the schema
+    // 'timestamps' will be added automatically based on the schema
   });
 
-  // Send the newly created post back with a 201 status code
+  // If the post was created successfully:
+  // Send the newly created post back as JSON with a 201 (Created) status code.
   res.status(201).json(post);
+
+  // Note: The asyncHandler wrapper handles catching errors from async functions
+  // and passing them to your Express error handling middleware.
 });
 
 // @desc    Update a post by ID
