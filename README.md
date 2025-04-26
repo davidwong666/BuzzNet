@@ -19,21 +19,6 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 3. Open the repository in VS Code
 4. When prompted, click "**Reopen in Container**" or run the "Remote-Containers: Reopen in Container" command
 
-# Working with Your Docker Environment
-
-- **Start Docker** (should be automatically done for you): `docker-compose up -d` (-d: detached mode)
-- **Stop Docker**: `docker-compose down`
-- **Check Docker Status**: `docker ps`
-- **Check Docker Logs**: `docker logs dev-environment` or `docker-compose logs dev`
-
-- **Access Shell in Container**: `docker exec -it dev-environment bash` or `docker-compose exec dev bash`
-
-- **In docker, run**: `npm run dev` to start the server.
-
-# For Windows Machine:
-
-Run `git config --global core.autocrlf false` and `git config --global core.eol lf` to prevent line ending issues.
-
 # ChangeLog
 
 ## 27-04-2025 Updates by Wong Kwok Kam
@@ -46,7 +31,7 @@ Features added / modified:
 
 2. Post controller to incorporate user model
 
-3.
+3. Error function for easier error handling in backend
 
 ## 16-04-2025 Updates by Baichuan ZENG
 
