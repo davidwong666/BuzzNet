@@ -9,10 +9,9 @@ yarn.lock
 
 # Environment variables
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production
+.env.*
+!/.env.example
+!/.env.*.example
 
 # IDE - VSCode
 .vscode/*
