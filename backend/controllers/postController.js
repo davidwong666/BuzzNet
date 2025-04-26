@@ -1,12 +1,20 @@
 const Post = require('../models/Post');
 
-// Get all posts
 const getPosts = async (req, res) => {
+  console.log('--- ENTERING getPosts controller ---'); // <--- ADD Log 1
   try {
+    console.log('Attempting Post.find()...'); // <--- ADD Log 2
     const posts = await Post.find().sort({ createdAt: -1 });
+    console.log(`Post.find() successful, found ${posts.length} posts.`); // <--- ADD Log 3
     res.json(posts);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('!!! ERROR CAUGHT IN getPosts controller !!!'); // <--- ADD Log 4
+    console.error('Error Name:', error.name); // <--- ADD Log 5
+    console.error('Error Message:', error.message); // <--- ADD Log 6
+    console.error('Error Stack:', error.stack); // <--- ADD Log 7 (Most detailed)
+    res
+      .status(500)
+      .json({ message: 'Error fetching posts. Check server logs.', error: error.message }); // Keep sending response
   }
 };
 
@@ -35,7 +43,7 @@ const createPost = async (req, res) => {
     const newPost = new Post({
       title,
       content,
-      author
+      author,
     });
 
     const savedPost = await newPost.save();
@@ -53,11 +61,7 @@ const updatePost = async (req, res) => {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    const updatedPost = await Post.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updatedPost);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -101,5 +105,5 @@ module.exports = {
   createPost,
   updatePost,
   deletePost,
-  likePost
-}; 
+  likePost,
+};

@@ -34,49 +34,35 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 Run `git config --global core.autocrlf false` and `git config --global core.eol lf` to prevent line ending issues.
 
-# React + Vite
-
-Success! Created frontend at /app/frontend
-Inside that directory, you can run several commands:
-
-npm start
-Starts the development server.
-
-npm run build
-Bundles the app into static files for production.
-
-npm test
-Starts the test runner.
-
-npm run eject
-Removes this tool and copies build dependencies, configuration files and scripts into the app directory. If you do this, you can’t go back!
-
-We suggest that you begin by typing:
-
-cd /app/frontend
-npm start
-
 # ChangeLog
 
 ## 16-04-2025 Updates by Baichuan ZENG
 
 I've made comprehensive changes to implement the unlike functionality and comment feature:
+
 1. Updated the Post component to:
+
 - Add an unlike button
 - Add a comment section with a toggle
 - Display comment count
 - Handle comment submission
+
 2. Created a new CommentForm component that:
+
 - Provides a textarea for comment input
 - Handles form submission
 - Shows error messages
 - Disables functionality when offline
+
 3. Updated the PostsContext to:
+
 - Add unlike functionality
 - Add comment management
 - Handle offline mode for comments
 - Update the UI state accordingly
+
 4. Added new CSS styles for:
+
 - Unlike button
 - Comment section
 - Comment form
@@ -84,14 +70,13 @@ I've made comprehensive changes to implement the unlike functionality and commen
 - Action buttons
 
 The new features include:
+
 - Unlike button next to the like button
 - Comment count display
 - Expandable comment section
 - Comment form with validation
 - Styled comment list
 - Offline support for all new features
-
-
 
 ## 14-04-2025 Updates by Baichuan ZENG
 
