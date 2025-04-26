@@ -16,6 +16,7 @@ if (!process.env.MONGO_URI) {
   console.warn('WARNING: MONGO_URI environment variable is not set');
   console.warn('Using default connection string or will attempt to connect to localhost');
 }
+
 // Initialize connection but don't wait for it (important for serverless)
 connectDB()
   .then((conn) => {
@@ -47,12 +48,22 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow all origins during development
-      return callback(null, true);
+      // Allow requests with no origin (like mobile apps or curl requests) in dev,
+      // or allow all if NODE_ENV is not production
+      if (
+        process.env.NODE_ENV !== 'production' ||
+        !origin ||
+        allowedOrigins.indexOf(origin) !== -1
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
     },
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -40,6 +40,14 @@ Run `git config --global core.autocrlf false` and `git config --global core.eol 
 
 I've fixed a problem when connecting to MongoDB in local development.
 
+Features added / modified:
+
+1. User model
+
+2. Post controller to incorporate user model
+
+3.
+
 ## 16-04-2025 Updates by Baichuan ZENG
 
 I've made comprehensive changes to implement the unlike functionality and comment feature:
