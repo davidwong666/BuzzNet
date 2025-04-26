@@ -36,6 +36,10 @@ Run `git config --global core.autocrlf false` and `git config --global core.eol 
 
 # ChangeLog
 
+## 27-04-2025 Updates by Wong Kwok Kam
+
+I've fixed a problem when connecting to MongoDB in local development.
+
 ## 16-04-2025 Updates by Baichuan ZENG
 
 I've made comprehensive changes to implement the unlike functionality and comment feature:
