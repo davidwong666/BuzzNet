@@ -35,6 +35,8 @@ Features added / modified:
 
 4. Fixed code duplication in backend/api/index.js, migrate the logic to backend/index.js -> need to be tested by re-deployment
 
+5. Added .env.example, removed committed .env and .env.production for security reasons.
+
 ## 16-04-2025 Updates by Baichuan ZENG
 
 I've made comprehensive changes to implement the unlike functionality and comment feature:
