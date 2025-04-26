@@ -33,6 +33,8 @@ Features added / modified:
 
 3. Error function for easier error handling in backend
 
+4. Fixed code duplication in backend/api/index.js, migrate the logic to backend/index.js -> need to be tested by re-deployment
+
 ## 16-04-2025 Updates by Baichuan ZENG
 
 I've made comprehensive changes to implement the unlike functionality and comment feature:
