@@ -3,18 +3,18 @@
   "name": "buzznet-api",
   "builds": [
     {
-      "src": "api/index.js",
+      "src": "backend/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/backend/index.js"
     }
   ],
   "env": {
     "MONGO_URI": "mongodb+srv://zbc2385505079:zbc2385505079@buzznet.tdtukqc.mongodb.net/buzznet?retryWrites=true&w=majority&appName=BuzzNet",
     "NODE_ENV": "production"
   }
-} 
+}

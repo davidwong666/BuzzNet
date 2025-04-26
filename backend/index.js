@@ -3,7 +3,9 @@ console.log('--- backend/index.js starting ---');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config(); // Ensure dotenv is loaded early
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config(); // Loads variables from .env file into process.env
+}
 const connectDB = require('./config/db');
 const mongoose = require('mongoose');
 
@@ -12,7 +14,6 @@ const postRoutes = require('./routes/postRoutes');
 const userRoutes = require('./routes/userRoutes'); // Import user routes
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // --- Check for essential environment variables ---
 if (!process.env.MONGO_URI) {
@@ -182,7 +183,8 @@ app.use(errorHandler);
 // ============================================
 
 // --- Start Server (for local development) ---
-if (process.env.NODE_ENV !== 'production') {
+if (require.main === module && process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Server running locally on http://localhost:${PORT}`);
   });
