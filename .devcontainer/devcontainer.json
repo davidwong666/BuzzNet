@@ -1,0 +1,42 @@
+{
+  "name": "Social Media Project",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/app",
+  "remoteUser": "developer",
+  "forwardPorts": [3000, 5000, 27017],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "hnw.vscode-auto-open-markdown-preview",
+        "aaron-bond.better-comments",
+        "alefragnani.bookmarks",
+        "ms-azuretools.vscode-docker",
+        "dsznajder.es7-react-js-snippets",
+        "eamodio.gitlens",
+        "kisstkondoros.vscode-gutter-preview",
+        "oderwat.indent-rainbow",
+        "xabikos.javascriptsnippets",
+        "zainchen.json",
+        "mongodb.mongodb-vscode",
+        "saoudrizwan.claude-dev",
+        "chris-noring.node-snippets",
+        "techer.open-in-browser",
+        "ibm.output-colorizer",
+        "bradlc.vscode-tailwindcss",
+        "wayou.vscode-todo-highlight",
+        "gruntfuggly.todo-tree",
+        "chakrounanas.turbo-console-log",
+        "tomoki1207.pdf",
+        "wakatime.vscode-wakatime",
+        "redhat.vscode-yaml"
+      ]
+    }
+  }
+}

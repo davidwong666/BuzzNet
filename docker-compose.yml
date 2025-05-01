@@ -1,0 +1,20 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: buzznet_dev
+    ports:
+      - '3000:3000' # Frontend port
+      - '5000:5000' # Backend port
+      # - '27017:27017' # MongoDB port if needed
+    volumes:
+      - .:/app # Mount your entire project into /app
+    networks:
+      - dev-network
+    tty: true
+    stdin_open: true
+
+networks:
+  dev-network:
+    driver: bridge
