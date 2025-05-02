@@ -21,6 +21,28 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 # ChangeLog
 
+## 01-05-2025 Updates by Zhang Ka Sing
+
+I've implemented a complete user authentication system and merged it with the existing codebase. Here's what I've added:
+
+1. Frontend Changes:
+   
+- Added Login component with form validation
+- Implemented user authentication state management
+- Added user interface elements (username display, logout button)
+- UI with responsive design
+
+2. Backend Changes:
+   
+- Added user authentication routes (/api/users/register and /api/users/login)
+- Implemented JWT-based authentication
+- Added user model and controllers
+
+3. Security Features:
+   
+- Implemented password hashing
+- Added JWT token validation
+
 ## 27-04-2025 Updates by Wong Kwok Kam
 
 I've fixed a problem when connecting to MongoDB in local development.
