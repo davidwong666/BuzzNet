@@ -21,6 +21,16 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 # ChangeLog
 
+## 03-05-2025 Updates by Baichuan ZENG
+
+### I made some modifications:
+
+-  Fixed the bug which for unsuccessful sign-in of account.
+
+### Some ToDos:
+- Limit the time of like/dislike of the post to one.
+- Limit the deletion function of post to author and admin only.
+
 ## 01-05-2025 Updates by Zhang Ka Sing
 
 I've implemented a complete user authentication system and merged it with the existing codebase. Here's what I've added:

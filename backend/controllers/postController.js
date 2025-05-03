@@ -72,7 +72,7 @@ const createPost = asyncHandler(async (req, res) => {
   const post = await Post.create({
     title,
     content,
-    author: authorId, // Use the ObjectId from the authenticated user
+    author: req.user.id, // Use the ObjectId from the authenticated user
     // 'likes' will default to 0 based on the schema
     // 'timestamps' will be added automatically based on the schema
   });
@@ -112,41 +112,91 @@ const updatePost = asyncHandler(async (req, res) => {
 // @route   DELETE /api/posts/:id
 // @access  Private (Assuming only the author can delete)
 const deletePost = asyncHandler(async (req, res) => {
-  // Find the post by ID and delete it
-  const deletedPost = await Post.findByIdAndDelete(req.params.id);
+  const { id } = req.params; // Post ID from the URL
+  const userId = req.user.id; // Authenticated user's ID (from the `protect` middleware)
 
-  // If no post was found and deleted, set status to 404 and throw an error
-  if (!deletedPost) {
+  // Find the post by ID
+  const post = await Post.findById(id);
+
+  if (!post) {
     res.status(404);
     throw new Error('Post not found');
   }
 
-  // Send the ID of the deleted post back as confirmation
-  res.status(200).json({ id: req.params.id, message: 'Post deleted successfully' });
-  // Note: Add authorization check here - ensure req.user.id matches post.author before deleting
+  // Check if the authenticated user is the author of the post
+  if (post.author.toString() !== userId) {
+    res.status(403); // Forbidden
+    throw new Error('You are not authorized to delete this post');
+  }
+
+  // Delete the post
+  await post.remove();
+
+  res.status(200).json({ id: post._id, message: 'Post deleted successfully' });
 });
 
 // @desc    Like a post by ID
 // @route   PATCH /api/posts/:id/like  (Using PATCH is common for partial updates like 'like')
 // @access  Private (Assuming only logged-in users can like)
-const likePost = asyncHandler(async (req, res) => {
-  // Find the post by ID and atomically increment the 'likes' count by 1
-  // { new: true } returns the updated document
-  const updatedPost = await Post.findByIdAndUpdate(
-    req.params.id,
-    { $inc: { likes: 1 } }, // Use $inc for atomic increment
-    { new: true }
-  );
+const likePost = async (req, res) => {
+  const { id } = req.params; // Post ID from the URL
+  const userId = req.user.id; // User ID from the authenticated user (e.g., from JWT)
 
-  // If no post was found and updated, set status to 404 and throw an error
-  if (!updatedPost) {
-    res.status(404);
-    throw new Error('Post not found');
+  try {
+    // Find the post by ID
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Check if the user has already liked the post
+    if (post.likedBy.includes(userId)) {
+      return res.status(400).json({ message: 'You have already liked this post' });
+    }
+
+    // Add the user's ID to the likedBy array and increment the likes count
+    post.likedBy.push(userId);
+    post.likes += 1;
+
+    // Save the updated post
+    await post.save();
+
+    res.status(200).json({ message: 'Post liked successfully', post });
+  } catch (error) {
+    console.error('Error liking post:', error);
+    res.status(500).json({ message: 'Server error', error });
   }
+};
 
-  // Send the updated post (with the new like count) as JSON response
-  res.status(200).json(updatedPost);
-});
+const unlikePost = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Check if the user has liked the post
+    if (!post.likedBy.includes(userId)) {
+      return res.status(400).json({ message: 'You have not liked this post' });
+    }
+
+    // Remove the user's ID from the likedBy array and decrement the likes count
+    post.likedBy = post.likedBy.filter((id) => id.toString() !== userId);
+    post.likes -= 1;
+
+    await post.save();
+
+    res.status(200).json({ message: 'Post unliked successfully', post });
+  } catch (error) {
+    console.error('Error unliking post:', error);
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
 
 // Export all controller functions
 module.exports = {
@@ -156,4 +206,5 @@ module.exports = {
   updatePost,
   deletePost,
   likePost,
+  unlikePost,
 };

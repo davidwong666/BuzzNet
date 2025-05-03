@@ -57,11 +57,11 @@ const postSchema = new mongoose.Schema(
       default: 0, // Start with 0 likes
       min: 0, // Likes cannot be negative
     },
-    // Optional: Array to store users who liked the post (prevents double liking)
-    // likedBy: [{
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'User'
-    // }],
+    // Optional: Array to store users who liked the post (ensure only like once)
+    likedBy: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }],
     // Array of embedded comment subdocuments
     comments: [commentSchema], // Use the commentSchema defined above
     // Optional: URL for an image associated with the post
