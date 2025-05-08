@@ -14,20 +14,20 @@ const getPosts = asyncHandler(async (req, res) => {
   res.status(200).json(posts);
 });
 
-// @desc    Get single post by ID
-// @route   GET /api/posts/:id
-// @access  Public (Adjust access as needed)
-const getPost = asyncHandler(async (req, res) => {
-  // Find the post by ID provided in the request parameters
-  const post = await Post.findById(req.params.id);
-  // If post is not found, set status to 404 and throw an error
-  if (!post) {
-    res.status(404);
-    throw new Error('Post not found');
-  }
-  // Send the found post as JSON response
-  res.status(200).json(post);
-});
+// // @desc    Get single post by ID
+// // @route   GET /api/posts/:id
+// // @access  Public (Adjust access as needed)
+// const getPost = asyncHandler(async (req, res) => {
+//   // Find the post by ID provided in the request parameters
+//   const post = await Post.findById(req.params.id);
+//   // If post is not found, set status to 404 and throw an error
+//   if (!post) {
+//     res.status(404);
+//     throw new Error('Post not found');
+//   }
+//   // Send the found post as JSON response
+//   res.status(200).json(post);
+// });
 
 // @desc    Create a new post
 // @route   POST /api/posts
@@ -84,129 +84,129 @@ const createPost = asyncHandler(async (req, res) => {
 // @desc    Update a post by ID
 // @route   PUT /api/posts/:id
 // @access  Private (Assuming only the author can update)
-const updatePost = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id); // Fetch post first to check author
+// const updatePost = asyncHandler(async (req, res) => {
+//   const post = await Post.findById(req.params.id); // Fetch post first to check author
 
-  if (!post) {
-    res.status(404);
-    throw new Error('Post not found');
-  }
+//   if (!post) {
+//     res.status(404);
+//     throw new Error('Post not found');
+//   }
 
-  // Authorization Check: Ensure logged-in user's name matches the post's author name
-  if (post.author !== req.user.name) {
-    res.status(403); // Forbidden
-    throw new Error('You are not authorized to update this post');
-  }
+//   // Authorization Check: Ensure logged-in user's name matches the post's author name
+//   if (post.author !== req.user.name) {
+//     res.status(403); // Forbidden
+//     throw new Error('You are not authorized to update this post');
+//   }
 
-  // If authorized, then update:
-  const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+//   // If authorized, then update:
+//   const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+//     new: true,
+//     runValidators: true,
+//   });
 
-  // Send the updated post as JSON response
-  res.status(200).json(updatedPost);
-});
+//   // Send the updated post as JSON response
+//   res.status(200).json(updatedPost);
+// });
 
 // @desc    Delete a post by ID
 // @route   DELETE /api/posts/:id
 // @access  Private (Assuming only the author can delete)
-const deletePost = asyncHandler(async (req, res) => {
-  const { id } = req.params; // Post ID from the URL
-  const userId = req.user.id; // Authenticated user's ID (from the `protect` middleware)
+// const deletePost = asyncHandler(async (req, res) => {
+//   const { id } = req.params; // Post ID from the URL
+//   const userId = req.user.id; // Authenticated user's ID (from the `protect` middleware)
 
-  // Find the post by ID
-  const post = await Post.findById(id);
+//   // Find the post by ID
+//   const post = await Post.findById(id);
 
-  if (!post) {
-    res.status(404);
-    throw new Error('Post not found');
-  }
+//   if (!post) {
+//     res.status(404);
+//     throw new Error('Post not found');
+//   }
 
-  // Authorization Check: Change from ObjectId comparison to name comparison
-  // Original: if (post.author.toString() !== userId)
-  if (post.author !== req.user.name) {
-    // userId here would be req.user.id, which is not what we want to compare against post.author (name)
-    // Ensure req.user.name is available from auth middleware
-    res.status(403); // Forbidden
-    throw new Error('You are not authorized to delete this post');
-  }
+//   // Authorization Check: Change from ObjectId comparison to name comparison
+//   // Original: if (post.author.toString() !== userId)
+//   if (post.author !== req.user.name) {
+//     // userId here would be req.user.id, which is not what we want to compare against post.author (name)
+//     // Ensure req.user.name is available from auth middleware
+//     res.status(403); // Forbidden
+//     throw new Error('You are not authorized to delete this post');
+//   }
 
-  await post.deleteOne();
+//   await post.deleteOne();
 
-  res.status(200).json({ id: post._id, message: 'Post deleted successfully' });
-});
+//   res.status(200).json({ id: post._id, message: 'Post deleted successfully' });
+// });
 
 // @desc    Like a post by ID
 // @route   PATCH /api/posts/:id/like  (Using PATCH is common for partial updates like 'like')
 // @access  Private (Assuming only logged-in users can like)
-const likePost = async (req, res) => {
-  const { id } = req.params; // Post ID from the URL
-  const userId = req.user.id; // User ID from the authenticated user (e.g., from JWT)
+// const likePost = async (req, res) => {
+//   const { id } = req.params; // Post ID from the URL
+//   const userId = req.user.id; // User ID from the authenticated user (e.g., from JWT)
 
-  try {
-    // Find the post by ID
-    const post = await Post.findById(id);
+//   try {
+//     // Find the post by ID
+//     const post = await Post.findById(id);
 
-    if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
+//     if (!post) {
+//       return res.status(404).json({ message: 'Post not found' });
+//     }
 
-    // Check if the user has already liked the post
-    if (post.likedBy.includes(userId)) {
-      return res.status(400).json({ message: 'You have already liked this post' });
-    }
+//     // Check if the user has already liked the post
+//     if (post.likedBy.includes(userId)) {
+//       return res.status(400).json({ message: 'You have already liked this post' });
+//     }
 
-    // Add the user's ID to the likedBy array and increment the likes count
-    post.likedBy.push(userId);
-    post.likes += 1;
+//     // Add the user's ID to the likedBy array and increment the likes count
+//     post.likedBy.push(userId);
+//     post.likes += 1;
 
-    // Save the updated post
-    await post.save();
+//     // Save the updated post
+//     await post.save();
 
-    res.status(200).json({ message: 'Post liked successfully', post });
-  } catch (error) {
-    console.error('Error liking post:', error);
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
+//     res.status(200).json({ message: 'Post liked successfully', post });
+//   } catch (error) {
+//     console.error('Error liking post:', error);
+//     res.status(500).json({ message: 'Server error', error });
+//   }
+// };
 
-const unlikePost = async (req, res) => {
-  const { id } = req.params;
-  const userId = req.user.id;
+// const unlikePost = async (req, res) => {
+//   const { id } = req.params;
+//   const userId = req.user.id;
 
-  try {
-    const post = await Post.findById(id);
+//   try {
+//     const post = await Post.findById(id);
 
-    if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
+//     if (!post) {
+//       return res.status(404).json({ message: 'Post not found' });
+//     }
 
-    // Check if the user has liked the post
-    if (!post.likedBy.includes(userId)) {
-      return res.status(400).json({ message: 'You have not liked this post' });
-    }
+//     // Check if the user has liked the post
+//     if (!post.likedBy.includes(userId)) {
+//       return res.status(400).json({ message: 'You have not liked this post' });
+//     }
 
-    // Remove the user's ID from the likedBy array and decrement the likes count
-    post.likedBy = post.likedBy.filter((id) => id.toString() !== userId);
-    post.likes -= 1;
+//     // Remove the user's ID from the likedBy array and decrement the likes count
+//     post.likedBy = post.likedBy.filter((id) => id.toString() !== userId);
+//     post.likes -= 1;
 
-    await post.save();
+//     await post.save();
 
-    res.status(200).json({ message: 'Post unliked successfully', post });
-  } catch (error) {
-    console.error('Error unliking post:', error);
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
+//     res.status(200).json({ message: 'Post unliked successfully', post });
+//   } catch (error) {
+//     console.error('Error unliking post:', error);
+//     res.status(500).json({ message: 'Server error', error });
+//   }
+// };
 
 // Export all controller functions
 module.exports = {
   getPosts,
-  getPost,
+  // getPost,
   createPost,
-  updatePost,
-  deletePost,
-  likePost,
-  unlikePost,
+  // updatePost,
+  // deletePost,
+  // likePost,
+  // unlikePost,
 };
