@@ -2,6 +2,7 @@
 const asyncHandler = require('express-async-handler');
 // Import the Post model
 const Post = require('../models/Post');
+const User = require('../models/User');
 
 // @desc    Get all posts
 // @route   GET /api/posts
