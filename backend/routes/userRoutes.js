@@ -1,26 +1,55 @@
-// backend/routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
+
+// --- Import Controller Functions ---
+// Import functions for user registration, login, and potentially fetching user profiles
 const {
   registerUser,
   loginUser,
-  // getUserProfile // Import future controllers
-} = require('../controllers/userController');
+  // getUserProfile, // Assuming you will create this controller function
+  // updateUserProfile, // Example for a future protected route
+} = require('../controllers/userController'); // Adjust path if needed
 
-// Import authentication middleware (we'll create this later if needed for protected routes)
-// const { protect } = require('../middleware/authMiddleware');
+// --- Import Authentication Middleware ---
+// Import the 'protect' middleware to secure routes
+const { protect } = require('../middleware/authMiddleware'); // Adjust path if needed
 
-// --- Public Routes ---
-// Route for user registration
+// =========================================
+// --- PUBLIC ROUTES ---
+// (No authentication required)
+// =========================================
+
+// @desc    Register a new user
+// @route   POST /api/users/register
+// @access  Public
 router.post('/register', registerUser);
 
-// Route for user login
+// @desc    Authenticate a user (login)
+// @route   POST /api/users/login
+// @access  Public
 router.post('/login', loginUser);
 
-// --- Protected Routes (Example) ---
-// Route for getting the logged-in user's profile
-// router.get('/profile', protect, getUserProfile); // Requires authentication
+// =========================================
+// --- PROTECTED ROUTES ---
+// (Authentication required - User must be logged in)
+// =========================================
 
-// TODO: Add routes for updating profile, following users, etc.
+// @desc    Get user profile (of the logged-in user)
+// @route   GET /api/users/profile
+// @access  Private (requires token)
+// The 'protect' middleware will run first. If the token is valid,
+// req.user will be populated and then getUserProfile will be called.
+// router.get('/profile', protect, getUserProfile);
+
+// @desc    Update user profile (of the logged-in user)
+// @route   PUT /api/users/profile
+// @access  Private (requires token)
+// Example:
+// router.put('/profile', protect, updateUserProfile); // You would need to create updateUserProfile controller
+
+// You could add other protected routes here, for example:
+// - Change password
+// - Delete account
+// - Get user's posts, etc.
 
 module.exports = router;

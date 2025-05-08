@@ -57,22 +57,21 @@ const createPost = asyncHandler(async (req, res) => {
     throw new Error('User not authenticated or user ID not found.');
     // This check is a safeguard; ideally, the auth middleware prevents unauthenticated access entirely.
   }
-  const authorId = req.user._id;
 
-  // Optional: Verify the user actually exists in the DB, although the ID
+  // Verify the user actually exists in the DB, although the ID
   // coming from a trusted auth token should be valid.
-  // const userExists = await User.findById(authorId);
-  // if (!userExists) {
-  //   res.status(401);
-  //   throw new Error('Author user not found in database.');
-  // }
+  const userExists = await User.findById(req.user._id);
+  if (!userExists) {
+    res.status(401);
+    throw new Error('Author user not found in database.');
+  }
 
   // Create a new post using the Post model.
   // Pass the extracted title, content, and the author's ObjectId.
   const post = await Post.create({
     title,
     content,
-    author: req.user.id, // Use the ObjectId from the authenticated user
+    author: req.user.name, // name instead of ObjectId for simplicity
     // 'likes' will default to 0 based on the schema
     // 'timestamps' will be added automatically based on the schema
   });
@@ -89,23 +88,27 @@ const createPost = asyncHandler(async (req, res) => {
 // @route   PUT /api/posts/:id
 // @access  Private (Assuming only the author can update)
 const updatePost = asyncHandler(async (req, res) => {
-  // Find the post by ID and update it with data from the request body
-  // { new: true } returns the updated document
-  // { runValidators: true } ensures the update respects schema validation rules
+  const post = await Post.findById(req.params.id); // Fetch post first to check author
+
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
+
+  // Authorization Check: Ensure logged-in user's name matches the post's author name
+  if (post.author !== req.user.name) {
+    res.status(403); // Forbidden
+    throw new Error('You are not authorized to update this post');
+  }
+
+  // If authorized, then update:
   const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
 
-  // If no post was found and updated, set status to 404 and throw an error
-  if (!updatedPost) {
-    res.status(404);
-    throw new Error('Post not found');
-  }
-
   // Send the updated post as JSON response
   res.status(200).json(updatedPost);
-  // Note: Add authorization check here - ensure req.user.id matches post.author before updating
 });
 
 // @desc    Delete a post by ID
@@ -123,14 +126,16 @@ const deletePost = asyncHandler(async (req, res) => {
     throw new Error('Post not found');
   }
 
-  // Check if the authenticated user is the author of the post
-  if (post.author.toString() !== userId) {
+  // Authorization Check: Change from ObjectId comparison to name comparison
+  // Original: if (post.author.toString() !== userId)
+  if (post.author !== req.user.name) {
+    // userId here would be req.user.id, which is not what we want to compare against post.author (name)
+    // Ensure req.user.name is available from auth middleware
     res.status(403); // Forbidden
     throw new Error('You are not authorized to delete this post');
   }
 
-  // Delete the post
-  await post.remove();
+  await post.deleteOne();
 
   res.status(200).json({ id: post._id, message: 'Post deleted successfully' });
 });

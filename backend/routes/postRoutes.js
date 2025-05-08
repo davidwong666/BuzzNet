@@ -11,7 +11,6 @@ const {
 } = require('../controllers/postController');
 
 // Middleware to protect routes
-// TODO
 const { protect } = require('../middleware/authMiddleware');
 
 // GET all posts
