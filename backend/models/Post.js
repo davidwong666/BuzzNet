@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Optional: Define a schema for comments if embedding them directly
 const commentSchema = new mongoose.Schema(
   {
     // Reference to the user who made the comment
@@ -15,14 +14,14 @@ const commentSchema = new mongoose.Schema(
       required: [true, 'Comment text cannot be empty'],
       trim: true,
     },
-    // Optional: User's name at the time of commenting (denormalized for convenience)
-    name: {
-      type: String,
-      required: true,
-    },
-    // TODO: User's profile picture URL at the time of commenting
+    // Optional: Denormalized user's name for quicker display if needed
+    // name: {
+    //   type: String,
+    //   required: true,
+    // },
+    // Optional: Denormalized user's profile picture URL
     // profilePicture: {
-    //   type: String
+    //   type: String,
     // }
   },
   {
@@ -46,9 +45,10 @@ const postSchema = new mongoose.Schema(
     },
     // Reference to the User who created the post
     author: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Reference the User model
       required: [true, 'Post must have an author'],
-      index: true, // Add an index for faster queries filtering by author
+      index: true, // Index for faster queries by author
     },
     // Number of likes the post has received
     likes: {
@@ -56,22 +56,24 @@ const postSchema = new mongoose.Schema(
       default: 0, // Start with 0 likes
       min: 0, // Likes cannot be negative
     },
-    // Optional: Array to store users who liked the post (ensure only like once)
-    // likedBy: [
-    //   {
-    //     type: String,
-    //   },
-    // ],
-    // Array of embedded comment subdocuments
-    comments: [commentSchema], // Use the commentSchema defined above
-    // Optional: URL for an image associated with the post
-    // imageUrl: {
-    //   type: String,
-    //   default: ''
-    // }
+    // Array of user IDs who liked the post
+    // Used for toggling likes and checking if a user has liked a post
+    likedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    // Array of embedded comment documents
+    comments: [commentSchema], // Embed the commentSchema here
+    // Denormalized count of comments for quick retrieval
+    commentCount: {
+      type: Number,
+      default: 0, // Start with 0 comments
+      min: 0, // Comment count cannot be negative
+    },
   },
   {
-    // Schema Options:
     // Automatically add 'createdAt' and 'updatedAt' timestamp fields to the post
     timestamps: true,
   }

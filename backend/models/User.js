@@ -1,3 +1,5 @@
+// * Good for now
+
 const mongoose = require('mongoose');
 // Library for hashing passwords
 const bcrypt = require('bcryptjs');
@@ -27,24 +29,6 @@ const userSchema = new mongoose.Schema(
       minlength: [6, 'Password must be at least 6 characters long'],
       select: false,
     },
-    // profilePicture field remains removed/commented
-    /* // Kept for potential future use, but not actively used in signup/login
-    profilePicture: {
-      type: String,
-      default: '',
-    },
-    */
-    // Kept for potential future use, but not actively used in signup/login
-    bio: {
-      type: String,
-      trim: true,
-      maxlength: [160, 'Bio cannot be more than 160 characters'],
-      default: '', // Default ensures it's optional
-    },
-    // Optional fields remain commented out
-    // likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-    // following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    // followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
   },
   {
     timestamps: true,
