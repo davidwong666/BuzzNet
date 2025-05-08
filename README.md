@@ -24,11 +24,12 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 # ChangeLog
 
-## 08-5-05-2025 Updates by Kwok Kam Wong
+## 09-5-05-2025 Updates by Kwok Kam Wong
 
 Added the following things:
 
 - Instructions on how to run the project locally
+- Modified the Post Model to embed comments and display comment count.
 
 ## 03-05-2025 Updates by Baichuan ZENG
 
