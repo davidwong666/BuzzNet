@@ -1,3 +1,17 @@
+/*
+Okay, in the simplest terms, authMiddleware.js will act like a security guard for certain parts of your application.
+
+This file will:
+
+Check the "ID": When a user tries to access a protected area, this middleware
+will look for some proof that the user is logged in (usually a special token they received when they signed in).
+Verify the "ID": It will check if this "ID" (token) is valid and hasn't expired.
+Grant or Deny Access:
+If the "ID" is valid, the guard lets them pass, and often attaches the user's information (like their user ID) to the request so the next part of your code knows who they are.
+If the "ID" is invalid or missing, the guard stops them and says "Access Denied."
+So, its main job is to make sure only logged-in users can do things they're supposed to be able to do, and to identify who that logged-in user is. This prevents unauthorized access and actions.
+*/
+
 // Utility to handle asynchronous Express route handlers and middleware
 const asyncHandler = require('express-async-handler');
 // Library for verifying JSON Web Tokens
@@ -27,7 +41,7 @@ const protect = asyncHandler(async (req, res, next) => {
       // If no user is found with that ID (e.g., user deleted after token issuance)
       if (!req.user) {
         res.status(401); // Unauthorized
-        throw new Error('Not authorized, user not found');
+        throw new Error('Not authorized, user associated with this token no longer exists');
       }
 
       // If user is found, proceed to the next middleware or route handler
@@ -37,14 +51,12 @@ const protect = asyncHandler(async (req, res, next) => {
       console.error('Token verification failed:', error.message);
       res.status(401); // Unauthorized
       // Provide a more generic error message to the client
-      throw new Error('Not authorized, token failed');
+      throw new Error('Not authorized, token failed or invalid');
     }
-  }
-
-  // If no token is found in the Authorization header
-  if (!token) {
+  } else {
+    // This 'else' block explicitly handles when the Authorization header is missing or not 'Bearer'
     res.status(401); // Unauthorized
-    throw new Error('Not authorized, no token');
+    throw new Error('Not authorized, no token provided or token is not Bearer type');
   }
 });
 
