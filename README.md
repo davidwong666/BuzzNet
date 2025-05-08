@@ -32,6 +32,8 @@ Added the following things:
 - Modified the Post Model to embed comments and display comment count.
 - Modified the User Model to include role field.
 - Modified the authMiddleware to provide more detailed error messages.
+- Added a TODO:
+  - Display username instead of user ID in the posts.
 
 ## 03-05-2025 Updates by Baichuan ZENG
 
