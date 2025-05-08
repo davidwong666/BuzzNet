@@ -1,6 +1,4 @@
-// Import the async handler utility
 const asyncHandler = require('express-async-handler');
-// Import the Post model
 const Post = require('../models/Post');
 const User = require('../models/User');
 
@@ -8,6 +6,7 @@ const User = require('../models/User');
 // @route   GET /api/posts
 // @access  Public
 const getPosts = asyncHandler(async (req, res) => {
+  // TODO: populate author field instead of just returning the ObjectId
   // Fetch all posts, sorted by creation date (newest first)
   const posts = await Post.find().sort({ createdAt: -1 });
   console.log(`Post.find() successful, found ${posts.length} posts.`);
@@ -69,7 +68,7 @@ const createPost = asyncHandler(async (req, res) => {
   const post = await Post.create({
     title,
     content,
-    author: req.user.name, // name instead of ObjectId for simplicity
+    author: req.user._id, // Use the user's ObjectId
     // 'likes' will default to 0 based on the schema
     // 'timestamps' will be added automatically based on the schema
   });
