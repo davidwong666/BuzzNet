@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 // Define the schema for the User model
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: [true, 'Please provide a name'],
       trim: true,
@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema(
       minlength: [6, 'Password must be at least 6 characters long'],
       select: false,
     },
+    role: {
+      type: String,
+      enum: ['user', 'admin'], // Defines the possible values for the role
+      default: 'user', // Sets the default role for new users
+    },
+    // Future implementation: Profile picture URL, bio, lastActive, etc.
   },
   {
     timestamps: true,
@@ -39,15 +45,17 @@ const userSchema = new mongoose.Schema(
 
 // Hash password BEFORE saving a new user or updating the password
 userSchema.pre('save', async function (next) {
+  // Only run this function if password was actually modified
   if (!this.isModified('password')) {
     return next();
   }
+  // Hash the password with cost of 10
   try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    const salt = await bcrypt.genSalt(10); // Generate a salt
+    this.password = await bcrypt.hash(this.password, salt); // Hash the password
     next();
   } catch (error) {
-    next(error);
+    next(error); // Pass errors to the next middleware
   }
 });
 
@@ -55,6 +63,7 @@ userSchema.pre('save', async function (next) {
 
 // Method to compare entered password with the hashed password
 userSchema.methods.matchPassword = async function (enteredPassword) {
+  // 'this.password' refers to the hashed password of the user instance
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
