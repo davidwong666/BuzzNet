@@ -31,6 +31,7 @@ Added the following things:
 - Instructions on how to run the project locally
 - Modified the Post Model to embed comments and display comment count.
 - Modified the User Model to include role field.
+- Modified the authMiddleware to provide more detailed error messages.
 
 ## 03-05-2025 Updates by Baichuan ZENG
 
