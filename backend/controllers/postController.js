@@ -5,12 +5,9 @@ const Post = require('../models/Post');
 
 // @desc    Get all posts
 // @route   GET /api/posts
-// @access  Public (Adjust access as needed)
+// @access  Public
 const getPosts = asyncHandler(async (req, res) => {
-  console.log('--- ENTERING getPosts controller ---');
   // Fetch all posts, sorted by creation date (newest first)
-  // If using ObjectId for author, you might want to populate user details:
-  // const posts = await Post.find().sort({ createdAt: -1 }).populate('author', 'name email'); // Example population
   const posts = await Post.find().sort({ createdAt: -1 });
   console.log(`Post.find() successful, found ${posts.length} posts.`);
   // Send the posts as JSON response
