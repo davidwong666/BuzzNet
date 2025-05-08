@@ -26,12 +26,14 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 ## 09-5-05-2025 Updates by Kwok Kam Wong
 
-Added the following things:
+### Added the following things:
 
 - Instructions on how to run the project locally
 - Modified the Post Model to embed comments and display comment count.
 - Modified the User Model to include role field.
 - Modified the authMiddleware to provide more detailed error messages.
+- Fixed 'cannot create post' bug, now you can create a post if you are signed in.
+- Focus on geting all posts and creating posts only. Modified the routes and controllers to focus on these two functionalities.
 - Added a TODO:
   - Display username instead of user ID in the posts.
 

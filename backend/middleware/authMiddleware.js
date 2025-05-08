@@ -1,16 +1,4 @@
-/*
-Okay, in the simplest terms, authMiddleware.js will act like a security guard for certain parts of your application.
-
-This file will:
-
-Check the "ID": When a user tries to access a protected area, this middleware
-will look for some proof that the user is logged in (usually a special token they received when they signed in).
-Verify the "ID": It will check if this "ID" (token) is valid and hasn't expired.
-Grant or Deny Access:
-If the "ID" is valid, the guard lets them pass, and often attaches the user's information (like their user ID) to the request so the next part of your code knows who they are.
-If the "ID" is invalid or missing, the guard stops them and says "Access Denied."
-So, its main job is to make sure only logged-in users can do things they're supposed to be able to do, and to identify who that logged-in user is. This prevents unauthorized access and actions.
-*/
+// * Good for now
 
 // Utility to handle asynchronous Express route handlers and middleware
 const asyncHandler = require('express-async-handler');
