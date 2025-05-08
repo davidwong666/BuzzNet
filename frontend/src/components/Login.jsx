@@ -40,27 +40,31 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      width: '100vw',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      zIndex: 1000,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'radial-gradient(circle, #b3c6ff 0%, #3a7bd5 100%)',
-    }}>
-      <div style={{
-        background: '#333',
-        borderRadius: '12px',
-        padding: '32px 24px 24px 24px',
-        boxShadow: '0 2px 16px rgba(0,0,0,0.12)',
-        width: '100%',
-        maxWidth: '400px',
-        boxSizing: 'border-box',
-      }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        width: '100vw',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'radial-gradient(circle, #b3c6ff 0%, #3a7bd5 100%)',
+      }}
+    >
+      <div
+        style={{
+          background: '#333',
+          borderRadius: '12px',
+          padding: '32px 24px 24px 24px',
+          boxShadow: '0 2px 16px rgba(0,0,0,0.12)',
+          width: '100%',
+          maxWidth: '400px',
+          boxSizing: 'border-box',
+        }}
+      >
         <form onSubmit={handleSubmit}>
           <div style={{ color: '#fff', fontSize: 18, marginBottom: 16, textAlign: 'center' }}>
             {isRegister ? 'Register' : 'Login'}
@@ -72,7 +76,13 @@ const Login = ({ onLogin }) => {
               name="username"
               value={form.username}
               onChange={handleChange}
-              style={{ width: '100%', padding: '10px', borderRadius: 4, border: 'none', fontSize: 16 }}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: 4,
+                border: 'none',
+                fontSize: 16,
+              }}
               autoComplete="username"
               required
             />
@@ -84,7 +94,13 @@ const Login = ({ onLogin }) => {
               name="password"
               value={form.password}
               onChange={handleChange}
-              style={{ width: '100%', padding: '10px', borderRadius: 4, border: 'none', fontSize: 16 }}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: 4,
+                border: 'none',
+                fontSize: 16,
+              }}
               autoComplete={isRegister ? 'new-password' : 'current-password'}
               required
             />
@@ -107,7 +123,7 @@ const Login = ({ onLogin }) => {
             }}
             disabled={loading}
           >
-            {loading ? 'Please wait...' : (isRegister ? 'Register' : 'Login')}
+            {loading ? 'Please wait...' : isRegister ? 'Register' : 'Login'}
           </button>
           <div style={{ textAlign: 'center' }}>
             <span style={{ color: '#fff', fontSize: 14 }}>
@@ -135,4 +151,4 @@ const Login = ({ onLogin }) => {
   );
 };
 
-export default Login; 
+export default Login;

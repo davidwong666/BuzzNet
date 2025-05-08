@@ -46,8 +46,7 @@ const postSchema = new mongoose.Schema(
     },
     // Reference to the User who created the post
     author: {
-      type: mongoose.Schema.Types.ObjectId, // Store the User's ID
-      ref: 'User', // Establish a reference to the 'User' model
+      type: String,
       required: [true, 'Post must have an author'],
       index: true, // Add an index for faster queries filtering by author
     },
@@ -58,10 +57,11 @@ const postSchema = new mongoose.Schema(
       min: 0, // Likes cannot be negative
     },
     // Optional: Array to store users who liked the post (ensure only like once)
-    likedBy: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }],
+    // likedBy: [
+    //   {
+    //     type: String,
+    //   },
+    // ],
     // Array of embedded comment subdocuments
     comments: [commentSchema], // Use the commentSchema defined above
     // Optional: URL for an image associated with the post
