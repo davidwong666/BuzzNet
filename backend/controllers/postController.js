@@ -10,7 +10,7 @@ const getPosts = asyncHandler(async (req, res) => {
   // Fetch all posts, sorted by creation date (newest first)
   const posts = await Post.find()
   .sort({ createdAt: -1 })
-  .populate('author', 'name');
+  .populate('author', 'username');
   console.log(`Post.find() successful, found ${posts.length} posts.`);
   // Send the posts as JSON response
   res.status(200).json(posts);

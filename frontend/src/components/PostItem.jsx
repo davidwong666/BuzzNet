@@ -7,7 +7,7 @@ const PostItem = ({ post, onLike, onDelete }) => {
   // Get current logged-in user
   const currentUsername = localStorage.getItem('username');
   // Check if current user is the author of the post
-  const isAuthor = post.author?.name === currentUsername;
+  const isAuthor = post.author?.username === currentUsername;
   
   const toggleExpand = () => setIsExpanded(!isExpanded);
   
@@ -53,7 +53,7 @@ const PostItem = ({ post, onLike, onDelete }) => {
     <div className="post-item">
       <h3>{post.title}</h3>
       <div className="post-meta">
-        <span className="post-author">By {post.author?.name || 'Unknown User'}</span>
+        <span className="post-author">By {post.author?.username || 'Unknown User'}</span>
         <span className="post-date">{formatDate(post.createdAt)}</span>
       </div>
       
