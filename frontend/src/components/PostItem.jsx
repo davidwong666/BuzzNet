@@ -79,6 +79,24 @@ const PostItem = ({ post, onLike, onDelete }) => {
         >
           👍 {post.likes}
         </button>
+        <button 
+          className="unlike-button" 
+          onClick={() => onDislike(post._id)} // Add this handler
+        >
+          👎 {post.dislikes || 0}
+        </button>
+        <button 
+          className="comment-button" 
+          onClick={() => onComment(post._id)}
+        >
+          💬 {post.commentCount || 0}
+        </button>
+        <button 
+          className="delete-button" 
+          onClick={handleDeleteClick}
+        >
+          Delete
+        </button>
         {isAuthor && (
           <button 
             className="delete-button" 

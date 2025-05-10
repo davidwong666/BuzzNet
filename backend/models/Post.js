@@ -66,6 +66,17 @@ const postSchema = new mongoose.Schema(
         ref: 'User',
       },
     ],
+    dislikes: {
+      type: Number,
+      default: 0, // Start with 0 dislikes
+      min: 0, // Dislikes cannot be negative
+    },
+    dislikedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Reference the User model
+      },
+    ],
     // Array of embedded comment documents
     comments: [commentSchema], // Embed the commentSchema here
     // Denormalized count of comments for quick retrieval
