@@ -18,14 +18,14 @@ const generateToken = (id) => {
 // @route   POST /api/users/register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  // Destructure only the necessary fields: name, email, password
-  const { name, email, password } = req.body;
+  // Destructure only the necessary fields: username, email, password
+  const { username, email, password } = req.body;
 
   // --- Basic Validation ---
   // Check only for the required fields
-  if (!name || !email || !password) {
+  if (!username || !email || !password) {
     res.status(400);
-    throw new Error('Please provide name, email, and password');
+    throw new Error('Please provide username, email, and password');
   }
   // Schema handles password length validation
 
@@ -39,7 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // --- Create user ---
   // Create user with only the essential fields. 'bio' will get its default value.
   const user = await User.create({
-    name,
+    username,
     email,
     password,
   });
@@ -49,7 +49,7 @@ const registerUser = asyncHandler(async (req, res) => {
     // Respond with only the essential non-sensitive fields and token
     res.status(201).json({
       _id: user._id,
-      name: user.name,
+      username: user.username,
       email: user.email,
       // bio removed from response
       // profilePicture removed from response
@@ -84,7 +84,7 @@ const loginUser = asyncHandler(async (req, res) => {
     // Respond with only the essential non-sensitive fields and token
     res.status(200).json({
       _id: user._id,
-      name: user.name,
+      username: user.username,
       email: user.email,
       // bio removed from response
       // profilePicture removed from response

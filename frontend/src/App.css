@@ -112,7 +112,7 @@ body {
 
 .app-header {
   text-align: center;
-  margin-bottom: 20px; /* Reduced margin */
+  margin-bottom: 5px; /* Reduced margin */
   padding: 15px 20px; /* Reduced padding */
   width: 1400px; /* Fixed exact width */
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -121,7 +121,7 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 0 0 16px 16px;
-  height: 150px; /* Fixed exact height, reduced from 200px */
+  height: 200px; /* Fixed exact height, reduced from 200px */
 }
 
 .app-header::before {
@@ -165,15 +165,14 @@ body {
   margin: 0 auto;
 }
 
-/* New Flex Layout */
 .app-main-flex {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 1400px; /* Fixed exact width */
-  height: calc(100vh - 230px); /* Fixed height: viewport minus header, footer and margins */
+  width: 1400px; 
+  height: calc(100vh - 230px); 
   margin: 0;
-  gap: 20px; /* Reduced gap */
+  gap: 20px; 
   overflow: hidden; /* Prevent overflow */
 }
 
@@ -187,18 +186,22 @@ body {
 }
 
 .right-column {
-  flex: 0 0 980px; /* Fixed width - Increased to fill the space */
+  flex: 0 0 980px; 
   width: 980px;
-  height: 100%; /* Full height of parent */
-  overflow-y: auto; /* Add scroll if needed */
+  height: 100%; 
+  overflow-y: auto; 
+  padding-right: 15px; 
+  overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 /* Add margin to the posts section to align with create post form header */
 .right-column .posts-section {
-  margin-top: 0; /* No margin needed anymore */
-  width: 980px; /* Fixed width */
+  margin-top: 0; 
+  width: 980px; 
   height: 100%;
   overflow-y: auto;
+  padding-right: 17px; 
+  overflow-x: hidden; 
 }
 
 /* Old app-main styles for reference */
@@ -232,17 +235,18 @@ body {
   width: 1400px; /* Fixed width */
   position: relative;
   bottom: 0;
-  height: 40px; /* Fixed height */
+  height: 50px; /* Fixed height */
 }
 
 /* Form Styles */
 .post-form-container {
   background-color: white;
-  padding: 20px; /* Reduced padding */
+  padding: 15px; /* Reduced from 20px */
   border-radius: 16px;
   box-shadow: var(--card-shadow);
-  width: 400px; /* Fixed width */
-  height: 600px; /* Fixed height - Reduced to fit better */
+  width: 400px;
+  height: auto; /* Changed from fixed height to auto */
+  min-height: 500px; /* Added minimum height */
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -262,34 +266,36 @@ body {
 }
 
 .post-form-container h2 {
-  margin-bottom: 1.875rem; /* 30px */
+  margin-bottom: 1.25rem;
   color: var(--primary-color);
-  font-size: 2.2rem;
+  font-size: 2rem;
+  text-align: center;
+  width: 100%;
 }
 
 .post-form .form-group {
-  margin-bottom: 2rem; /* Increase from 1.5625rem (25px) to 2rem (32px) */
+  margin-bottom: 1.25rem; /* Reduced from 2rem */
 }
 
 .post-form label {
   display: block;
-  margin-bottom: 0.875rem; /* Increase from 0.625rem to 0.875rem */
+  margin-bottom: 0rem; /* Reduced from 0.875rem */
   font-weight: 500;
-  font-size: 1.4rem; /* Increase from 1.3rem */
+  font-size: 1.2rem; /* Reduced from 1.4rem */
 }
 
 .post-form input,
 .post-form textarea {
   width: 100%;
-  padding: 1.5rem; /* Increase from 1.25rem to 1.5rem */
+  padding: 0.75rem; /* Reduced from 1.5rem */
   border: 1px solid var(--border-color);
-  border-radius: 0.625rem;
-  font-size: 1.4rem;
+  border-radius: 0.5rem; /* Reduced from 0.625rem */
+  font-size: 1.2rem; /* Reduced from 1.4rem */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .post-form input {
-  height: 3.5rem; /* Set explicit height for input fields */
+  height: 2.5rem; /* Reduced from 3.5rem */
 }
 
 .post-form input:focus,
@@ -301,22 +307,22 @@ body {
 
 .post-form textarea {
   resize: vertical;
-  min-height: 150px; /* Reduced minimum height */
-  max-height: 250px; /* Reduced maximum height */
+  min-height: 100px; /* Reduced from 150px */
+  max-height: 200px; /* Reduced from 250px */
 }
 
 .post-form .submit-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 18px 25px;
+  padding: 12px 20px; /* Reduced from 18px 25px */
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.4rem;
+  font-size: 1.2rem; /* Reduced from 1.4rem */
   font-weight: 500;
   width: 100%;
-  margin-top: 40px; /* Fixed size */
-  height: 65px; /* Fixed height */
+  margin-top: 0rem; /* Reduced from 40px */
+  height: 65px; /* Reduced from 65px */
 }
 
 .post-form .submit-button:hover {
@@ -332,10 +338,11 @@ body {
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px; /* Reduced from 20px */
   width: 100%;
   height: auto;
   margin: 0;
+  padding-top: 0; /* Added to remove top padding */
   padding-bottom: 20px;
   overflow-x: hidden;
 }
@@ -344,8 +351,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.25rem; /* 20px */
+  margin-bottom: 1rem; /* Reduced from 1.25rem */
   width: 100%;
+  padding: 0 0 10px 0; /* Added padding to separate header from posts */
+  border-bottom: 1px solid var(--border-color); /* Added border to separate header */
 }
 
 .post-list h2 {
@@ -387,13 +396,13 @@ body {
 
 .post-item {
   background-color: white;
-  padding: 20px;
-  border-radius: 16px;
+  padding: 15px; /* Reduced from 20px */
+  border-radius: 12px; /* Reduced from 16px */
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
   width: 100%;
-  min-height: 150px;
+  min-height: 120px; /* Reduced from 150px */
   height: auto;
   max-height: none;
   overflow: visible;
@@ -407,23 +416,23 @@ body {
 }
 
 .post-item h3 {
-  margin-bottom: 1.25rem; /* 20px */
+  margin-bottom: 0.5rem; /* Reduced from 1rem */
   color: var(--secondary-color);
-  font-size: 2rem;
+  font-size: 1.8rem; /* Reduced from 2rem */
 }
 
 .post-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 1.1rem;
+  font-size: 1rem; /* Reduced from 1.1rem */
   color: var(--light-text);
-  margin-bottom: 1.5625rem; /* 25px */
+  margin-bottom: 1rem; /* Reduced from 1.5625rem */
 }
 
 .post-content {
-  margin-bottom: 1.5625rem;
-  line-height: 1.8;
-  font-size: 1.3rem;
+  margin-bottom: 1rem; /* Reduced from 1.5625rem */
+  line-height: 1.4; /* Reduced from 1.6 */
+  font-size: 1.2rem; /* Reduced from 1.3rem */
   white-space: pre-line;
   overflow: visible;
   height: auto;
