@@ -117,6 +117,11 @@ const PostList = () => {
   
   const handleDelete = async (id) => {
     try {
+      // Check if user is logged in
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('You must be logged in to delete a post');
+      }
       // Optimistically update UI immediately
       setPosts(posts.filter(post => post._id !== id));
       
@@ -132,7 +137,10 @@ const PostList = () => {
       
       // If connected to backend, send delete request
       const response = await fetch(`${API_URL}/api/posts/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       
       if (!response.ok) {
@@ -161,9 +169,14 @@ const PostList = () => {
     <div className="post-list">
       <div className="post-list-header">
         <h2>Recent Posts</h2>
-        <button className="refresh-button" onClick={handleManualRefresh} disabled={loading}>
-          {loading ? 'Refreshing...' : 'Refresh Now'}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="last-refresh-info" style={{ marginBottom: 0 }}>
+            Last updated: {new Date(lastRefresh).toLocaleTimeString()}
+          </div>
+          <button className="refresh-button" onClick={handleManualRefresh} disabled={loading}>
+            {loading ? 'Refreshing...' : 'Refresh Now'}
+          </button>
+        </div>
       </div>
       
       {error && <div className="error">{error}</div>}
@@ -172,9 +185,6 @@ const PostList = () => {
         <div className="no-posts">No posts found</div>
       ) : (
         <>
-          <div className="last-refresh-info">
-            Last updated: {new Date(lastRefresh).toLocaleTimeString()}
-          </div>
           {posts.map(post => (
             <PostItem 
               key={post._id} 
