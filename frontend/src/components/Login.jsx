@@ -31,9 +31,8 @@ const Login = ({ onLogin }) => {
       // Save token and username
       localStorage.setItem('token', data.token);
       localStorage.setItem('username', data.username || form.username);
-      if (isRegister) {
-        localStorage.setItem('createdAt', new Date().toISOString());
-      }
+      localStorage.setItem('email', data.email);
+      localStorage.setItem('createdAt', data.createdAt);
       if (onLogin) onLogin();
     } catch (err) {
       setError(err.message);
