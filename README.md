@@ -18,16 +18,33 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 2. Clone this repository via **HTTPS**
 3. Open the repository in VS Code
 4. When prompted, click "**Reopen in Container**" or run the "Remote-Containers: Reopen in Container" command
+5. cd `BuzzNet` and run `npm install` to install the dependencies
+6. Run `cd frontend && npm run dev` to run the frontend locally
+7. Run `cd backend && npm run dev` to run the backend locally
 
 # ChangeLog
+
+## 09-5-05-2025 Updates by Kwok Kam Wong
+
+### Added the following things:
+
+- Instructions on how to run the project locally
+- Modified the Post Model to embed comments and display comment count.
+- Modified the User Model to include role field.
+- Modified the authMiddleware to provide more detailed error messages.
+- Fixed 'cannot create post' bug, now you can create a post if you are signed in.
+- Focus on geting all posts and creating posts only. Modified the routes and controllers to focus on these two functionalities.
+- Added a TODO:
+  - Display username instead of user ID in the posts.
 
 ## 03-05-2025 Updates by Baichuan ZENG
 
 ### I made some modifications:
 
--  Fixed the bug which for unsuccessful sign-in of account.
+- Fixed the bug which for unsuccessful sign-in of account.
 
 ### Some ToDos:
+
 - Limit the time of like/dislike of the post to one.
 - Limit the deletion function of post to author and admin only.
 
@@ -36,20 +53,20 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 I've implemented a complete user authentication system and merged it with the existing codebase. Here's what I've added:
 
 1. Frontend Changes:
-   
+
 - Added Login component with form validation
 - Implemented user authentication state management
 - Added user interface elements (username display, logout button)
 - UI with responsive design
 
 2. Backend Changes:
-   
+
 - Added user authentication routes (/api/users/register and /api/users/login)
 - Implemented JWT-based authentication
 - Added user model and controllers
 
 3. Security Features:
-   
+
 - Implemented password hashing
 - Added JWT token validation
 
