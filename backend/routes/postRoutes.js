@@ -7,7 +7,7 @@ const {
   // getPost,
   createPost,
   // updatePost,
-  // deletePost,
+  deletePost,
   // likePost,
   // unlikePost,
 } = require('../controllers/postController');
@@ -28,7 +28,7 @@ router.post('/', protect, createPost);
 // router.put('/:id', protect, updatePost); // You'll need to add authorization logic in updatePost
 
 // DELETE post - Apply protect
-// router.delete('/:id', protect, deletePost);
+router.delete('/:id', protect, deletePost);
 
 // PATCH like post - Apply protect
 // router.patch('/:id/like', protect, likePost);

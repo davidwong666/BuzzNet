@@ -8,7 +8,9 @@ const User = require('../models/User');
 const getPosts = asyncHandler(async (req, res) => {
   // TODO: populate author field instead of just returning the ObjectId
   // Fetch all posts, sorted by creation date (newest first)
-  const posts = await Post.find().sort({ createdAt: -1 });
+  const posts = await Post.find()
+  .sort({ createdAt: -1 })
+  .populate('author', 'name');
   console.log(`Post.find() successful, found ${posts.length} posts.`);
   // Send the posts as JSON response
   res.status(200).json(posts);
@@ -110,32 +112,29 @@ const createPost = asyncHandler(async (req, res) => {
 
 // @desc    Delete a post by ID
 // @route   DELETE /api/posts/:id
-// @access  Private (Assuming only the author can delete)
-// const deletePost = asyncHandler(async (req, res) => {
-//   const { id } = req.params; // Post ID from the URL
-//   const userId = req.user.id; // Authenticated user's ID (from the `protect` middleware)
+// @access  Private (Only the author can delete)
+const deletePost = asyncHandler(async (req, res) => {
+  const { id } = req.params; // Post ID from the URL
+  const userId = req.user._id; // Authenticated user's ID from the `protect` middleware
 
-//   // Find the post by ID
-//   const post = await Post.findById(id);
+  // Find the post by ID
+  const post = await Post.findById(id);
 
-//   if (!post) {
-//     res.status(404);
-//     throw new Error('Post not found');
-//   }
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
 
-//   // Authorization Check: Change from ObjectId comparison to name comparison
-//   // Original: if (post.author.toString() !== userId)
-//   if (post.author !== req.user.name) {
-//     // userId here would be req.user.id, which is not what we want to compare against post.author (name)
-//     // Ensure req.user.name is available from auth middleware
-//     res.status(403); // Forbidden
-//     throw new Error('You are not authorized to delete this post');
-//   }
+  // Authorization Check: Compare author's ObjectId with authenticated user's ID
+  if (post.author.toString() !== userId.toString()) {
+    res.status(403); // Forbidden
+    throw new Error('You are not authorized to delete this post');
+  }
 
-//   await post.deleteOne();
+  await post.deleteOne();
 
-//   res.status(200).json({ id: post._id, message: 'Post deleted successfully' });
-// });
+  res.status(200).json({ id: post._id, message: 'Post deleted successfully' });
+});
 
 // @desc    Like a post by ID
 // @route   PATCH /api/posts/:id/like  (Using PATCH is common for partial updates like 'like')
@@ -206,7 +205,7 @@ module.exports = {
   // getPost,
   createPost,
   // updatePost,
-  // deletePost,
+  deletePost,
   // likePost,
   // unlikePost,
 };

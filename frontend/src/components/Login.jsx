@@ -19,7 +19,7 @@ const Login = ({ onLogin }) => {
     try {
       const endpoint = isRegister ? '/api/users/register' : '/api/users/login';
       const body = isRegister
-        ? { name: form.username, email: form.username + '@test.com', password: form.password }
+        ? { username: form.username, email: form.username + '@test.com', password: form.password }
         : { email: form.username + '@test.com', password: form.password };
       const res = await fetch(`${API_URL}${endpoint}`, {
         method: 'POST',
@@ -30,7 +30,10 @@ const Login = ({ onLogin }) => {
       if (!res.ok) throw new Error(data.message || 'Operation failed');
       // Save token and username
       localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.name);
+      localStorage.setItem('username', data.username || form.username);
+      if (isRegister) {
+        localStorage.setItem('createdAt', new Date().toISOString());
+      }
       if (onLogin) onLogin();
     } catch (err) {
       setError(err.message);

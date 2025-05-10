@@ -24,6 +24,20 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 # ChangeLog
 
+## 10-05-2025 Updates by Zhang Ka Sing
+
+### Fixed and Added the following features:
+
+1. Bug Fixes:
+   - Fixed the issue where usernames were not displaying correctly in posts
+   - Fixed the post deletion functionality
+   - Implemented post deletion restriction (only post authors can delete their own posts)
+
+2. UI Improvements:
+   - Optimized frontend page layout and design
+   - Added a basic profile page for users (Access by clicking on your username in the header)
+   - Enhanced overall user experience
+
 ## 09-5-05-2025 Updates by Kwok Kam Wong
 
 ### Added the following things:
