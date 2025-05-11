@@ -28,6 +28,7 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 1.Implementations:
    - Implement likes and dislikes methods
    - Implement post detailed page
+   
 2.Fix bugs:
    - collarborate with David to fix some bugs in likes and dislikes
    - some frontend view bugs, like zoom rate and feed view
