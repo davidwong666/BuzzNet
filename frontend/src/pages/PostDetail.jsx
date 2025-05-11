@@ -145,7 +145,16 @@ const PostDetail = () => {
   }
 
   return (
-    <div className="post-detail-container">
+    <div className="post-detail-container" style={{
+      width: '100%',
+      maxWidth: '1400px',
+      margin: '0 auto',
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'relative',
+      height: 'auto'
+    }}>
       <button 
         className="back-button" 
         onClick={() => navigate(-1)}
@@ -158,7 +167,12 @@ const PostDetail = () => {
           padding: '10px 0',
           display: 'flex',
           alignItems: 'center',
-          gap: '5px'
+          gap: '5px',
+          marginBottom: '20px',
+          position: 'sticky',
+          top: '0',
+          zIndex: 1,
+          backgroundColor: 'var(--background-color)'
         }}
       >
         ← Back
@@ -169,12 +183,18 @@ const PostDetail = () => {
         borderRadius: '12px',
         padding: '2rem',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-        marginBottom: '2rem'
+        marginBottom: '2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        width: '100%',
+        height: 'auto'
       }}>
         <h1 style={{
           color: '#3a7bd5',
           marginBottom: '1rem',
-          fontSize: '2.5rem'
+          fontSize: '2.5rem',
+          wordBreak: 'break-word'
         }}>{post.title}</h1>
         
         <div style={{
@@ -192,7 +212,10 @@ const PostDetail = () => {
           fontSize: '1.2rem',
           lineHeight: '1.6',
           marginBottom: '2rem',
-          whiteSpace: 'pre-wrap'
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-word',
+          width: '100%',
+          height: 'auto'
         }}>
           {post.content}
         </div>
@@ -202,7 +225,8 @@ const PostDetail = () => {
           gap: '2rem',
           paddingTop: '1rem',
           borderTop: '1px solid #ddd',
-          color: '#666'
+          color: '#666',
+          width: '100%'
         }}>
           <button
             onClick={handleLike}
