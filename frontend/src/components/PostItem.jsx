@@ -3,6 +3,10 @@ import { useState } from 'react';
 const PostItem = ({ post, onLike, onDelete }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [likes, setLikes] = useState(post.likes || 0);
+  const [dislikes, setDislikes] = useState(post.dislikes || 0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
   
   // Get current logged-in user
   const currentUsername = localStorage.getItem('username');
@@ -22,6 +26,69 @@ const PostItem = ({ post, onLike, onDelete }) => {
   
   const cancelDelete = () => {
     setShowConfirm(false);
+  };
+
+  const handleLike = async () => {
+    try {
+      if (isLiked) {
+        setLikes(prev => prev - 1);
+        setIsLiked(false);
+      } else {
+        if (isDisliked) {
+          setDislikes(prev => prev - 1);
+          setIsDisliked(false);
+        }
+        setLikes(prev => prev + 1);
+        setIsLiked(true);
+      }
+      await onLike(post._id);
+    } catch (error) {
+      console.error('Error liking post:', error);
+      // Revert the state if the API call fails
+      if (isLiked) {
+        setLikes(prev => prev + 1);
+        setIsLiked(true);
+      } else {
+        if (isDisliked) {
+          setDislikes(prev => prev + 1);
+          setIsDisliked(true);
+        }
+        setLikes(prev => prev - 1);
+        setIsLiked(false);
+      }
+    }
+  };
+
+  const handleDislike = async () => {
+    try {
+      if (isDisliked) {
+        setDislikes(prev => prev - 1);
+        setIsDisliked(false);
+      } else {
+        if (isLiked) {
+          setLikes(prev => prev - 1);
+          setIsLiked(false);
+        }
+        setDislikes(prev => prev + 1);
+        setIsDisliked(true);
+      }
+      // You'll need to implement onDislike in the parent component
+      // await onDislike(post._id);
+    } catch (error) {
+      console.error('Error disliking post:', error);
+      // Revert the state if the API call fails
+      if (isDisliked) {
+        setDislikes(prev => prev + 1);
+        setIsDisliked(true);
+      } else {
+        if (isLiked) {
+          setLikes(prev => prev + 1);
+          setIsLiked(true);
+        }
+        setDislikes(prev => prev - 1);
+        setIsDisliked(false);
+      }
+    }
   };
   
   const formatDate = (dateString) => {
@@ -91,16 +158,36 @@ const PostItem = ({ post, onLike, onDelete }) => {
       
       <div className="post-actions">
         <button 
-          className="like-button" 
-          onClick={() => onLike(post._id)}
+          className={`like-button ${isLiked ? 'active' : ''}`}
+          onClick={handleLike}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '5px 10px',
+            color: isLiked ? '#3a7bd5' : '#666',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px'
+          }}
         >
-          👍 {post.likes}
+          👍 {likes}
         </button>
         <button 
-          className="unlike-button" 
-          onClick={() => onDislike(post._id)}
+          className={`dislike-button ${isDisliked ? 'active' : ''}`}
+          onClick={handleDislike}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '5px 10px',
+            color: isDisliked ? '#3a7bd5' : '#666',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px'
+          }}
         >
-          👎 {post.dislikes || 0}
+          👎 {dislikes}
         </button>
         <button 
           className="comment-button" 
@@ -112,6 +199,13 @@ const PostItem = ({ post, onLike, onDelete }) => {
           <button 
             className="delete-button" 
             onClick={handleDeleteClick}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '5px 10px',
+              color: '#ff4444'
+            }}
           >
             Delete
           </button>
