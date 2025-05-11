@@ -32,11 +32,21 @@ This project uses VS Code's **Remote Development extension** for a consistent de
    - collarborate with David to fix some bugs in likes and dislikes
    - some frontend view bugs, like zoom rate and feed view
 
+## 11-05-2025 Updates by Kwok Kam Wong
+
+### Added the following things:
+
+- Fixed the bug that logged in user cannot like/unlike a post
+- Use optimistic like for a post. (Local change not necesasrily reflect the server state)
+- Removed redundant code in the frontend
+- Store user_id in local storage for later use
+
 ## 10-05-2025 Updates by Zhang Ka Sing
 
 ### Fixed and Added the following features:
 
 1. Bug Fixes:
+
    - Fixed the issue where usernames were not displaying correctly in posts
    - Fixed the post deletion functionality
    - Implemented post deletion restriction (only post authors can delete their own posts)
