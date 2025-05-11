@@ -80,6 +80,9 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 - Use optimistic like for a post. (Local change not necesasrily reflect the server state)
 - Removed redundant code in the frontend
 - Store user_id in local storage for later use
+- Set JWT token expiry time to 1m (will change back to 15m: first time and 7d: refresh later)
+- Code review and bug identification
+- Recheck SRS and design implementation to make sure correct project alignment
 
 ## 10-05-2025 Updates by Zhang Ka Sing
 
