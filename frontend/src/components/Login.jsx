@@ -1,20 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+// Password strength checker
+const checkPasswordStrength = (password) => {
+  let strength = 0;
+  if (password.length >= 8) strength += 1;
+  if (/[A-Z]/.test(password)) strength += 1;
+  if (/[a-z]/.test(password)) strength += 1;
+  if (/[0-9]/.test(password)) strength += 1;
+  if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+  return strength;
+};
+
+const getStrengthColor = (strength) => {
+  switch (strength) {
+    case 0:
+    case 1:
+      return '#ff4444';
+    case 2:
+      return '#ffbb33';
+    case 3:
+      return '#ffeb3b';
+    case 4:
+      return '#00C851';
+    case 5:
+      return '#007E33';
+    default:
+      return '#ff4444';
+  }
+};
+
+const getStrengthText = (strength) => {
+  switch (strength) {
+    case 0:
+    case 1:
+      return 'Very Weak';
+    case 2:
+      return 'Weak';
+    case 3:
+      return 'Medium';
+    case 4:
+      return 'Strong';
+    case 5:
+      return 'Very Strong';
+    default:
+      return 'Very Weak';
+  }
+};
+
 const Login = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ username: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+    
+    if (name === 'password') {
+      setPasswordStrength(checkPasswordStrength(value));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Check if passwords match when registering
+    if (isRegister && form.password !== form.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
     setLoading(true);
     try {
       const endpoint = isRegister ? '/api/users/register' : '/api/users/login';
@@ -30,6 +90,11 @@ const Login = ({ onLogin }) => {
       const data = await res.json();
 
       if (!res.ok) {
+        // Check if it's a validation error
+        if (data.errors && Array.isArray(data.errors)) {
+          // If it's a validation error, show the first error message
+          throw new Error(data.errors[0]);
+        }
         throw new Error(data.message || 'Operation failed');
       }
 
@@ -42,8 +107,6 @@ const Login = ({ onLogin }) => {
       if (data._id) {
         localStorage.setItem('userId', data._id);
       } else {
-        // This else block might not be strictly necessary if _id is always present on success,
-        // but it's good for debugging if something unexpected happens.
         console.warn('User ID (_id) not found in login/register response.');
       }
       if (onLogin) onLogin();
@@ -119,7 +182,52 @@ const Login = ({ onLogin }) => {
               autoComplete={isRegister ? 'new-password' : 'current-password'}
               required
             />
+            {isRegister && form.password && (
+              <div style={{ marginTop: 8 }}>
+                <div style={{ 
+                  height: 4, 
+                  background: '#444', 
+                  borderRadius: 2,
+                  marginBottom: 4
+                }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${(passwordStrength / 5) * 100}%`,
+                    background: getStrengthColor(passwordStrength),
+                    borderRadius: 2,
+                    transition: 'all 0.3s ease'
+                  }} />
+                </div>
+                <div style={{ 
+                  color: getStrengthColor(passwordStrength),
+                  fontSize: 12,
+                  textAlign: 'right'
+                }}>
+                  {getStrengthText(passwordStrength)}
+                </div>
+              </div>
+            )}
           </div>
+          {isRegister && (
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ color: '#fff', display: 'block', marginBottom: 8 }}>Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  borderRadius: 4,
+                  border: 'none',
+                  fontSize: 16,
+                }}
+                autoComplete="new-password"
+                required
+              />
+            </div>
+          )}
           {error && <div style={{ color: '#ffb3b3', marginBottom: 16 }}>{error}</div>}
           <button
             type="submit"
@@ -155,7 +263,11 @@ const Login = ({ onLogin }) => {
                 cursor: 'pointer',
                 textDecoration: 'underline',
               }}
-              onClick={() => setIsRegister(!isRegister)}
+              onClick={() => {
+                setIsRegister(!isRegister);
+                setForm({ username: '', password: '', confirmPassword: '' });
+                setError('');
+              }}
             >
               {isRegister ? 'Go to Login' : 'Go to Register'}
             </button>
