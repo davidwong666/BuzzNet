@@ -10,7 +10,7 @@ const generateToken = (id) => {
     throw new Error('Server configuration error: JWT secret missing.');
   }
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
+    expiresIn: '1m',
   });
 };
 
@@ -103,7 +103,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  
+
   if (user) {
     res.json({
       _id: user._id,
@@ -111,7 +111,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       email: user.email,
       role: user.role,
       createdAt: user.createdAt,
-      updatedAt: user.updatedAt
+      updatedAt: user.updatedAt,
     });
   } else {
     res.status(404);

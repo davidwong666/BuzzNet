@@ -1,5 +1,3 @@
-// * Good for now
-
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema(

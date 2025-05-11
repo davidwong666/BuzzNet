@@ -1,5 +1,3 @@
-// * Good for now
-
 const mongoose = require('mongoose');
 // Library for hashing passwords
 const bcrypt = require('bcryptjs');

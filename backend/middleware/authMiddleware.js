@@ -1,5 +1,3 @@
-// * Good for now
-
 // Utility to handle asynchronous Express route handlers and middleware
 const asyncHandler = require('express-async-handler');
 // Library for verifying JSON Web Tokens
