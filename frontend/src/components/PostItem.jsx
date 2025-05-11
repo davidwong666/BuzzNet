@@ -10,6 +10,7 @@ const PostItem = ({ post, onDelete }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [commentCount, setCommentCount] = useState(post.comments?.length || 0);
 
   // Get current logged-in user
   const currentUsername = localStorage.getItem('username');
@@ -30,6 +31,11 @@ const PostItem = ({ post, onDelete }) => {
     setLikes(post.likes || 0);
     setDislikes(post.dislikes || 0);
   }, [post, currentUserId]);
+
+  // Add useEffect to update comment count when post changes
+  useEffect(() => {
+    setCommentCount(post.comments?.length || 0);
+  }, [post.comments]);
 
   const toggleExpand = (e) => {
     e.stopPropagation(); // Prevent navigation when clicking read more
@@ -132,8 +138,11 @@ const PostItem = ({ post, onDelete }) => {
     }
   };
 
-  const handlePostClick = () => {
-    navigate(`/post/${post._id}`);
+  const handlePostClick = (e) => {
+    // Only navigate if the click wasn't on a button or link
+    if (!e.target.closest('button') && !e.target.closest('a')) {
+      navigate(`/post/${post._id}`);
+    }
   };
 
   const formatDate = (dateString) => {
@@ -162,7 +171,11 @@ const PostItem = ({ post, onDelete }) => {
   };
 
   return (
-    <div className="post-item" onClick={handlePostClick}>
+    <div 
+      className="post-item" 
+      onClick={handlePostClick}
+      style={{ cursor: 'pointer' }}
+    >
       <h3>{post.title}</h3>
       <div className="post-meta">
         <span className="post-author">By {post.author?.username || 'Unknown User'}</span>
@@ -203,46 +216,38 @@ const PostItem = ({ post, onDelete }) => {
         </button>
       )}
 
-      <div className="post-actions">
-        <button
-          className={`like-button ${isLiked ? 'active' : ''}`}
-          onClick={handleLike}
-          disabled={isLoading}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            padding: '5px 10px',
-            color: isLiked ? '#3a7bd5' : '#666',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            opacity: isLoading ? 0.7 : 1,
-          }}
-        >
-          👍 {likes}
-        </button>
-        <button
-          className={`dislike-button ${isDisliked ? 'active' : ''}`}
-          onClick={handleDislike}
-          disabled={isLoading}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            padding: '5px 10px',
-            color: isDisliked ? '#3a7bd5' : '#666',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            opacity: isLoading ? 0.7 : 1,
-          }}
-        >
-          👎 {dislikes}
-        </button>
-        <button className="comment-button" onClick={() => onComment(post._id)}>
-          💬 {post.commentCount || 0}
-        </button>
+      <div className="post-footer">
+        <div className="post-actions">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike(e);
+            }}
+            className={`action-button ${isLiked ? 'liked' : ''}`}
+            disabled={isLoading}
+          >
+            👍 {likes}
+          </button>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDislike(e);
+            }}
+            className={`action-button ${isDisliked ? 'disliked' : ''}`}
+            disabled={isLoading}
+          >
+            👎 {dislikes}
+          </button>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/post/${post._id}`);
+            }}
+            className="action-button"
+          >
+            💬 {commentCount}
+          </button>
+        </div>
         {canDelete && (
           <button
             className="delete-button"

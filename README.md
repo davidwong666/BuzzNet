@@ -74,15 +74,16 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 ### Fixed and Added the following features:
 
-1.Implementations:
+1.Implementations (Both Frontend and Back end):
 
 - Implement likes and dislikes methods
 - Implement post detailed page
+- Implement the real-time update of the number of comments
 
-  2.Fix bugs:
+2.Fix bugs:
 
 - collarborate with David to fix some bugs in likes and dislikes
-- some frontend view bugs, like zoom rate and feed view
+- some frontend view bugs, like UI adability at different zoom rate and feed view
 
 ## 11-05-2025 Updates by Kwok Kam Wong
 
