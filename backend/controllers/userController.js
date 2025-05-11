@@ -78,24 +78,48 @@ const loginUser = asyncHandler(async (req, res) => {
   // --- Find user by email ---
   const user = await User.findOne({ email }).select('+password');
 
-  // --- Check if user exists and password matches ---
-  if (user && (await user.matchPassword(password))) {
-    // --- Respond with user data and token ---
-    // Respond with only the essential non-sensitive fields and token
-    res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      token: generateToken(user._id),
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    });
-  } else {
-    // --- Authentication failed ---
+  if (!user) {
     res.status(401);
-    throw new Error('Invalid username or password');
+    throw new Error('Invalid email or password');
   }
+
+  // Check if account is locked
+  if (user.isLocked()) {
+    const lockTime = Math.ceil((user.lockUntil - Date.now()) / 60000); // Convert to minutes
+    res.status(401);
+    throw new Error(`Account is locked. Please try again in ${lockTime} minutes.`);
+  }
+
+  // --- Check if password matches ---
+  const isMatch = await user.matchPassword(password);
+
+  if (!isMatch) {
+    // Increment login attempts
+    await user.incrementLoginAttempts();
+    
+    // Check if account should be locked after this attempt
+    if (user.loginAttempts >= 5) {
+      res.status(401);
+      throw new Error('Too many failed attempts. Account is locked for 5 minutes.');
+    }
+
+    res.status(401);
+    throw new Error('Invalid email or password');
+  }
+
+  // Reset login attempts on successful login
+  await user.resetLoginAttempts();
+
+  // --- Respond with user data and token ---
+  res.status(200).json({
+    _id: user._id,
+    username: user.username,
+    email: user.email,
+    role: user.role,
+    token: generateToken(user._id),
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  });
 });
 
 // @desc    Get user profile
