@@ -112,7 +112,14 @@ function AppContent() {
       <main className="app-main-flex">
         <Routes>
           <Route path="/profile" element={<Profile />} />
-          <Route path="/post/:id" element={<PostDetail />} />
+          <Route 
+            path="/post/:id" 
+            element={
+              <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
+                <PostDetail />
+              </div>
+            } 
+          />
           <Route
             path="/"
             element={

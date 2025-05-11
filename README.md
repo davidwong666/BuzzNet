@@ -23,6 +23,14 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 7. Run `cd backend && npm run dev` to run the backend locally
 
 # ChangeLog
+## 11-05-2025 Updates by Peng Minqi
+### Fixed and Added the following features:
+1.Implementations:
+   - Implement likes and dislikes methods
+   - Implement post detailed page
+2.Fix bugs:
+   - collarborate with David to fix some bugs in likes and dislikes
+   - some frontend view bugs, like zoom rate and feed view
 
 ## 10-05-2025 Updates by Zhang Ka Sing
 
