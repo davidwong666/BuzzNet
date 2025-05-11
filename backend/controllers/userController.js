@@ -101,7 +101,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (!user) {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error('Invalid username or password');
   }
 
   // Check if account is locked
@@ -117,7 +117,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!isMatch) {
     // Increment login attempts
     await user.incrementLoginAttempts();
-    
+
     // Check if account should be locked after this attempt
     if (user.loginAttempts >= 5) {
       res.status(401);
@@ -125,7 +125,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error('Invalid username or password');
   }
 
   // Reset login attempts on successful login
