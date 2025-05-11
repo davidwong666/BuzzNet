@@ -12,6 +12,8 @@ const PostDetail = () => {
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [isLoadingAction, setIsLoadingAction] = useState(false);
+  const [commentText, setCommentText] = useState('');
+  const [commentError, setCommentError] = useState('');
 
   useEffect(() => {
     fetchPost();
@@ -130,6 +132,59 @@ const PostDetail = () => {
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
+
+  const formatCommentDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    setCommentError('');
+    if (!commentText.trim()) {
+      setCommentError('Comment cannot be empty');
+      return;
+    }
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/api/posts/${id}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ text: commentText }),
+    });
+    if (!response.ok) {
+      setCommentError('Failed to add comment');
+      return;
+    }
+    setCommentText('');
+    fetchPost();
+  };
+
+  const handleLikeComment = async (commentId) => {
+    const token = localStorage.getItem('token');
+    await fetch(`http://localhost:5000/api/posts/${id}/comments/${commentId}/like`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchPost();
+  };
+
+  const handleDislikeComment = async (commentId) => {
+    const token = localStorage.getItem('token');
+    await fetch(`http://localhost:5000/api/posts/${id}/comments/${commentId}/dislike`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchPost();
   };
 
   if (isLoading) {
@@ -262,7 +317,43 @@ const PostDetail = () => {
           >
             👎 {dislikes}
           </button>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            💬 {post.comments ? post.comments.length : 0}
+          </span>
         </div>
+      </div>
+
+      <form onSubmit={handleAddComment} style={{ marginTop: 24 }}>
+        <input
+          type="text"
+          value={commentText}
+          onChange={e => setCommentText(e.target.value)}
+          placeholder="Add a comment..."
+          style={{ width: '70%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }}
+        />
+        <button type="submit" style={{ marginLeft: 8, padding: 8 }}>Comment</button>
+        {commentError && <div style={{ color: 'red' }}>{commentError}</div>}
+      </form>
+
+      <div style={{ marginTop: 32 }}>
+        <h3>Comments</h3>
+        {post.comments && post.comments.length === 0 && <div>No comments yet.</div>}
+        {post.comments && post.comments.map(comment => (
+          <div key={comment._id} style={{ marginBottom: 16, padding: 12, border: '1px solid #eee', borderRadius: 6 }}>
+            <strong>{comment.username}</strong>: {comment.text}
+            <div style={{ fontSize: '0.9em', color: '#888', marginTop: 4 }}>
+              {formatCommentDate(comment.createdAt)}
+            </div>
+            <div>
+              <button onClick={() => handleLikeComment(comment._id)}>
+                👍 {comment.likes.length}
+              </button>
+              <button onClick={() => handleDislikeComment(comment._id)} style={{ marginLeft: 8 }}>
+                👎 {comment.dislikes.length}
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

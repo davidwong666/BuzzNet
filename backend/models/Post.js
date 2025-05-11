@@ -10,6 +10,10 @@ const commentSchema = new mongoose.Schema(
       ref: 'User', // References the User model
       required: true,
     },
+    username: {
+      type: String,
+      required: true,
+    },
     // The text content of the comment
     text: {
       type: String,
@@ -25,6 +29,8 @@ const commentSchema = new mongoose.Schema(
     // profilePicture: {
     //   type: String,
     // }
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },
   {
     // Add timestamps (createdAt, updatedAt) to each comment

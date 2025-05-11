@@ -10,6 +10,9 @@ const {
   deletePost,
   likePost,
   dislikePost,
+  addCommentToPost,
+  likeComment,
+  dislikeComment,
 } = require('../controllers/postController');
 
 // Middleware to protect routes
@@ -33,5 +36,12 @@ router.delete('/:id', protect, deletePost);
 // PATCH like/dislike post - Apply protect
 router.route('/:id/like').patch(protect, likePost);
 router.route('/:id/dislike').patch(protect, dislikePost);
+
+// Add a comment to a post
+router.post('/:id/comments', protect, addCommentToPost);
+
+// Like/dislike a comment
+router.patch('/:postId/comments/:commentId/like', protect, likeComment);
+router.patch('/:postId/comments/:commentId/dislike', protect, dislikeComment);
 
 module.exports = router;
