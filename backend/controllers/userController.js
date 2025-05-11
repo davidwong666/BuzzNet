@@ -86,8 +86,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       username: user.username,
       email: user.email,
-      // bio removed from response
-      // profilePicture removed from response
+      role: user.role,
       token: generateToken(user._id),
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

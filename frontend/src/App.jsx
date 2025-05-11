@@ -12,6 +12,7 @@ function AppContent() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [lastAction, setLastAction] = useState(null);
   const username = localStorage.getItem('username') || 'Guest';
+  const isAdmin = localStorage.getItem('role') === 'admin';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +42,7 @@ function AppContent() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('role');
     setIsLoggedIn(false);
     navigate('/');
   };
@@ -50,8 +52,9 @@ function AppContent() {
   }
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${isAdmin ? 'admin-mode' : ''}`}>
       <header className="app-header" style={{ position: 'relative', zIndex: 10 }}>
+        {isAdmin && <div className="admin-badge">Admin Mode</div>}
         <div className="logo-container">
           <h1>BuzzNet</h1>
         </div>

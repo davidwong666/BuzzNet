@@ -38,8 +38,9 @@ const Login = ({ onLogin }) => {
       localStorage.setItem('username', data.username);
       localStorage.setItem('email', data.email);
       localStorage.setItem('createdAt', data.createdAt);
+      localStorage.setItem('role', data.role);
       if (data._id) {
-        localStorage.setItem('userId', data._id); // Storing it as 'userId'
+        localStorage.setItem('userId', data._id);
       } else {
         // This else block might not be strictly necessary if _id is always present on success,
         // but it's good for debugging if something unexpected happens.

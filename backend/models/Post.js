@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema(
   {
     // Reference to the user who made the comment
-    user: {
+    author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', // References the User model
       required: true,

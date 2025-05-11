@@ -112,7 +112,7 @@ const createPost = asyncHandler(async (req, res) => {
 
 // @desc    Delete a post by ID
 // @route   DELETE /api/posts/:id
-// @access  Private (Only the author can delete)
+// @access  Private (Only the author or admin can delete)
 const deletePost = asyncHandler(async (req, res) => {
   const { id } = req.params; // Post ID from the URL
   const userId = req.user._id; // Authenticated user's ID from the `protect` middleware
@@ -125,8 +125,8 @@ const deletePost = asyncHandler(async (req, res) => {
     throw new Error('Post not found');
   }
 
-  // Authorization Check: Compare author's ObjectId with authenticated user's ID
-  if (post.author.toString() !== userId.toString()) {
+  // Authorization Check: Allow deletion if user is admin or the post author
+  if (req.user.role !== 'admin' && post.author.toString() !== userId.toString()) {
     res.status(403); // Forbidden
     throw new Error('You are not authorized to delete this post');
   }
