@@ -193,7 +193,18 @@ const PostForm = ({ onPostCreated }) => {
             value={formData.content}
             onChange={handleChange}
             placeholder="Share everything with the BuzzNet community..."
-            rows="4"
+            rows="6"
+            style={{
+              width: '100%',
+              padding: '12px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              resize: 'vertical',
+              minHeight: '120px',
+              fontFamily: 'inherit',
+              fontSize: '14px',
+              lineHeight: '1.5'
+            }}
             disabled={isSubmitting}
             required
           ></textarea>
