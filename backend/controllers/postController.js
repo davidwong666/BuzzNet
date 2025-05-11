@@ -189,6 +189,61 @@ const likePost = asyncHandler(async (req, res) => {
   res.status(200).json(updatedPost);
 });
 
+// @desc    Dislike a post by ID
+// @route   PATCH /api/posts/:id/dislike
+// @access  Private (Assuming only logged-in users can dislike)
+const dislikePost = asyncHandler(async (req, res) => {
+  const { id: postId } = req.params; // Post ID from the URL
+  const userId = req.user._id; // User ID from the authenticated user
+
+  if (!userId) {
+    res.status(401);
+    throw new Error('User not authenticated.');
+  }
+
+  const post = await Post.findById(postId);
+
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
+
+  // Convert userId to string for comparison if it's an ObjectId
+  const userIdStr = userId.toString();
+
+  // Check if user is in likedBy array and remove them if so
+  const userLikeIndex = post.likedBy.findIndex(
+    (likerId) => likerId.toString() === userIdStr
+  );
+  if (userLikeIndex > -1) {
+    post.likedBy.splice(userLikeIndex, 1);
+  }
+
+  // Check if the user has already disliked the post
+  const userDislikeIndex = post.dislikedBy.findIndex(
+    (dislikerId) => dislikerId.toString() === userIdStr
+  );
+
+  if (userDislikeIndex > -1) {
+    // User has already disliked the post, so remove dislike
+    post.dislikedBy.splice(userDislikeIndex, 1);
+  } else {
+    // User has not disliked the post, so add dislike
+    post.dislikedBy.push(userId);
+  }
+
+  // Update likes and dislikes counts
+  post.likes = post.likedBy.length;
+  post.dislikes = post.dislikedBy.length;
+
+  const updatedPost = await post.save();
+
+  // Populate author details for the response
+  await updatedPost.populate('author', 'username');
+
+  res.status(200).json(updatedPost);
+});
+
 // Export all controller functions
 module.exports = {
   getPosts,
@@ -197,4 +252,5 @@ module.exports = {
   // updatePost,
   deletePost,
   likePost,
+  dislikePost,
 };
