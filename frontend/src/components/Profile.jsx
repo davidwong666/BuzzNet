@@ -29,7 +29,7 @@ const Profile = () => {
               <span>{new Date(createdAt).toLocaleDateString()}</span>
             </div>
           </div>
-          <button 
+          <button
             onClick={() => navigate('/')}
             style={{
               marginTop: '2rem',
@@ -47,8 +47,8 @@ const Profile = () => {
               ':hover': {
                 backgroundColor: 'var(--secondary-color)',
                 transform: 'translateY(-2px)',
-                boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
-              }
+                boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+              },
             }}
           >
             Back to Home
@@ -59,4 +59,4 @@ const Profile = () => {
   );
 };
 
-export default Profile; 
+export default Profile;

@@ -42,15 +42,11 @@ const CommentForm = ({ onSubmit }) => {
         />
       </div>
       {error && <div className="error-message">{error}</div>}
-      <button 
-        type="submit" 
-        className="submit-button"
-        disabled={!isOnline || !comment.trim()}
-      >
+      <button type="submit" className="submit-button" disabled={!isOnline || !comment.trim()}>
         Add Comment
       </button>
     </form>
   );
 };
 
-export default CommentForm; 
+export default CommentForm;

@@ -26,13 +26,25 @@ const Login = ({ onLogin }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Operation failed');
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Operation failed');
+      }
+
       // Save token and username
       localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username || form.username);
+      localStorage.setItem('username', data.username);
       localStorage.setItem('email', data.email);
       localStorage.setItem('createdAt', data.createdAt);
+      if (data._id) {
+        localStorage.setItem('userId', data._id); // Storing it as 'userId'
+      } else {
+        // This else block might not be strictly necessary if _id is always present on success,
+        // but it's good for debugging if something unexpected happens.
+        console.warn('User ID (_id) not found in login/register response.');
+      }
       if (onLogin) onLogin();
     } catch (err) {
       setError(err.message);

@@ -8,8 +8,7 @@ const {
   createPost,
   // updatePost,
   deletePost,
-  // likePost,
-  // unlikePost,
+  likePost,
 } = require('../controllers/postController');
 
 // Middleware to protect routes
@@ -31,9 +30,6 @@ router.post('/', protect, createPost);
 router.delete('/:id', protect, deletePost);
 
 // PATCH like post - Apply protect
-// router.patch('/:id/like', protect, likePost);
-
-// PATCH unlike post - Apply protect
-// router.patch('/:id/unlike', protect, unlikePost);
+router.route('/:id/like').patch(protect, likePost);
 
 module.exports = router;

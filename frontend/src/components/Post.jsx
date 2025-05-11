@@ -6,7 +6,11 @@ import { useOnlineStatus } from '../hooks/useOnlineStatus';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faComment } from '@fortawesome/free-solid-svg-icons';
 import CommentForm from './CommentForm';
-import { FaThumbsUp as FaThumbsUpIcon, FaThumbsDown as FaThumbsDownIcon, FaComment as FaCommentIcon } from 'react-icons/fa';
+import {
+  FaThumbsUp as FaThumbsUpIcon,
+  FaThumbsDown as FaThumbsDownIcon,
+  FaComment as FaCommentIcon,
+} from 'react-icons/fa';
 
 const Post = ({ post }) => {
   const { currentUser } = useAuth();
@@ -70,9 +74,7 @@ const Post = ({ post }) => {
           </span>
         </div>
       </div>
-      <div className="post-content">
-        {post.content}
-      </div>
+      <div className="post-content">{post.content}</div>
       <div className="post-actions">
         <button
           className={`action-button ${isLiked ? 'active' : ''}`}
@@ -111,10 +113,7 @@ const Post = ({ post }) => {
               placeholder="Add a comment..."
               disabled={!isOnline || isCommenting}
             />
-            <button 
-              type="submit" 
-              disabled={!isOnline || !newComment.trim() || isCommenting}
-            >
+            <button type="submit" disabled={!isOnline || !newComment.trim() || isCommenting}>
               {isCommenting ? 'Posting...' : 'Post'}
             </button>
           </form>
@@ -137,4 +136,4 @@ const Post = ({ post }) => {
   );
 };
 
-export default Post; 
+export default Post;
