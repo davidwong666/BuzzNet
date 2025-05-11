@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const {
   getPosts,
-  // getPost,
+  getPostById,
   createPost,
   // updatePost,
   deletePost,
@@ -19,7 +19,7 @@ const { protect } = require('../middleware/authMiddleware');
 router.get('/', getPosts);
 
 // GET single post
-// router.get('/:id', getPost);
+router.get('/:id', getPostById);
 
 // POST create post - Apply the protect middleware here
 router.post('/', protect, createPost);

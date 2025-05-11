@@ -244,10 +244,24 @@ const dislikePost = asyncHandler(async (req, res) => {
   res.status(200).json(updatedPost);
 });
 
+const getPostById = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id)
+    .populate('author', 'username')
+    .populate('likedBy', '_id')
+    .populate('dislikedBy', '_id');
+
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
+
+  res.status(200).json(post);
+});
+
 // Export all controller functions
 module.exports = {
   getPosts,
-  // getPost,
+  getPostById,
   createPost,
   // updatePost,
   deletePost,

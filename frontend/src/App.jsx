@@ -5,6 +5,7 @@ import PostList from './components/PostList';
 import PostForm from './components/PostForm';
 import Login from './components/Login';
 import Profile from './components/Profile';
+import PostDetail from './pages/PostDetail';
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
@@ -111,6 +112,7 @@ function AppContent() {
       <main className="app-main-flex">
         <Routes>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/post/:id" element={<PostDetail />} />
           <Route
             path="/"
             element={
