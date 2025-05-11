@@ -12,27 +12,11 @@ const getPosts = asyncHandler(async (req, res) => {
     .sort({ createdAt: -1 })
     .populate('author', 'username')
     .populate('comments.author', 'username');
-  
+
   console.log(`Post.find() successful, found ${posts.length} posts.`);
   // Send the posts as JSON response
   res.status(200).json(posts);
 });
-
-// TODO: get single post by ID, for getting access for Post View
-// // @desc    Get single post by ID
-// // @route   GET /api/posts/:id
-// // @access  Public (Adjust access as needed)
-// const getPost = asyncHandler(async (req, res) => {
-//   // Find the post by ID provided in the request parameters
-//   const post = await Post.findById(req.params.id);
-//   // If post is not found, set status to 404 and throw an error
-//   if (!post) {
-//     res.status(404);
-//     throw new Error('Post not found');
-//   }
-//   // Send the found post as JSON response
-//   res.status(200).json(post);
-// });
 
 // @desc    Create a new post
 // @route   POST /api/posts
@@ -85,34 +69,6 @@ const createPost = asyncHandler(async (req, res) => {
   // Note: The asyncHandler wrapper handles catching errors from async functions
   // and passing them to your Express error handling middleware.
 });
-
-// TODO: implement updatePost function
-// @desc    Update a post by ID
-// @route   PUT /api/posts/:id
-// @access  Private (Assuming only the author can update)
-// const updatePost = asyncHandler(async (req, res) => {
-//   const post = await Post.findById(req.params.id); // Fetch post first to check author
-
-//   if (!post) {
-//     res.status(404);
-//     throw new Error('Post not found');
-//   }
-
-//   // Authorization Check: Ensure logged-in user's name matches the post's author name
-//   if (post.author !== req.user.name) {
-//     res.status(403); // Forbidden
-//     throw new Error('You are not authorized to update this post');
-//   }
-
-//   // If authorized, then update:
-//   const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
-//     new: true,
-//     runValidators: true,
-//   });
-
-//   // Send the updated post as JSON response
-//   res.status(200).json(updatedPost);
-// });
 
 // @desc    Delete a post by ID
 // @route   DELETE /api/posts/:id
@@ -216,9 +172,7 @@ const dislikePost = asyncHandler(async (req, res) => {
   const userIdStr = userId.toString();
 
   // Check if user is in likedBy array and remove them if so
-  const userLikeIndex = post.likedBy.findIndex(
-    (likerId) => likerId.toString() === userIdStr
-  );
+  const userLikeIndex = post.likedBy.findIndex((likerId) => likerId.toString() === userIdStr);
   if (userLikeIndex > -1) {
     post.likedBy.splice(userLikeIndex, 1);
   }
@@ -287,7 +241,7 @@ const addComment = asyncHandler(async (req, res) => {
     author: userId,
     username,
     likes: [],
-    dislikes: []
+    dislikes: [],
   });
 
   await post.save();
@@ -378,7 +332,6 @@ module.exports = {
   getPosts,
   getPostById,
   createPost,
-  // updatePost,
   deletePost,
   likePost,
   dislikePost,
