@@ -24,6 +24,23 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 # ChangeLog
 
+## 12-05-2025 Updates by Zhang Ka Sing
+
+###  Fixed and Added the following features:
+1. Profile Page Improvements:
+- Fixed profile page data fetching from backend
+- Added proper user information display
+- Implemented loading and error states
+
+2. Admin Mode Implementation:
+- Added admin role verification middleware
+- Implemented admin-specific post deletion permission
+- Added admin mode visual indicator in header
+
+3. Security and Authorization:
+- Added role-based access control
+- Implemented admin permission checks
+
 ## 11-05-2025 Updates by Baichuan ZENG
 
 1. Update password set-up policy:
