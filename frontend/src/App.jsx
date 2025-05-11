@@ -28,9 +28,9 @@ function AppContent() {
 
   const handlePostCreated = () => {
     // Trigger refresh of PostList component
-    setRefreshKey(prev => prev + 1);
-    setLastAction("Post created successfully!");
-    
+    setRefreshKey((prev) => prev + 1);
+    setLastAction('Post created successfully!');
+
     // Clear success message after 3 seconds
     setTimeout(() => {
       setLastAction(null);
@@ -55,17 +55,19 @@ function AppContent() {
           <h1>BuzzNet</h1>
         </div>
         <p>Share and Connect with the Community</p>
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          right: 50,
-          transform: 'translateY(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          gap: '10px',
-          zIndex: 1001
-        }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            right: 50,
+            transform: 'translateY(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            gap: '10px',
+            zIndex: 1001,
+          }}
+        >
           {username && (
             <Link
               to="/profile"
@@ -81,7 +83,7 @@ function AppContent() {
                 transition: 'all 0.2s ease',
                 ':hover': {
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                }
+                },
               }}
             >
               {username}
@@ -109,22 +111,25 @@ function AppContent() {
       <main className="app-main-flex">
         <Routes>
           <Route path="/profile" element={<Profile />} />
-          <Route path="/" element={
-            <>
-              <div className="left-column">
-                <section className="create-post-section">
-                  <PostForm onPostCreated={handlePostCreated} />
-                  {lastAction && <div className="success-message">{lastAction}</div>}
-                </section>
-              </div>
-              
-              <div className="right-column">
-                <section className="posts-section" key={refreshKey}>
-                  <PostList />
-                </section>
-              </div>
-            </>
-          } />
+          <Route
+            path="/"
+            element={
+              <>
+                <div className="left-column">
+                  <section className="create-post-section">
+                    <PostForm onPostCreated={handlePostCreated} />
+                    {lastAction && <div className="success-message">{lastAction}</div>}
+                  </section>
+                </div>
+
+                <div className="right-column">
+                  <section className="posts-section" key={refreshKey}>
+                    <PostList />
+                  </section>
+                </div>
+              </>
+            }
+          />
         </Routes>
       </main>
 

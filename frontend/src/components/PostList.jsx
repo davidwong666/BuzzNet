@@ -30,19 +30,6 @@ const PostList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [usedMockData, setUsedMockData] = useState(false);
-  // Removed refreshCount and lastRefresh for simplicity with optimistic updates
-  // const [refreshCount, setRefreshCount] = useState(0);
-  // const [lastRefresh, setLastRefresh] = useState(Date.now());
-
-  // useEffect for auto-refresh can be removed if optimistic updates + server response are sufficient
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (!usedMockData) {
-  //       setRefreshCount((prev) => prev + 1);
-  //     }
-  //   }, 10000);
-  //   return () => clearInterval(interval);
-  // }, [usedMockData]);
 
   const fetchPosts = useCallback(async () => {
     try {
