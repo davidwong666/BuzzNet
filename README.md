@@ -24,50 +24,65 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 # ChangeLog
 
-## 12-05-2025 Updates by Zhang Ka Sing
+## 11-05-2025 Updates by Zhang Ka Sing
 
-###  Fixed and Added the following features:
+### Fixed and Added the following features:
+
 1. Profile Page Improvements:
+
 - Fixed profile page data fetching from backend
 - Added proper user information display
 - Implemented loading and error states
 
 2. Admin Mode Implementation:
+
 - Added admin role verification middleware
 - Implemented admin-specific post deletion permission
 - Added admin mode visual indicator in header
 
 3. Security and Authorization:
+
 - Added role-based access control
 - Implemented admin permission checks
 
 ## 11-05-2025 Updates by Baichuan ZENG
 
 1. Update password set-up policy:
+
 - at least one upper case, one lower case and one number
 - minimum length 8 characters
 
 2. Update Comment Post function:
+
 ### Backend
+
 - add addCommentToPost(), likeComment(), dislikeComment() functions in postController.js
 - update commentSchema in Post.js
 - update postRoutes.js due to new functions
+
 ### Frontend
+
 - update PostDetail.jsx to handle comment
 - show no. of comments
 - show time of comments
+
 ### REMIND
+
 - Modify frontend/src/pages/PostDetail.jsx when deplying
 
 ## 11-05-2025 Updates by Peng Minqi
+
 ### Fixed and Added the following features:
+
 1.Implementations:
-   - Implement likes and dislikes methods
-   - Implement post detailed page
-   
-2.Fix bugs:
-   - collarborate with David to fix some bugs in likes and dislikes
-   - some frontend view bugs, like zoom rate and feed view
+
+- Implement likes and dislikes methods
+- Implement post detailed page
+
+  2.Fix bugs:
+
+- collarborate with David to fix some bugs in likes and dislikes
+- some frontend view bugs, like zoom rate and feed view
 
 ## 11-05-2025 Updates by Kwok Kam Wong
 
