@@ -10,29 +10,27 @@ const commentSchema = new mongoose.Schema(
       ref: 'User', // References the User model
       required: true,
     },
+    username: {
+      type: String,
+      required: true,
+    },
     // The text content of the comment
     text: {
       type: String,
       required: [true, 'Comment text cannot be empty'],
       trim: true,
     },
-    // Reference to Post
-    post: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post',
-      required: true,
-    },
-    likeCount: {
-      type: Number,
-      default: 0, // Start with 0 likes
-      min: 0, // Likes cannot be negative
-    },
-    likedBy: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference the User model
-      },
-    ],
+    // Optional: Denormalized user's name for quicker display if needed
+    // name: {
+    //   type: String,
+    //   required: true,
+    // },
+    // Optional: Denormalized user's profile picture URL
+    // profilePicture: {
+    //   type: String,
+    // }
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },
   {
     // Add timestamps (createdAt, updatedAt) to each comment

@@ -23,6 +23,25 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 7. Run `cd backend && npm run dev` to run the backend locally
 
 # ChangeLog
+
+## 11-05-2025 Updates by Baichuan ZENG
+
+1. Update password set-up policy:
+- at least one upper case, one lower case and one number
+- minimum length 8 characters
+
+2. Update Comment Post function:
+### Backend
+- add addCommentToPost(), likeComment(), dislikeComment() functions in postController.js
+- update commentSchema in Post.js
+- update postRoutes.js due to new functions
+### Frontend
+- update PostDetail.jsx to handle comment
+- show no. of comments
+- show time of comments
+### REMIND
+- Modify frontend/src/pages/PostDetail.jsx when deplying
+
 ## 11-05-2025 Updates by Peng Minqi
 ### Fixed and Added the following features:
 1.Implementations:

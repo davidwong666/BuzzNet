@@ -258,6 +258,105 @@ const getPostById = asyncHandler(async (req, res) => {
   res.status(200).json(post);
 });
 
+// @desc    Add a comment to a post
+// @route   POST /api/posts/:id/comments
+// @access  Private
+const addCommentToPost = asyncHandler(async (req, res) => {
+  const postId = req.params.id;
+  const { text } = req.body;
+  if (!text || !text.trim()) {
+    res.status(400);
+    throw new Error('Comment text cannot be empty');
+  }
+  const post = await Post.findById(postId);
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
+  // Get user info
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    res.status(401);
+    throw new Error('User not found');
+  }
+  // Create comment object
+  const comment = {
+    user: user._id,
+    username: user.username,
+    text,
+    likes: [],
+    dislikes: [],
+  };
+  post.comments.push(comment);
+  post.commentCount = post.comments.length;
+  await post.save();
+  res.status(201).json(post.comments[post.comments.length - 1]);
+});
+
+// @desc    Like a comment
+// @route   PATCH /api/posts/:postId/comments/:commentId/like
+// @access  Private
+const likeComment = asyncHandler(async (req, res) => {
+  const { postId, commentId } = req.params;
+  const userId = req.user._id;
+  const post = await Post.findById(postId);
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
+  const comment = post.comments.id(commentId);
+  if (!comment) {
+    res.status(404);
+    throw new Error('Comment not found');
+  }
+  // Remove user from dislikes if present
+  comment.dislikes = comment.dislikes.filter(
+    (id) => id.toString() !== userId.toString()
+  );
+  // Toggle like
+  if (comment.likes.some((id) => id.toString() === userId.toString())) {
+    // Unlike
+    comment.likes = comment.likes.filter((id) => id.toString() !== userId.toString());
+  } else {
+    // Like
+    comment.likes.push(userId);
+  }
+  await post.save();
+  res.status(200).json(comment);
+});
+
+// @desc    Dislike a comment
+// @route   PATCH /api/posts/:postId/comments/:commentId/dislike
+// @access  Private
+const dislikeComment = asyncHandler(async (req, res) => {
+  const { postId, commentId } = req.params;
+  const userId = req.user._id;
+  const post = await Post.findById(postId);
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
+  const comment = post.comments.id(commentId);
+  if (!comment) {
+    res.status(404);
+    throw new Error('Comment not found');
+  }
+  // Remove user from likes if present
+  comment.likes = comment.likes.filter(
+    (id) => id.toString() !== userId.toString()
+  );
+  // Toggle dislike
+  if (comment.dislikes.some((id) => id.toString() === userId.toString())) {
+    // Remove dislike
+    comment.dislikes = comment.dislikes.filter((id) => id.toString() !== userId.toString());
+  } else {
+    // Add dislike
+    comment.dislikes.push(userId);
+  }
+  await post.save();
+  res.status(200).json(comment);
+});
+
 // Export all controller functions
 module.exports = {
   getPosts,
@@ -267,4 +366,7 @@ module.exports = {
   deletePost,
   likePost,
   dislikePost,
+  addCommentToPost,
+  likeComment,
+  dislikeComment,
 };
