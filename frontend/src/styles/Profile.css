@@ -64,4 +64,21 @@
   color: var(--text-color);
   font-size: 1.1rem;
   flex: 1;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+  font-size: 1.2rem;
+  background-color: #f8d7da;
+  border-radius: 8px;
+  margin: 1rem 0;
 } 

@@ -8,7 +8,7 @@ const router = express.Router();
 const {
   registerUser,
   loginUser,
-  // getUserProfile, // Assuming you will create this controller function
+  getUserProfile,
   // updateUserProfile, // Example for a future protected route
 } = require('../controllers/userController'); // Adjust path if needed
 
@@ -39,9 +39,7 @@ router.post('/login', loginUser);
 // @desc    Get user profile (of the logged-in user)
 // @route   GET /api/users/profile
 // @access  Private (requires token)
-// The 'protect' middleware will run first. If the token is valid,
-// req.user will be populated and then getUserProfile will be called.
-// router.get('/profile', protect, getUserProfile);
+router.get('/profile', protect, getUserProfile);
 
 // @desc    Update user profile (of the logged-in user)
 // @route   PUT /api/users/profile

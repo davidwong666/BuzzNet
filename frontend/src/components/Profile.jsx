@@ -1,12 +1,65 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Profile.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Profile = () => {
   const navigate = useNavigate();
-  const username = localStorage.getItem('username') || 'Guest';
-  const email = localStorage.getItem('email') || `${username}@test.com`;
-  const createdAt = localStorage.getItem('createdAt');
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/');
+          return;
+        }
+
+        const response = await fetch(`${API_URL}/api/users/profile`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+
+        const data = await response.json();
+        setUserData(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <div className="profile-container">
+        <div className="profile-card">
+          <div className="loading">Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="profile-container">
+        <div className="profile-card">
+          <div className="error">{error}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">
@@ -18,15 +71,19 @@ const Profile = () => {
           <div className="profile-info">
             <div className="info-item">
               <label>Username:</label>
-              <span>{username}</span>
+              <span>{userData?.username}</span>
             </div>
             <div className="info-item">
               <label>Email:</label>
-              <span>{email}</span>
+              <span>{userData?.email}</span>
+            </div>
+            <div className="info-item">
+              <label>Role:</label>
+              <span>{userData?.role}</span>
             </div>
             <div className="info-item">
               <label>Join Date:</label>
-              <span>{new Date(createdAt).toLocaleDateString()}</span>
+              <span>{new Date(userData?.createdAt).toLocaleDateString()}</span>
             </div>
           </div>
           <button
