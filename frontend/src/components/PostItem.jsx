@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const PostItem = ({ post, onLike, onDelete }) => {
+const PostItem = ({ post, onDelete }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [likes, setLikes] = useState(post.likes || 0);
   const [dislikes, setDislikes] = useState(post.dislikes || 0);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Get current logged-in user
   const currentUsername = localStorage.getItem('username');
+  const currentUserId = localStorage.getItem('userId');
   // Check if current user is the author of the post
   const isAuthor = post.author?.username === currentUsername;
+
+  // Initialize like/dislike status when post data changes
+  useEffect(() => {
+    if (currentUserId && post.likedBy) {
+      setIsLiked(post.likedBy.includes(currentUserId));
+    }
+    if (currentUserId && post.dislikedBy) {
+      setIsDisliked(post.dislikedBy.includes(currentUserId));
+    }
+    setLikes(post.likes || 0);
+    setDislikes(post.dislikes || 0);
+  }, [post, currentUserId]);
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
@@ -29,65 +43,80 @@ const PostItem = ({ post, onLike, onDelete }) => {
   };
 
   const handleLike = async () => {
+    if (isLoading) return;
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please login first');
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      if (isLiked) {
-        setLikes((prev) => prev - 1);
-        setIsLiked(false);
-      } else {
-        if (isDisliked) {
-          setDislikes((prev) => prev - 1);
-          setIsDisliked(false);
+      const response = await fetch(`http://localhost:5000/api/posts/${post._id}/like`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
-        setLikes((prev) => prev + 1);
-        setIsLiked(true);
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to like post');
       }
-      await onLike(post._id);
+
+      const updatedPost = await response.json();
+      
+      // Update state with backend response
+      setLikes(updatedPost.likes);
+      setDislikes(updatedPost.dislikes);
+      setIsLiked(updatedPost.likedBy.includes(currentUserId));
+      setIsDisliked(updatedPost.dislikedBy.includes(currentUserId));
+
     } catch (error) {
       console.error('Error liking post:', error);
-      // Revert the state if the API call fails
-      if (isLiked) {
-        setLikes((prev) => prev + 1);
-        setIsLiked(true);
-      } else {
-        if (isDisliked) {
-          setDislikes((prev) => prev + 1);
-          setIsDisliked(true);
-        }
-        setLikes((prev) => prev - 1);
-        setIsLiked(false);
-      }
+      alert('Failed to like post. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDislike = async () => {
+    if (isLoading) return;
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please login first');
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      if (isDisliked) {
-        setDislikes((prev) => prev - 1);
-        setIsDisliked(false);
-      } else {
-        if (isLiked) {
-          setLikes((prev) => prev - 1);
-          setIsLiked(false);
+      const response = await fetch(`http://localhost:5000/api/posts/${post._id}/dislike`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
-        setDislikes((prev) => prev + 1);
-        setIsDisliked(true);
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to dislike post');
       }
-      // You'll need to implement onDislike in the parent component
-      // await onDislike(post._id);
+
+      const updatedPost = await response.json();
+      
+      // Update state with backend response
+      setLikes(updatedPost.likes);
+      setDislikes(updatedPost.dislikes);
+      setIsLiked(updatedPost.likedBy.includes(currentUserId));
+      setIsDisliked(updatedPost.dislikedBy.includes(currentUserId));
+
     } catch (error) {
       console.error('Error disliking post:', error);
-      // Revert the state if the API call fails
-      if (isDisliked) {
-        setDislikes((prev) => prev + 1);
-        setIsDisliked(true);
-      } else {
-        if (isLiked) {
-          setLikes((prev) => prev + 1);
-          setIsLiked(true);
-        }
-        setDislikes((prev) => prev - 1);
-        setIsDisliked(false);
-      }
+      alert('Failed to dislike post. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -162,15 +191,17 @@ const PostItem = ({ post, onLike, onDelete }) => {
         <button
           className={`like-button ${isLiked ? 'active' : ''}`}
           onClick={handleLike}
+          disabled={isLoading}
           style={{
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
+            cursor: isLoading ? 'not-allowed' : 'pointer',
             padding: '5px 10px',
             color: isLiked ? '#3a7bd5' : '#666',
             display: 'flex',
             alignItems: 'center',
             gap: '5px',
+            opacity: isLoading ? 0.7 : 1,
           }}
         >
           👍 {likes}
@@ -178,15 +209,17 @@ const PostItem = ({ post, onLike, onDelete }) => {
         <button
           className={`dislike-button ${isDisliked ? 'active' : ''}`}
           onClick={handleDislike}
+          disabled={isLoading}
           style={{
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
+            cursor: isLoading ? 'not-allowed' : 'pointer',
             padding: '5px 10px',
             color: isDisliked ? '#3a7bd5' : '#666',
             display: 'flex',
             alignItems: 'center',
             gap: '5px',
+            opacity: isLoading ? 0.7 : 1,
           }}
         >
           👎 {dislikes}
