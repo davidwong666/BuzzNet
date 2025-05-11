@@ -261,100 +261,112 @@ const getPostById = asyncHandler(async (req, res) => {
 // @desc    Add a comment to a post
 // @route   POST /api/posts/:id/comments
 // @access  Private
-const addCommentToPost = asyncHandler(async (req, res) => {
-  const postId = req.params.id;
+const addComment = asyncHandler(async (req, res) => {
+  const { id } = req.params;
   const { text } = req.body;
-  if (!text || !text.trim()) {
+  const userId = req.user._id;
+  const username = req.user.username;
+
+  if (!text) {
     res.status(400);
-    throw new Error('Comment text cannot be empty');
+    throw new Error('Please provide comment text');
   }
-  const post = await Post.findById(postId);
+
+  const post = await Post.findById(id);
   if (!post) {
     res.status(404);
     throw new Error('Post not found');
   }
-  // Get user info
-  const user = await User.findById(req.user._id);
-  if (!user) {
-    res.status(401);
-    throw new Error('User not found');
-  }
-  // Create comment object
-  const comment = {
-    user: user._id,
-    username: user.username,
+
+  post.comments.push({
     text,
+    author: userId,
+    username,
     likes: [],
-    dislikes: [],
-  };
-  post.comments.push(comment);
-  post.commentCount = post.comments.length;
+    dislikes: []
+  });
+
   await post.save();
-  res.status(201).json(post.comments[post.comments.length - 1]);
+  await post.populate('author', 'username');
+  await post.populate('comments.author', 'username');
+
+  res.status(201).json(post);
 });
 
 // @desc    Like a comment
-// @route   PATCH /api/posts/:postId/comments/:commentId/like
+// @route   PATCH /api/posts/:id/comments/:commentId/like
 // @access  Private
 const likeComment = asyncHandler(async (req, res) => {
-  const { postId, commentId } = req.params;
+  const { id, commentId } = req.params;
   const userId = req.user._id;
-  const post = await Post.findById(postId);
+
+  const post = await Post.findById(id);
   if (!post) {
     res.status(404);
     throw new Error('Post not found');
   }
+
   const comment = post.comments.id(commentId);
   if (!comment) {
     res.status(404);
     throw new Error('Comment not found');
   }
-  // Remove user from dislikes if present
-  comment.dislikes = comment.dislikes.filter(
-    (id) => id.toString() !== userId.toString()
-  );
-  // Toggle like
-  if (comment.likes.some((id) => id.toString() === userId.toString())) {
-    // Unlike
-    comment.likes = comment.likes.filter((id) => id.toString() !== userId.toString());
+
+  const likeIndex = comment.likes.indexOf(userId);
+  const dislikeIndex = comment.dislikes.indexOf(userId);
+
+  if (likeIndex > -1) {
+    comment.likes.splice(likeIndex, 1);
   } else {
-    // Like
     comment.likes.push(userId);
+    if (dislikeIndex > -1) {
+      comment.dislikes.splice(dislikeIndex, 1);
+    }
   }
+
   await post.save();
-  res.status(200).json(comment);
+  await post.populate('author', 'username');
+  await post.populate('comments.author', 'username');
+
+  res.status(200).json(post);
 });
 
 // @desc    Dislike a comment
-// @route   PATCH /api/posts/:postId/comments/:commentId/dislike
+// @route   PATCH /api/posts/:id/comments/:commentId/dislike
 // @access  Private
 const dislikeComment = asyncHandler(async (req, res) => {
-  const { postId, commentId } = req.params;
+  const { id, commentId } = req.params;
   const userId = req.user._id;
-  const post = await Post.findById(postId);
+
+  const post = await Post.findById(id);
   if (!post) {
     res.status(404);
     throw new Error('Post not found');
   }
+
   const comment = post.comments.id(commentId);
   if (!comment) {
     res.status(404);
     throw new Error('Comment not found');
   }
-  // Remove user from likes if present
-  comment.likes = comment.likes.filter(
-    (id) => id.toString() !== userId.toString()
-  );
-  // Toggle dislike
-  if (comment.dislikes.some((id) => id.toString() === userId.toString())) {
-    // Remove dislike
-    comment.dislikes = comment.dislikes.filter((id) => id.toString() !== userId.toString());
+
+  const dislikeIndex = comment.dislikes.indexOf(userId);
+  const likeIndex = comment.likes.indexOf(userId);
+
+  if (dislikeIndex > -1) {
+    comment.dislikes.splice(dislikeIndex, 1);
   } else {
-    // Add dislike
     comment.dislikes.push(userId);
+    if (likeIndex > -1) {
+      comment.likes.splice(likeIndex, 1);
+    }
   }
+
   await post.save();
-  res.status(200).json(comment);
+  await post.populate('author', 'username');
+  await post.populate('comments.author', 'username');
+
+  res.status(200).json(post);
 });
 
 // Export all controller functions
@@ -366,7 +378,7 @@ module.exports = {
   deletePost,
   likePost,
   dislikePost,
-  addCommentToPost,
+  addComment,
   likeComment,
   dislikeComment,
 };
