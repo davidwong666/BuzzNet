@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PostItem = ({ post, onDelete }) => {
+  const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [likes, setLikes] = useState(post.likes || 0);
@@ -27,22 +29,29 @@ const PostItem = ({ post, onDelete }) => {
     setDislikes(post.dislikes || 0);
   }, [post, currentUserId]);
 
-  const toggleExpand = () => setIsExpanded(!isExpanded);
+  const toggleExpand = (e) => {
+    e.stopPropagation(); // Prevent navigation when clicking read more
+    setIsExpanded(!isExpanded);
+  };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (e) => {
+    e.stopPropagation(); // Prevent navigation when clicking delete
     setShowConfirm(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = (e) => {
+    e.stopPropagation(); // Prevent navigation when clicking confirm
     onDelete(post._id);
     setShowConfirm(false);
   };
 
-  const cancelDelete = () => {
+  const cancelDelete = (e) => {
+    e.stopPropagation(); // Prevent navigation when clicking cancel
     setShowConfirm(false);
   };
 
-  const handleLike = async () => {
+  const handleLike = async (e) => {
+    e.stopPropagation(); // Prevent navigation when clicking like
     if (isLoading) return;
 
     const token = localStorage.getItem('token');
@@ -81,7 +90,8 @@ const PostItem = ({ post, onDelete }) => {
     }
   };
 
-  const handleDislike = async () => {
+  const handleDislike = async (e) => {
+    e.stopPropagation(); // Prevent navigation when clicking dislike
     if (isLoading) return;
 
     const token = localStorage.getItem('token');
@@ -120,6 +130,10 @@ const PostItem = ({ post, onDelete }) => {
     }
   };
 
+  const handlePostClick = () => {
+    navigate(`/post/${post._id}`);
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -146,7 +160,7 @@ const PostItem = ({ post, onDelete }) => {
   };
 
   return (
-    <div className="post-item">
+    <div className="post-item" onClick={handlePostClick}>
       <h3>{post.title}</h3>
       <div className="post-meta">
         <span className="post-author">By {post.author?.username || 'Unknown User'}</span>
