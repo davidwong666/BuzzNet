@@ -66,20 +66,18 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 ### Fixed and Added the following features:
 1.Implementations:
    - Implement likes and dislikes methods:
-    User can like or dislike posts;
+    User can like or dislike posts:
     Clicking like on a disliked post will remove the dislike and add a like; otherwise, it will remove the like and add a dislikes;
-    The like/dislike count is displayed next to the repective buttons;
+    The like/dislike count is displayed next to the repective buttons.
    - Implement post read more/show less:
     Clicking "Read more" expands the content to full length;
-    Clicking "Show less" collapses the content to truncated view;
+    Clicking "Show less" collapses the content to truncated view.
    - Implement post detail page:
     clicking post will redirect to a post detail page;
     post content display;
     navigation feature, containing Back button;
     interaction features: like/dislike posts and comments;
-    some changes on comment system: comment list, comment interactions;
-    real-time update;
-    data management;
+    some changes on comment system: comment list, comment interactions.
 
 
    
@@ -87,7 +85,7 @@ This project uses VS Code's **Remote Development extension** for a consistent de
    - collarborate with David to fix some bugs in likes and dislikes
    - some frontend view bugs, like zoom rate and feed view:
     Improve the adaptability of web pages to front-end display functions at different zoom rates；
-    Improve the frontend performance the webpages;
+    Improve the frontend performance the webpages.
 
 ## 11-05-2025 Updates by Kwok Kam Wong
 
