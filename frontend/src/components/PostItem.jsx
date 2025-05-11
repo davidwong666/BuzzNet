@@ -57,7 +57,12 @@ const PostItem = ({ post, onLike, onDelete }) => {
         <span className="post-date">{formatDate(post.createdAt)}</span>
       </div>
       
-      <div className={`post-content ${isExpanded ? 'expanded' : ''}`}>
+      <div className={`post-content ${isExpanded ? 'expanded' : ''}`} style={{
+        wordWrap: 'break-word',
+        whiteSpace: 'pre-wrap',
+        overflowWrap: 'break-word',
+        maxWidth: '100%'
+      }}>
         {isExpanded 
           ? post.content 
           : post.content.length > 150 
@@ -67,7 +72,19 @@ const PostItem = ({ post, onLike, onDelete }) => {
       </div>
       
       {post.content.length > 150 && (
-        <button className="read-more" onClick={toggleExpand}>
+        <button 
+          className="read-more-button" 
+          onClick={toggleExpand}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#3a7bd5',
+            cursor: 'pointer',
+            padding: '5px 0',
+            fontSize: '14px',
+            textDecoration: 'underline'
+          }}
+        >
           {isExpanded ? 'Show less' : 'Read more'}
         </button>
       )}
@@ -81,7 +98,7 @@ const PostItem = ({ post, onLike, onDelete }) => {
         </button>
         <button 
           className="unlike-button" 
-          onClick={() => onDislike(post._id)} // Add this handler
+          onClick={() => onDislike(post._id)}
         >
           👎 {post.dislikes || 0}
         </button>
@@ -90,12 +107,6 @@ const PostItem = ({ post, onLike, onDelete }) => {
           onClick={() => onComment(post._id)}
         >
           💬 {post.commentCount || 0}
-        </button>
-        <button 
-          className="delete-button" 
-          onClick={handleDeleteClick}
-        >
-          Delete
         </button>
         {isAuthor && (
           <button 
