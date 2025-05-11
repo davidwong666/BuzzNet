@@ -14,8 +14,10 @@ const PostItem = ({ post, onDelete }) => {
   // Get current logged-in user
   const currentUsername = localStorage.getItem('username');
   const currentUserId = localStorage.getItem('userId');
+  const isAdmin = localStorage.getItem('role') === 'admin';
   // Check if current user is the author of the post
   const isAuthor = post.author?.username === currentUsername;
+  const canDelete = isAdmin || isAuthor;
 
   // Initialize like/dislike status when post data changes
   useEffect(() => {
@@ -241,7 +243,7 @@ const PostItem = ({ post, onDelete }) => {
         <button className="comment-button" onClick={() => onComment(post._id)}>
           💬 {post.commentCount || 0}
         </button>
-        {isAuthor && (
+        {canDelete && (
           <button
             className="delete-button"
             onClick={handleDeleteClick}
