@@ -7,8 +7,12 @@ const User = require('../models/User');
 // @access  Public
 const getPosts = asyncHandler(async (req, res) => {
   // Fetch all posts, sorted by creation date (newest first)
-  // Populate author field with username
-  const posts = await Post.find().sort({ createdAt: -1 }).populate('author', 'username'); // Consider populating more author details if needed
+  // Populate author field with username and include comments
+  const posts = await Post.find()
+    .sort({ createdAt: -1 })
+    .populate('author', 'username')
+    .populate('comments.author', 'username');
+  
   console.log(`Post.find() successful, found ${posts.length} posts.`);
   // Send the posts as JSON response
   res.status(200).json(posts);
