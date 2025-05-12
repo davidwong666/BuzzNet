@@ -23,6 +23,14 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 7. Run `cd backend && npm run dev` to run the backend locally
 
 # ChangeLog
+## 12-05-2025 Updates by Zhang Ka Sing
+
+### Added the following features:
+3. Comment Management:
+- Implemented comment deletion functionality
+- Added comment author and admin deletion permission verification
+- Added comment delete button and confirmation prompt in frontend
+- Implemented comment deletion API endpoint in backend
 
 ## 11-05-2025 Updates by Zhang Ka Sing
 
@@ -80,9 +88,6 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 - Use optimistic like for a post. (Local change not necesasrily reflect the server state)
 - Removed redundant code in the frontend
 - Store user_id in local storage for later use
-- Set JWT token expiry time to 1m (will change back to 15m: first time and 7d: refresh later)
-- Code review and bug identification
-- Recheck SRS and design implementation to make sure correct project alignment
 
 ## 10-05-2025 Updates by Zhang Ka Sing
 

@@ -1,3 +1,4 @@
+// backend/controllers/userController.js
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
@@ -8,30 +9,8 @@ const generateToken = (id) => {
     console.error('FATAL ERROR: JWT_SECRET is not defined in .env file');
     throw new Error('Server configuration error: JWT secret missing.');
   }
-  return jwt.sign({ id, type: 'access' }, process.env.JWT_SECRET, {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '1m',
-  });
-};
-
-const generateRefreshToken = (id) => {
-  if (!process.env.JWT_REFRESH_SECRET) {
-    // Using a different secret for refresh tokens is a good practice
-    console.error('FATAL ERROR: JWT_REFRESH_SECRET is not defined in .env file');
-    // Fallback to JWT_SECRET if JWT_REFRESH_SECRET is not defined, but log a warning
-    // In production, you should ensure JWT_REFRESH_SECRET is set.
-    console.warn(
-      'Warning: JWT_REFRESH_SECRET is not set. Falling back to JWT_SECRET for refresh tokens. This is not recommended for production.'
-    );
-    if (!process.env.JWT_SECRET) {
-      throw new Error('Server configuration error: JWT secret missing for refresh token.');
-    }
-    return jwt.sign({ id, type: 'refresh' }, process.env.JWT_SECRET, {
-      // Added a 'type' claim
-      expiresIn: '7d', // Longer lifespan for refresh tokens
-    });
-  }
-  return jwt.sign({ id, type: 'refresh' }, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: '7d', // e.g., 7 days
   });
 };
 
@@ -54,7 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
-    throw new Error('User already exists');
+    throw new Error('User already exists with this email');
   }
 
   // --- Create user ---
@@ -101,7 +80,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (!user) {
     res.status(401);
-    throw new Error('Invalid username or password');
+    throw new Error('Invalid email or password');
   }
 
   // Check if account is locked
@@ -117,7 +96,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!isMatch) {
     // Increment login attempts
     await user.incrementLoginAttempts();
-
+    
     // Check if account should be locked after this attempt
     if (user.loginAttempts >= 5) {
       res.status(401);
@@ -125,7 +104,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     res.status(401);
-    throw new Error('Invalid username or password');
+    throw new Error('Invalid email or password');
   }
 
   // Reset login attempts on successful login
@@ -163,8 +142,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 });
-
-// TODO: add generateToken function
 
 module.exports = {
   registerUser,

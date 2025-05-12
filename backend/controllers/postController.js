@@ -327,6 +327,42 @@ const dislikeComment = asyncHandler(async (req, res) => {
   res.status(200).json(post);
 });
 
+// @desc    Delete a comment
+// @route   DELETE /api/posts/:id/comments/:commentId
+// @access  Private (Only comment author or admin can delete)
+const deleteComment = asyncHandler(async (req, res) => {
+  const { id, commentId } = req.params;
+  const userId = req.user._id;
+
+  const post = await Post.findById(id);
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
+
+  const comment = post.comments.id(commentId);
+  if (!comment) {
+    res.status(404);
+    throw new Error('Comment not found');
+  }
+
+  // Check if user is admin or comment author
+  if (req.user.role !== 'admin' && comment.author.toString() !== userId.toString()) {
+    res.status(403);
+    throw new Error('Not authorized to delete this comment');
+  }
+
+  // Remove the comment
+  post.comments.pull(commentId);
+  await post.save();
+
+  // Populate the updated post data
+  await post.populate('author', 'username');
+  await post.populate('comments.author', 'username');
+
+  res.status(200).json(post);
+});
+
 // Export all controller functions
 module.exports = {
   getPosts,
@@ -338,4 +374,5 @@ module.exports = {
   addComment,
   likeComment,
   dislikeComment,
+  deleteComment,
 };
