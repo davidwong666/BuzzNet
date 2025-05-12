@@ -26,7 +26,7 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 ## 12-05-2025 Updates by Zhang Ka Sing
 
 ### Added the following features:
-3. Comment Management:
+1. Comment Management:
 - Implemented comment deletion functionality
 - Added comment author and admin deletion permission verification
 - Added comment delete button and confirmation prompt in frontend
