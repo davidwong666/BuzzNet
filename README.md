@@ -23,10 +23,19 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 7. Run `cd backend && npm run dev` to run the backend locally
 
 # ChangeLog
+
+## 12-05-2025 Updates by Wong Kwok Kam
+
+### Fixed the following feature:
+
+- JWT Token Expiration Handling: Set the expiration time for JWT tokens to 1 hour to prevent rapid invalidation of JWT token, provide better user experience.
+
 ## 12-05-2025 Updates by Zhang Ka Sing
 
 ### Added the following features:
+
 1. Comment Management:
+
 - Implemented comment deletion functionality
 - Added comment author and admin deletion permission verification
 - Added comment delete button and confirmation prompt in frontend
@@ -34,63 +43,78 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 ## 11-05-2025 Updates by Zhang Ka Sing
 
-###  Fixed and Added the following features:
+### Fixed and Added the following features:
+
 1. Profile Page Improvements:
+
 - Fixed profile page data fetching from backend
 - Added proper user information display
 - Implemented loading and error states
 
 2. Admin Mode Implementation:
+
 - Added admin role verification middleware
 - Implemented admin-specific post deletion permission
 - Added admin mode visual indicator in header
 
 3. Login/Register Form Improvements:
+
 - Added specific password requirements message
 - Added two times repeated password validation
 - Added password strength indicator
 - Account lockout after multiple failed attempts
 
-
 ## 11-05-2025 Updates by Baichuan ZENG
 
 1. Update password set-up policy:
+
 - at least one upper case, one lower case and one number
 - minimum length 8 characters
 
 2. Update Comment Post function:
+
 ### Backend
+
 - add addCommentToPost(), likeComment(), dislikeComment() functions in postController.js
 - update commentSchema in Post.js
 - update postRoutes.js due to new functions
+
 ### Frontend
+
 - update PostDetail.jsx to handle comment
 - show no. of comments
 - show time of comments
+
 ### REMIND
+
 - Modify frontend/src/pages/PostDetail.jsx when deplying
 
 ## 11-05-2025 Updates by Peng Minqi
+
 ### Fixed and Added the following features:
+
 ### Implementations:
-   - Implement likes and dislikes methods:
-    User can like or dislike posts.
-    Clicking like on a disliked post will remove the dislike and add a like; otherwise, it will remove the like and add a dislikes.
-    The like/dislike count is displayed next to the repective buttons.
-   - Implement post read more/show less:
-    Clicking "Read more" expands the content to full length;
-    Clicking "Show less" collapses the content to truncated view.
-   - Implement post detail page:
-    clicking post will redirect to a post detail page;
-    post content display;
-    navigation feature, containing Back button;
-    interaction features: like/dislike posts and comments;
-    some changes on comment system: comment list, comment interactions.
+
+- Implement likes and dislikes methods:
+  User can like or dislike posts.
+  Clicking like on a disliked post will remove the dislike and add a like; otherwise, it will remove the like and add a dislikes.
+  The like/dislike count is displayed next to the repective buttons.
+- Implement post read more/show less:
+  Clicking "Read more" expands the content to full length;
+  Clicking "Show less" collapses the content to truncated view.
+- Implement post detail page:
+  clicking post will redirect to a post detail page;
+  post content display;
+  navigation feature, containing Back button;
+  interaction features: like/dislike posts and comments;
+  some changes on comment system: comment list, comment interactions.
+
 ### Fix bugs:
-   - collarborate with David to fix some bugs in likes and dislikes
-   - some frontend view bugs, like zoom rate and feed view:
-    Improve the adaptability of web pages to front-end display functions at different zoom rates；
-    Improve the frontend performance the webpages.
+
+- collarborate with David to fix some bugs in likes and dislikes
+- some frontend view bugs, like zoom rate and feed view:
+  Improve the adaptability of web pages to front-end display functions at different zoom rates；
+  Improve the frontend performance the webpages.
 
 ## 11-05-2025 Updates by Kwok Kam Wong
 
