@@ -28,7 +28,9 @@ This project uses VS Code's **Remote Development extension** for a consistent de
 
 ### Fixed the following feature:
 
-- JWT Token Expiration Handling: Set the expiration time for JWT tokens to 1 hour to prevent rapid invalidation of JWT token, provide better user experience.
+- JWT Token Expiration Handling: Set the expiration time for JWT tokens to 3 hour to prevent rapid invalidation of JWT token, provide better user experience.
+
+- Modify env file for JWT_SECRET variable.
 
 ## 12-05-2025 Updates by Zhang Ka Sing
 

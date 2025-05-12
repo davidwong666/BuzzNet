@@ -10,7 +10,7 @@ const generateToken = (id) => {
     throw new Error('Server configuration error: JWT secret missing.');
   }
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '1h',
+    expiresIn: '3h',
   });
 };
 
