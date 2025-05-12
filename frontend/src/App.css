@@ -1,5 +1,6 @@
 /* Base Styles */
 :root {
+  /* Colors */
   --primary-color: #4a6fa5;
   --secondary-color: #166088;
   --accent-color: #4cb5f5;
@@ -9,66 +10,43 @@
   --border-color: #ddd;
   --success-color: #4caf50;
   --error-color: #f44336;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  /* Base font size for better zoom adaptability */
-  font-size: 16px;
   
-  /* Dynamic scale factor for zooming */
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.25rem;
+  --spacing-xl: 1.5rem;
+  
+  /* Shadows */
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  
+  /* Font Sizes */
+  --font-size-xs: 0.9rem;
+  --font-size-sm: 1rem;
+  --font-size-md: 1.2rem;
+  --font-size-lg: 1.4rem;
+  --font-size-xl: 1.6rem;
+  --font-size-xxl: 2rem;
+  --font-size-xxxl: 5rem;
+  
+  /* Layout */
+  --container-width: 1400px;
+  --header-height: 200px;
+  --footer-height: 50px;
+  
+  /* Base font size */
+  font-size: 16px;
   --scale-factor: 1;
 }
 
-/* Enhanced zoom level adaptability - scale based on zoom level */
-@media screen and (min-resolution: 96dpi) {
-  :root {
-    font-size: calc(16px + 0.2vw); /* Slightly responsive to viewport width */
-    --scale-factor: 1;
-  }
-}
-
-/* Better handling of extreme zoom out */
-@media screen and (max-resolution: 50dpi) {
-  :root {
-    font-size: calc(16px + 2vw); /* More aggressive scaling for extreme zoom out */
-    --scale-factor: 1.5; /* Increase scale factor for 50% zoom */
-  }
-  
-  .app-container {
-    max-width: 98%; /* Use more screen space when zoomed out */
-  }
-  
-  /* Ensure minimum sizes at 50% zoom */
-  .left-column {
-    min-width: 250px;
-  }
-  
-  .right-column {
-    min-width: 400px;
-  }
-  
-  /* Scale up certain text elements at extreme zoom out */
-  .app-header h1 {
-    font-size: calc(5rem * var(--scale-factor));
-  }
-  
-  .app-header p {
-    font-size: calc(1.6rem * var(--scale-factor));
-  }
-  
-  .post-form-container h2,
-  .post-list h2 {
-    font-size: calc(2.2rem * var(--scale-factor));
-  }
-}
-
-/* Transition helper to smooth zoom changes */
-* {
-  transition: font-size 0.3s ease, padding 0.3s ease, margin 0.3s ease;
-}
-
+/* Reset & Base Styles */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: font-size 0.3s ease, padding 0.3s ease, margin 0.3s ease;
 }
 
 html, body {
@@ -76,7 +54,6 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  /* Force-render layout elements at full precision */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -90,14 +67,13 @@ body {
   display: flex;
   justify-content: center;
   overflow-y: auto;
-  padding-top: 1.25rem; /* Convert 20px to rem */
-  /* Add minimum width to prevent extreme narrowing at lower zoom */
+  padding-top: var(--spacing-lg);
   min-width: 320px;
 }
 
-/* App Layout */
+/* Layout Components */
 .app-container {
-  width: 1400px; /* Fixed exact width */
+  width: var(--container-width);
   margin: 0 auto;
   padding: 0;
   display: flex;
@@ -105,23 +81,23 @@ body {
   align-items: center;
   position: relative;
   overflow-x: hidden;
-  height: 100vh; /* Full viewport height */
-  min-height: 800px; /* Minimum height */
-  max-height: 100vh; /* Maximum height */
+  height: 100vh;
+  min-height: 800px;
+  max-height: 100vh;
 }
 
 .app-header {
   text-align: center;
-  margin-bottom: 5px; /* Reduced margin */
-  padding: 15px 20px; /* Reduced padding */
-  width: 1400px; /* Fixed exact width */
+  margin-bottom: var(--spacing-xs);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  width: var(--container-width);
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--card-shadow);
   position: relative;
   overflow: hidden;
   border-radius: 0 0 16px 16px;
-  height: 200px; /* Fixed exact height, reduced from 200px */
+  height: var(--header-height);
 }
 
 .app-header::before {
@@ -169,29 +145,28 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 1400px; 
-  height: calc(100vh - 230px); 
+  width: var(--container-width);
+  height: calc(100vh - var(--header-height) - 30px);
   margin: 0;
-  gap: 20px; 
-  overflow: hidden; /* Prevent overflow */
+  gap: var(--spacing-xl);
+  overflow: hidden;
 }
 
 .left-column {
-  flex: 0 0 400px; /* Fixed width */
+  flex: 0 0 400px;
   position: relative;
-  top: 0;
-  height: 100%; /* Full height of parent */
+  height: 100%;
   width: 400px;
   overflow-y: auto;
 }
 
 .right-column {
-  flex: 0 0 980px; 
+  flex: 0 0 980px;
   width: 980px;
-  height: 100%; 
-  overflow-y: auto; 
-  padding-right: 15px; 
-  overflow-x: hidden; /* Hide horizontal scrollbar */
+  height: 100%;
+  overflow-y: auto;
+  padding-right: var(--spacing-lg);
+  overflow-x: hidden;
 }
 
 /* Add margin to the posts section to align with create post form header */
@@ -227,26 +202,26 @@ body {
 
 /* Footer */
 .app-footer {
-  margin-top: 20px; /* Reduced margin */
+  margin-top: var(--spacing-xl);
   text-align: center;
-  padding: 10px 0;
+  padding: var(--spacing-xs) 0;
   color: var(--light-text);
   border-top: 1px solid var(--border-color);
-  width: 1400px; /* Fixed width */
+  width: var(--container-width);
   position: relative;
   bottom: 0;
-  height: 50px; /* Fixed height */
+  height: var(--footer-height);
 }
 
 /* Form Styles */
 .post-form-container {
   background-color: white;
-  padding: 15px; /* Reduced from 20px */
+  padding: var(--spacing-lg);
   border-radius: 16px;
   box-shadow: var(--card-shadow);
-  width: 400px;
-  height: auto; /* Changed from fixed height to auto */
-  min-height: 500px; /* Added minimum height */
+  width: 100%;
+  height: auto;
+  min-height: 500px;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -261,7 +236,7 @@ body {
 }
 
 .post-form-container:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--hover-shadow);
   transform: translateY(-2px);
 }
 
@@ -274,28 +249,28 @@ body {
 }
 
 .post-form .form-group {
-  margin-bottom: 1.25rem; /* Reduced from 2rem */
+  margin-bottom: var(--spacing-lg);
 }
 
 .post-form label {
   display: block;
-  margin-bottom: 0rem; /* Reduced from 0.875rem */
+  margin-bottom: 0;
   font-weight: 500;
-  font-size: 1.2rem; /* Reduced from 1.4rem */
+  font-size: var(--font-size-md);
 }
 
 .post-form input,
 .post-form textarea {
   width: 100%;
-  padding: 0.75rem; /* Reduced from 1.5rem */
+  padding: var(--spacing-sm);
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem; /* Reduced from 0.625rem */
-  font-size: 1.2rem; /* Reduced from 1.4rem */
+  border-radius: 8px;
+  font-size: var(--font-size-md);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .post-form input {
-  height: 2.5rem; /* Reduced from 3.5rem */
+  height: 2.5rem;
 }
 
 .post-form input:focus,
@@ -307,22 +282,21 @@ body {
 
 .post-form textarea {
   resize: vertical;
-  min-height: 100px; /* Reduced from 150px */
-  max-height: 200px; /* Reduced from 250px */
+  min-height: 100px;
+  max-height: 200px;
 }
 
 .post-form .submit-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 12px 20px; /* Reduced from 18px 25px */
+  padding: var(--spacing-md) var(--spacing-xl);
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.2rem; /* Reduced from 1.4rem */
+  font-size: var(--font-size-md);
   font-weight: 500;
   width: 100%;
-  margin-top: 0rem; /* Reduced from 40px */
-  height: 65px; /* Reduced from 65px */
+  height: 65px;
 }
 
 .post-form .submit-button:hover {
@@ -338,12 +312,11 @@ body {
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Reduced from 20px */
+  gap: var(--spacing-lg);
   width: 100%;
   height: auto;
   margin: 0;
-  padding-top: 0; /* Added to remove top padding */
-  padding-bottom: 20px;
+  padding-bottom: var(--spacing-xl);
   overflow-x: hidden;
 }
 
@@ -351,10 +324,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem; /* Reduced from 1.25rem */
+  margin-bottom: 1rem;
   width: 100%;
-  padding: 0 0 10px 0; /* Added padding to separate header from posts */
-  border-bottom: 1px solid var(--border-color); /* Added border to separate header */
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .post-list h2 {
@@ -367,8 +340,8 @@ body {
   background-color: var(--accent-color);
   color: white;
   border: none;
-  padding: 0.5rem 1rem; /* 8px 16px */
-  border-radius: 1.25rem; /* 20px */
+  padding: 0.5rem 1rem;
+  border-radius: 1.25rem;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 500;
@@ -389,50 +362,47 @@ body {
 .last-refresh-info {
   color: var(--light-text);
   font-size: 0.9rem;
-  margin-bottom: 0.9375rem; /* 15px */
+  margin-bottom: 0.9375rem;
   text-align: right;
   font-style: italic;
 }
 
 .post-item {
   background-color: white;
-  padding: 15px; /* Reduced from 20px */
-  border-radius: 12px; /* Reduced from 16px */
+  padding: var(--spacing-lg);
+  border-radius: 12px;
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
   width: 100%;
-  min-height: 120px; /* Reduced from 150px */
+  min-height: 120px;
   height: auto;
-  max-height: none;
-  overflow: visible;
-  box-sizing: border-box;
 }
 
 .post-item:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--hover-shadow);
   transform: translateY(-2px);
   border-left-color: var(--accent-color);
 }
 
 .post-item h3 {
-  margin-bottom: 0.5rem; /* Reduced from 1rem */
+  margin-bottom: 0.5rem;
   color: var(--secondary-color);
-  font-size: 1.8rem; /* Reduced from 2rem */
+  font-size: 1.8rem;
 }
 
 .post-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 1rem; /* Reduced from 1.1rem */
+  font-size: 1rem;
   color: var(--light-text);
-  margin-bottom: 1rem; /* Reduced from 1.5625rem */
+  margin-bottom: 1rem;
 }
 
 .post-content {
-  margin-bottom: 1rem; /* Reduced from 1.5625rem */
-  line-height: 1.4; /* Reduced from 1.6 */
-  font-size: 1.2rem; /* Reduced from 1.3rem */
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  font-size: 1.2rem;
   white-space: pre-line;
   overflow: visible;
   height: auto;
@@ -451,7 +421,7 @@ body {
   cursor: pointer;
   font-size: 1.1rem;
   padding: 0;
-  margin-bottom: 1.25rem; /* 20px */
+  margin-bottom: 1.25rem;
 }
 
 .post-actions {
@@ -629,26 +599,26 @@ body {
 /* Utility Classes */
 .loading {
   text-align: center;
-  padding: 2.5rem; /* 40px */
+  padding: var(--spacing-xl);
   color: var(--light-text);
-  font-size: 1.4rem;
+  font-size: var(--font-size-lg);
 }
 
 .error {
   background-color: #ffebee;
   color: var(--error-color);
-  padding: 1.25rem; /* 20px */
-  border-radius: 0.5rem; /* 8px */
-  margin-bottom: 1.5625rem; /* 25px */
-  font-size: 1.2rem;
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  margin-bottom: var(--spacing-xl);
+  font-size: var(--font-size-md);
 }
 
 .no-posts {
   text-align: center;
-  padding: 3.125rem; /* 50px */
+  padding: 3.125rem;
   color: var(--light-text);
   background-color: white;
-  border-radius: 0.75rem; /* 12px */
+  border-radius: 0.75rem;
   box-shadow: var(--card-shadow);
   font-size: 1.4rem;
 }
@@ -656,14 +626,14 @@ body {
 .success-message {
   background-color: #e8f5e9;
   color: var(--success-color);
-  padding: 0.75rem; /* 12px */
-  border-radius: 0.5rem; /* 8px */
-  margin-top: 1.25rem; /* 20px */
-  font-size: 1.1rem;
+  padding: var(--spacing-sm);
+  border-radius: 8px;
+  margin-top: var(--spacing-lg);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   text-align: center;
   animation: fadeIn 0.3s ease-in-out;
-  border-left: 0.25rem solid var(--success-color); /* 4px */
+  border-left: 4px solid var(--success-color);
 }
 
 @keyframes fadeIn {
@@ -683,11 +653,11 @@ body {
 }
 
 /* Viewport adaptation */
-@media (max-height: 900px) {
+@media screen and (max-height: 900px) {
   .app-header {
-    height: 120px; /* Even smaller height */
-    padding: 10px;
-    margin-bottom: 10px;
+    height: 120px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
   }
   
   .app-main-flex {
@@ -704,13 +674,13 @@ body {
   
   .app-footer {
     height: 30px;
-    margin-top: 10px;
-    padding: 5px 0;
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-xs) 0;
   }
 }
 
 /* Ensure all content fits within browser window */
-@media (max-width: 1440px) {
+@media screen and (max-width: 1440px) {
   .app-container,
   .app-header,
   .app-main-flex,
@@ -718,22 +688,22 @@ body {
   .right-column .posts-section,
   .post-list,
   .post-item {
-    width: 95vw; /* Switch to viewport width */
+    width: 95vw;
   }
   
   .right-column {
-    width: calc(95vw - 420px); /* 95vw minus left column and gap */
+    width: calc(95vw - 420px);
     flex: 0 0 calc(95vw - 420px);
   }
   
   .post-item {
-    width: 100%; /* Full width of parent */
-    max-height: none; /* Ensure no max height constraint */
+    width: 100%;
+    max-height: none;
   }
 }
 
 /* Style adjustments for smaller screens */
-@media (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
   .app-container,
   .app-header,
   .app-main-flex,
@@ -752,42 +722,33 @@ body {
   }
 }
 
-@media (max-width: 992px) {
+@media screen and (max-width: 992px) {
   .app-main-flex {
-    width: 95vw;
-    height: auto;
     flex-direction: column;
   }
   
-  .left-column {
+  .left-column,
+  .right-column,
+  .post-form-container {
     width: 95vw;
     flex: none;
-    height: auto;
-    position: static;
   }
   
   .right-column {
-    width: 95vw;
-    flex: none;
-    margin-top: 20px;
-  }
-  
-  .post-form-container {
-    height: 500px;
-    width: 95vw;
+    margin-top: var(--spacing-xl);
   }
   
   .post-list,
   .post-item {
     width: 95vw;
-    max-height: none; /* Ensure no max height constraint */
+    max-height: none;
   }
 }
 
 /* Add zoom adaptability for high DPI screens */
 @media screen and (min-resolution: 192dpi) {
   :root {
-    font-size: 18px; /* Increase base font size for high DPI screens */
+    font-size: 18px;
   }
 }
 

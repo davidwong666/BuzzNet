@@ -11,6 +11,7 @@ const {
   addComment,
   likeComment,
   dislikeComment,
+  deleteComment,
 } = require('../controllers/postController');
 
 // GET all posts
@@ -34,5 +35,8 @@ router.route('/:id/comments').post(protect, addComment);
 router.route('/:id/comments/:commentId/like').patch(protect, likeComment);
 
 router.route('/:id/comments/:commentId/dislike').patch(protect, dislikeComment);
+
+// Delete a comment
+router.route('/:id/comments/:commentId').delete(protect, deleteComment);
 
 module.exports = router;

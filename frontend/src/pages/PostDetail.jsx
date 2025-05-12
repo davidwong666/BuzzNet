@@ -187,6 +187,29 @@ const PostDetail = () => {
     fetchPost();
   };
 
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm('Are you sure you want to delete this comment?')) {
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch(`http://localhost:5000/api/posts/${id}/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete comment');
+      }
+
+      fetchPost();
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      alert('Failed to delete comment. Please try again.');
+    }
+  };
+
   if (isLoading) {
     return <div className="loading">Loading...</div>;
   }
@@ -338,22 +361,48 @@ const PostDetail = () => {
       <div style={{ marginTop: 32 }}>
         <h3>Comments</h3>
         {post.comments && post.comments.length === 0 && <div>No comments yet.</div>}
-        {post.comments && post.comments.map(comment => (
-          <div key={comment._id} style={{ marginBottom: 16, padding: 12, border: '1px solid #eee', borderRadius: 6 }}>
-            <strong>{comment.username}</strong>: {comment.text}
-            <div style={{ fontSize: '0.9em', color: '#888', marginTop: 4 }}>
-              {formatCommentDate(comment.createdAt)}
+        {post.comments && post.comments.map(comment => {
+          const currentUserId = localStorage.getItem('userId');
+          const isCommentAuthor = comment.author === currentUserId;
+          const isAdmin = localStorage.getItem('userRole') === 'admin';
+          const canDelete = isCommentAuthor || isAdmin;
+
+          return (
+            <div key={comment._id} style={{ marginBottom: 16, padding: 12, border: '1px solid #eee', borderRadius: 6 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <strong>{comment.username}</strong>: {comment.text}
+                  <div style={{ fontSize: '0.9em', color: '#888', marginTop: 4 }}>
+                    {formatCommentDate(comment.createdAt)}
+                  </div>
+                </div>
+                {canDelete && (
+                  <button
+                    onClick={() => handleDeleteComment(comment._id)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#ff4444',
+                      cursor: 'pointer',
+                      padding: '4px 8px',
+                      fontSize: '0.9em'
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+              <div>
+                <button onClick={() => handleLikeComment(comment._id)}>
+                  👍 {comment.likes.length}
+                </button>
+                <button onClick={() => handleDislikeComment(comment._id)} style={{ marginLeft: 8 }}>
+                  👎 {comment.dislikes.length}
+                </button>
+              </div>
             </div>
-            <div>
-              <button onClick={() => handleLikeComment(comment._id)}>
-                👍 {comment.likes.length}
-              </button>
-              <button onClick={() => handleDislikeComment(comment._id)} style={{ marginLeft: 8 }}>
-                👎 {comment.dislikes.length}
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
