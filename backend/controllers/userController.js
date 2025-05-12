@@ -10,7 +10,7 @@ const generateToken = (id) => {
     throw new Error('Server configuration error: JWT secret missing.');
   }
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '1m',
+    expiresIn: '1h',
   });
 };
 
@@ -96,7 +96,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!isMatch) {
     // Increment login attempts
     await user.incrementLoginAttempts();
-    
+
     // Check if account should be locked after this attempt
     if (user.loginAttempts >= 5) {
       res.status(401);
