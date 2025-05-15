@@ -10,6 +10,9 @@ Group Project for CSCI3100 2024-25 Sem 2 at CUHK
 - Zeng Bai Chuan - Backend
 - Wong Kwok Kam - Backend
 
+# The Websites of Our Projects
+You can visit our websites: https://buzz-net-tau.vercel.app/
+
 # Dev Env Setup
 
 This project uses VS Code's **Remote Development extension** for a consistent development environment:
